@@ -11,7 +11,7 @@ Note: A* algorithm uses the equation F=G+H for finding spot of best value, where
 number possible. H is a calculation of how far away the spot would be from the end if it moved to that spot
 it is considering. G is the cost of movement to that next spot added to the cost of moving to that spot through
 all previous spots on that route.
-By Riley Schaaf. Last updated 17:45 February 7, 2018*/
+By Riley Schaaf. Last updated 01:15 February 8, 2018*/
 
 public class Path{
   /**private static ArrayList<String> open;
