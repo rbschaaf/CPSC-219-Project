@@ -116,6 +116,27 @@ public class Path{
     //method call to add start point to solution list
     listOfMoves.addToPath(start);
     
+    currentSpot = start;
+    
+    //do while loop to find new spot to move on way to end point
+    do{//loop through possible moves.
+      //check if new moves are valid
+      //if valid, choose shortest distance to end
+      //add it to list
+    }while (!currentSpot.equals(end));
+    
+    //if current location is the end, print the list of successful moves
+    if (currentSpot.equals(end)){
+      listOfMoves.displaySuccessfulPath(listOfMoves);
+    }//if cannot find a successful path, print a message saying so
+    else{
+      System.out.println("No successful path was found.");
+    }
+   }
+  }
+
+      
+    
     
     
     
