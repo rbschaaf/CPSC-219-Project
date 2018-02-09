@@ -120,41 +120,67 @@ public class Path{
     int distanceValue = currentSpot.distanceToEnd(currentSpot, end);
     //do while loop to find new spot to move on way to end point
     do{//loop through possible moves.
-      if (x<COLS-1)
+      if (x<COLS-1){
+        //check if new moves are valid
         if (currentSpot.isValidMove(currentSpot[x+1][y])){
+           //if valid, choose shortest distance to end
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x+1][y], end)){
-            currentSpot = [x+1][y];
-      if (x>0)
+            currentSpot = currentSpot[x+1][y];
+          }
+        }
+      }
+      if (x>0){
         if (currentSpot.isValidMove(currentSpot[x-1][y])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x-1][y], end)){
-            currentSpot = [x-1][y];
-      if (y<ROWS-1)
+            currentSpot = currentSpot[x-1][y];
+          }
+        }
+      }
+      if (y<ROWS-1){
         if (currentSpot.isValidMove(currentSpot[x][y+1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x][y+1], end)){
-            currentSpot = [x][y+1];
-      if (y>0)
+            currentSpot = currentSpot[x][y+1];
+          }
+        }
+      }
+      if (y>0){
         if (currentSpot.isValidMove(currentSpot[x][y-1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x][y-1], end)){
-            currentSpot = [x][y-1];
-      if (x<COLS-1 && y>0)
+            currentSpot = currentSpot[x][y-1];
+          }
+        }
+      }
+      if (x<COLS-1 && y>0){
         if (currentSpot.isValidMove(currentSpot[x+1][y-1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x+1][y-1], end)){
-            currentSpot = [x+1][y-1];
-      if (x> 0 && y>0)
+            currentSpot = currentSpot[x+1][y-1];
+          }
+        }
+      }
+      if (x> 0 && y>0){
          if (currentSpot.isValidMove(currentSpot[x-1][y-1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x-1][y-1], end)){
-            currentSpot = [x-1][y-1];
-      if (x >0  && y< ROWS-1)
+            currentSpot = currentSpot[x-1][y-1];
+          }
+        }
+      }
+      if (x >0  && y< ROWS-1){
         if (currentSpot.isValidMove(currentSpot[x-1][y+1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x-1][y+1], end)){
-            currentSpot = [x-1][y+1];
-      if (x< COLS-1 && y<ROWS-1)
+            currentSpot = currentSpot[x-1][y+1];
+          }
+        }
+      }
+      if (x< COLS-1 && y<ROWS-1){
         if (currentSpot.isValidMove(currentSpot[x+1][y+1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x+1][y+1], end)){
-            currentSpot = [x+1][y+1];
-      //check if new moves are valid
-      //if valid, choose shortest distance to end
+            currentSpot = currentSpot[x+1][y+1];
+          }
+        }
+      }
+      
       //add it to list
+      listOfMoves.addToPath(currentSpot);
     }while (!currentSpot.equals(end));
     
     //if current location is the end, print the list of successful moves
