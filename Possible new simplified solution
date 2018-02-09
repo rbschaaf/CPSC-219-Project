@@ -86,7 +86,7 @@ public class Path{
     //check if new moves are valid
     if (thisCurrentSpot.isValidMove(newPossibleSpot[x][y])){
       //if valid, choose shortest distance to end
-      if (thisCurrentSpot.distanceToEnd(currentSpot,end) > (thisCurrentSpot.distanceToEnd(newPossibleSpot[x][y], end)){
+      if (thisCurrentSpot.distanceToEnd(thisCurrentSpot[x][y],end) > (newPossibleSpot.distanceToEnd(newPossibleSpot[x][y], end)){
         currentSpot = newPossibleSpot[x][y];
       }
     }
