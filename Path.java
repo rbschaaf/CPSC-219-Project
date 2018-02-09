@@ -28,10 +28,7 @@ public class Path{
   private  static int ROWS=5;
   private static ArrayList<Path> openSet;
   private static ArrayList<Path> closedSet;
-  private static int startRow;
-  private static int endRow;
-  private static int startCol;
-  private static int endCol;
+
 
 
 
@@ -66,9 +63,8 @@ public class Path{
   }
 
 //Trying to create a starting location. Just starting with top left corner for now.
-  public static void setStart(){
-    this.startRow=0;
-    this.startCol=0;
+  public static void setStart(grid[x][y]){
+    Path start = grid[x][y];
   }
 
   //Trying to return starting location
@@ -79,9 +75,8 @@ public class Path{
 
 
 //Trying to create an end location. Just starting with bottom right corner for now
-  public void setEnd(){
-    this.endRow=ROWS-1;
-    this.endCol=COLS-1;
+  public void setEnd(grid [x][y]){
+    Path end = grid[x][y];
   }
 
   // Trying to return an end location
