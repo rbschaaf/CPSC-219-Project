@@ -86,4 +86,17 @@ public class Path{
     return validMove;
   }
   
+  //adds the successful new spot to the list of previous spots
+  public void addToPath (ArrayList <int> newSpot){
+    listOfMoves.add(newSpot);
+  }
+  
+  //if the end is found, display the successful path.
+  public void displaySuccessfulPath(ArrayList <int> successfulPath){
+    for (int i=0; i<successfulPath.length; i++){
+      for (int j=0; j<successfulPath[i].length; j++){
+        System.out.println(successfulPath[i][j]);
+      }
+    }
+  }
   
