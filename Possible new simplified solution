@@ -118,7 +118,7 @@ public class Path{
     
     currentSpot = start;
     int distanceValue = currentSpot.distanceToEnd(currentSpot, end);
-    //do while loop to find new spot to move on way to end point
+    //do while loop to find new spot to move on way to end point. Should be in a loop. if conditions will need to be changed to relect size of map
     do{//loop through possible moves.
       if (x<COLS-1){
         //check if new moves are valid
