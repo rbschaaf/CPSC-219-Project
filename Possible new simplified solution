@@ -34,11 +34,14 @@ Pseudocode:
     +possibleNewSpots(currentSpot:Array coordinate)
     +addToPath(newSpot:Array coordinate)
     +displaySuccessfulPath(successfulPath:ArrayList)
+    +setMapSize(map:Array)
     */
 
 public class Path{
   private ArrayList<int> listOfMoves;
   private ArrayList<int> currentSpot;
+  private int columnNumber;
+  private int rowNumber;
   
   // Copy constructor. Copied from Nicki's Map Class code
   public Path(Map gridToCopy){
@@ -69,6 +72,13 @@ public class Path{
   //get the end location
   public ArrayList<int> getEnd (){
     return end;
+  }
+  
+  //find the map size in columns and rows
+  public void findMapSize(Array[][] map){
+    int i;
+    columnNumber=map.length();
+    rowNumber=map[i].length();
   }
 
   //calculating the distance from a potnetial new spot to move to and the end point.
@@ -106,6 +116,9 @@ public class Path{
     
     //method call to get a copy of the grid map from Nicki
     map.Path(gridToCopy);
+    
+    //method call to find the map dimensions
+    findMapSize(map);
     
     //method call to set start point on grid map
     map.setStart();
