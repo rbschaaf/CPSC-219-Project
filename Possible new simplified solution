@@ -129,7 +129,7 @@ public class Path{
     //if current location is the end, print the list of successful moves
     if (currentSpot.equals(end)){
       listOfMoves.displaySuccessfulPath(listOfMoves);
-    }//if cannot find a successful path, print a message saying so
+    }//if cannot find a successful path, print a message saying so. Currently no way to decide when no path can be found
     else{
       System.out.println("No successful path was found.");
     }
