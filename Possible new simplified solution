@@ -44,7 +44,15 @@ public class Path{
     start = startLocation;
   }
   
-    public void setEnd(ArrayList<int> endLocation){
+  public void setEnd(ArrayList<int> endLocation){
     ArrayList<int> end = new ArrayList<int>;
     end = endLocation;
+  }
+
+  public ArrayList<int> getStart (){
+    return start;
+  }
+  
+  public ArrayList<int> getEnd (){
+    return end;
   }
