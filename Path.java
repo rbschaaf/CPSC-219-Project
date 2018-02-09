@@ -69,7 +69,6 @@ public class Path{
 
   //Trying to return starting location
   public static int[] getStart(){
-    int[] start={startRow, startCol};
     return start;
   }
 
@@ -81,7 +80,6 @@ public class Path{
 
   // Trying to return an end location
   public static int[] getEnd(){
-    int[] end = {endRow, endCol};
     return end;
   }
 
