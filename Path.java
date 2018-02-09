@@ -107,7 +107,7 @@ public class Path{
   public static void displayPath(Path[][] closedList){
     for (int i=0; i<closedList.length; i++){
       for (int j=0; j<closedList[i].length; j++){
-        System.out.println(closedList[i][j]0;
+        System.out.println(closedList[i][j]);
       }
     }
     System.out.println("The end was found successfully);
