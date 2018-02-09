@@ -1,0 +1,35 @@
+/**This is an attempt at simplified alternate solution for Friday
+Pseudocode:
+  copyMap from Nicki
+  setStart
+  setEnd
+  add start to list
+  make start the currentSpot
+  do: loop through possible moves(neighbouring spots)
+      check if valid move
+      if valid,
+        measure each distance to end 
+        choose shortest to end
+      add spot to list 
+      make the spot currentSpot
+    while: check currentSpot is the end
+ if current is end
+  print list
+ else 
+  say no path
+  
+  Typed UML 
+    Class Path
+    -listOfMoves:ArrayList
+    -currentSpot: Array coordinate
+    
+    +setStart(startLocation: Array coordinate)
+    +setEnd(endLocation: Array coordinate)
+    +getStart(): Array coordinate
+    +getEnd(): Array coordinate
+    +distanceToEnd(newNeighbour: Array coordinate, endPoint:Array coordinate):int
+    +copyMap(mapToCopy:Array):Array
+    +isValidMove(newSpot:Array coordinate):boolean
+    +possibleNewSpots(currentSpot:Array coordinate)
+    +addToPath(newSpot:Array coordinate)
+    +displaySuccessfulPath(successfulPath:ArrayList)
