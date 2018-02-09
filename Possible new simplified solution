@@ -34,3 +34,17 @@ Pseudocode:
     +addToPath(newSpot:Array coordinate)
     +displaySuccessfulPath(successfulPath:ArrayList)
     */
+
+public class Path{
+  private ArrayList<int> listOfMoves;
+  private ArrayList<int> currentSpot;
+  
+  public void setStart(ArrayList<int> startLocation){
+    ArrayList<int> start = new ArrayList<int>;
+    start = startLocation;
+  }
+  
+    public void setEnd(ArrayList<int> endLocation){
+    ArrayList<int> end = new ArrayList<int>;
+    end = endLocation;
+  }
