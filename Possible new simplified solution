@@ -133,7 +133,7 @@ public class Path{
     int distanceValue = currentSpot.distanceToEnd(currentSpot, end);
     //do while loop to find new spot to move on way to end point. Should be in a loop. if conditions will need to be changed to relect size of map
     do{//loop through possible moves.
-      if (x<COLS-1){
+      if (x<columnNumber-1){
         //check if new moves are valid
         if (currentSpot.isValidMove(currentSpot[x+1][y])){
            //if valid, choose shortest distance to end
@@ -149,7 +149,7 @@ public class Path{
           }
         }
       }
-      if (y<ROWS-1){
+      if (y<rowNumber-1){
         if (currentSpot.isValidMove(currentSpot[x][y+1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x][y+1], end)){
             currentSpot = currentSpot[x][y+1];
@@ -163,7 +163,7 @@ public class Path{
           }
         }
       }
-      if (x<COLS-1 && y>0){
+      if (x<columnNumber-1 && y>0){
         if (currentSpot.isValidMove(currentSpot[x+1][y-1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x+1][y-1], end)){
             currentSpot = currentSpot[x+1][y-1];
@@ -177,14 +177,14 @@ public class Path{
           }
         }
       }
-      if (x >0  && y< ROWS-1){
+      if (x >0  && y< rowNumber-1){
         if (currentSpot.isValidMove(currentSpot[x-1][y+1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x-1][y+1], end)){
             currentSpot = currentSpot[x-1][y+1];
           }
         }
       }
-      if (x< COLS-1 && y<ROWS-1){
+      if (x< columnNumber-1 && y<rowNumber-1){
         if (currentSpot.isValidMove(currentSpot[x+1][y+1])){
           if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x+1][y+1], end)){
             currentSpot = currentSpot[x+1][y+1];
