@@ -64,11 +64,11 @@ public class Path{
     if (x<COLS-1 && y>0){
     this.neighbours.add(grid[x+1][y-1]);
     }
-    if (x< COLS-1 && y>0){
-    this.neighbours.add(grid[x+1][y-1]);
+    if (x> 0 && y>0){
+    this.neighbours.add(grid[x-1][y-1]);
     }
     if (x >0  && y< ROWS-1){
-    this.neighbours.add(grid[x-11][y+1]);
+    this.neighbours.add(grid[x-1][y+1]);
     }
     if (x< COLS-1 && y<ROWS-1){
     this.neighbours.add(grid[x+1][y+1]);
@@ -127,11 +127,10 @@ public class Path{
         System.out.println(closedList[i][j]0;
       }
     }
+    System.out.println("The end was found successfully);
   }                     
                            
-                          
-
-
+                         
   public static void main(String[] args){
     //creating a grid
     Path[][] grid=new Path[COLS][ROWS];
@@ -170,17 +169,8 @@ public class Path{
       //If successful path is found to the end point, it is supposed to work backwards from the endPoint
       //through all of the successful points. This was done with JavaScript methods. Could probably use
       //the closedList for it.
-      if (current == end){
+      if (current.equals(end)){
         closedSet.displayPath(closedSet);
-        Path[][] foundPath =new Path[][];
-        (variable type) temp = current;
-        foundPath.add(temp);
-        //Connecting to each position before it add adding it to the list to get the successful path.
-        while (temp.previous){
-          foundPath.add(temp.previous);
-          temp = temp.previous;
-        }
-        System.out.println("The end was found");
       }//if end is not found, add the current spot to the closedSet and remove it from the OpenSet
       else{
         removeFromArray(openSet,current);
