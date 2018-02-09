@@ -1,5 +1,5 @@
 /**This is an attempt at simplified alternate solution for Friday. I am not sure how to use a spot on the map, so I 
-am currently putting it as an ArrayList.
+am currently putting it as an ArrayList. Does anyone know how best to pass something like this in a parameter?
 Pseudocode:
   copyMap from Nicki
   setStart
@@ -110,7 +110,7 @@ public class Path{
     }
   }
   
-  //the bulk of the Path Class code. Finds a possible path from a start location to end location.
+  //the opetation of the Path Class code. Finds a possible path from a start location to end location.
   public void findAPath (){
     grid[][] map = new grid[][];
     
