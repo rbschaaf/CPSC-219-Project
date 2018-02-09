@@ -46,9 +46,7 @@ public class Path{
   }
 
 //He is building a method so each Spot will add its 8 neighbours.
-  public static void addNeighbours(grid){
-    int x = this.i;
-    int y = this.j;
+  public static void addNeighbours(grid[x][y]){
     if (x<COLS-1)
       this.neighbours.add(grid[x+1][y]);
     if (x>0)
