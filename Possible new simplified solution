@@ -100,3 +100,22 @@ public class Path{
     }
   }
   
+  //the bulk of the Path Class code. Finds a possible path from a start location to end location.
+  public void findAPath (){
+    grid[][] map = new grid[][];
+    
+    //method call to get a copy of the grid map from Nicki
+    map.Path(gridToCopy);
+    
+    //method call to set start point on grid map
+    map.setStart();
+    
+    //method call to set end point on grid map
+    map.setEnd();
+    
+    //method call to add start point to solution list
+    listOfMoves.addToPath(start);
+    
+    
+    
+    
