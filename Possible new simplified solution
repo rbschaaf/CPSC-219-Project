@@ -28,7 +28,7 @@ Pseudocode:
     +setEnd(endLocation: Array coordinate)
     +getStart(): Array coordinate
     +getEnd(): Array coordinate
-    +distanceToEnd(potentialSpot: Array coordinate):int
+    +distanceToEnd(Spot: Array coordinate):int
     +copyMap(mapToCopy:Array):Array
     +isValidMove(newSpot:Array coordinate):boolean
     +possibleNewSpots(currentSpot:Array coordinate)
@@ -81,6 +81,17 @@ public class Path{
     rowNumber=map[i].length();
   }
 
+  //any possible new spots to move from the current square can be checked to find the best one
+  public void possibleNewSpots(ArrayList <int> thisCurrentSpot, ArrayList <int> newPossibleSpot){
+    //check if new moves are valid
+    if (thisCurrentSpot.isValidMove(newPossibleSpot[x][y])){
+      //if valid, choose shortest distance to end
+      if (thisCurrentSpot.distanceToEnd(currentSpot,end) > (thisCurrentSpot.distanceToEnd(newPossibleSpot[x][y], end)){
+        currentSpot = newPossibleSpot[x][y];
+      }
+    }
+  }
+  
   //calculating the distance from a potnetial new spot to move to and the end point.
   public int distanceToEnd (ArrayList <int> potentialSpot, ArrayList <int> end){
     int distance = (potentialSpot.x - end.x) + (potentialSpot.y - end.y);
@@ -131,65 +142,39 @@ public class Path{
     
     currentSpot = start;
     int distanceValue = currentSpot.distanceToEnd(currentSpot, end);
-    //do while loop to find new spot to move on way to end point. Should be in a loop. if conditions will need to be changed to relect size of map
+    //do while loop to find new spot to move on way to end point. Logic will be off because it will go with first available better space, as opposed to optimal move.
     do{//loop through possible moves.
       if (x<columnNumber-1){
-        //check if new moves are valid
-        if (currentSpot.isValidMove(currentSpot[x+1][y])){
-           //if valid, choose shortest distance to end
-          if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x+1][y], end)){
-            currentSpot = currentSpot[x+1][y];
-          }
-        }
+        //call method to see if this move is an improvement
+        possibleNewSpot(currentSpot[x][y], currentSpot[x+1],[y]);
       }
       if (x>0){
-        if (currentSpot.isValidMove(currentSpot[x-1][y])){
-          if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x-1][y], end)){
-            currentSpot = currentSpot[x-1][y];
-          }
-        }
+      //call method to see if this move is an improvement
+        possibleNewSpot(currentSpot[x][y], currentSpot[x-1],[y]);
       }
       if (y<rowNumber-1){
-        if (currentSpot.isValidMove(currentSpot[x][y+1])){
-          if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x][y+1], end)){
-            currentSpot = currentSpot[x][y+1];
-          }
-        }
+      //call method to see if this move is an improvement
+        possibleNewSpot(currentSpot[x][y], currentSpot[x],[y+1]);
       }
       if (y>0){
-        if (currentSpot.isValidMove(currentSpot[x][y-1])){
-          if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x][y-1], end)){
-            currentSpot = currentSpot[x][y-1];
-          }
-        }
+      //call method to see if this move is an improvement
+        possibleNewSpot(currentSpot[x][y], currentSpot[x],[y-1]);
       }
       if (x<columnNumber-1 && y>0){
-        if (currentSpot.isValidMove(currentSpot[x+1][y-1])){
-          if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x+1][y-1], end)){
-            currentSpot = currentSpot[x+1][y-1];
-          }
-        }
+      //call method to see if this move is an improvement
+        possibleNewSpot(currentSpot[x][y], currentSpot[x+1],[y-1]);
       }
       if (x> 0 && y>0){
-         if (currentSpot.isValidMove(currentSpot[x-1][y-1])){
-          if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x-1][y-1], end)){
-            currentSpot = currentSpot[x-1][y-1];
-          }
-        }
+      //call method to see if this move is an improvement
+        possibleNewSpot(currentSpot[x][y], currentSpot[x-1],[y-1]);
       }
       if (x >0  && y< rowNumber-1){
-        if (currentSpot.isValidMove(currentSpot[x-1][y+1])){
-          if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x-1][y+1], end)){
-            currentSpot = currentSpot[x-1][y+1];
-          }
-        }
+      //call method to see if this move is an improvement
+        possibleNewSpot(currentSpot[x][y], currentSpot[x-1],[y+1]);
       }
       if (x< columnNumber-1 && y<rowNumber-1){
-        if (currentSpot.isValidMove(currentSpot[x+1][y+1])){
-          if (currentSpot.distanceToEnd(currentSpot,end) > (currentSpot.distanceToEnd(currentSpot[x+1][y+1], end)){
-            currentSpot = currentSpot[x+1][y+1];
-          }
-        }
+      //call method to see if this move is an improvement
+        possibleNewSpot(currentSpot[x][y], currentSpot[x+1],[y+1]);
       }
       
       //add it to list
