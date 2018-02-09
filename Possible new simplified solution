@@ -39,6 +39,8 @@ public class Path{
   private ArrayList<int> listOfMoves;
   private ArrayList<int> currentSpot;
   
+  
+  
   public void setStart(ArrayList<int> startLocation){
     ArrayList<int> start = new ArrayList<int>;
     start = startLocation;
@@ -56,3 +58,10 @@ public class Path{
   public ArrayList<int> getEnd (){
     return end;
   }
+
+  public int distanceToEnd (ArrayList <int> potentialSpot, ArrayList <int> endPoint){
+    int distance = (newNeighbour.x - endPoint.x) + (newNeighbour.y - endPoint.y);
+    return distance;
+  }
+  
+  
