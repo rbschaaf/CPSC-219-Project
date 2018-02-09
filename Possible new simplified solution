@@ -120,6 +120,7 @@ public class Path{
     
     //do while loop to find new spot to move on way to end point
     do{//loop through possible moves.
+      
       //check if new moves are valid
       //if valid, choose shortest distance to end
       //add it to list
