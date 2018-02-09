@@ -49,30 +49,22 @@ public class Path{
   public static void addNeighbours(grid){
     int x = this.i;
     int y = this.j;
-    if (x<COLS-1){
+    if (x<COLS-1)
       this.neighbours.add(grid[x+1][y]);
-    }
-    if (x>0){
+    if (x>0)
       this.neighbours.add(grid[x-1][y]);
-    }
-    if (y<ROWS-1){
-    this.neighbours.add(grid[x][y+1]);
-    }
-    if (y>0){
-    this.neighbours.add(grid[x][y-1]);
-    }
-    if (x<COLS-1 && y>0){
-    this.neighbours.add(grid[x+1][y-1]);
-    }
-    if (x> 0 && y>0){
-    this.neighbours.add(grid[x-1][y-1]);
-    }
-    if (x >0  && y< ROWS-1){
-    this.neighbours.add(grid[x-1][y+1]);
-    }
-    if (x< COLS-1 && y<ROWS-1){
-    this.neighbours.add(grid[x+1][y+1]);
-    }
+    if (y<ROWS-1)
+      this.neighbours.add(grid[x][y+1]);
+    if (y>0)
+      this.neighbours.add(grid[x][y-1]);
+    if (x<COLS-1 && y>0)
+      this.neighbours.add(grid[x+1][y-1]);
+    if (x> 0 && y>0)
+      this.neighbours.add(grid[x-1][y-1]);
+    if (x >0  && y< ROWS-1)
+      this.neighbours.add(grid[x-1][y+1]);
+    if (x< COLS-1 && y<ROWS-1)
+      this.neighbours.add(grid[x+1][y+1]);
   }
 
 //Trying to create a starting location. Just starting with top left corner for now.
