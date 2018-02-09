@@ -132,8 +132,8 @@ public class Path{
     }
 
     //calling a method to have the starting point.
-    grid.setStart();
-    Path startPoint = grid.getStart;
+    grid.setStart(grid[x][y]);
+    Path startPoint = grid.getStart();
     openSet.add(startPoint); //Alwasy want to add the starting point to the open list.
 
     //Looping through openList trying to find best move or the end.
