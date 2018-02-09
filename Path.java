@@ -104,9 +104,9 @@ public class Path{
   }
   
   //Display the successful path once found
-  public static Path displayPath(Path[][] closedList){
+  public static void displayPath(Path[][] closedList){
     for (int i=0; i<closedList.length; i++){
-      for (int j=0; j<closedList[i]; j++){
+      for (int j=0; j<closedList[i].length; j++){
         System.out.println(closedList[i][j]0;
       }
     }
