@@ -23,18 +23,20 @@ Pseudocode:
     Class Path
     -listOfMoves:ArrayList
     -currentSpot: Array coordinate
+    -columnNumber: int
+    -rowNumber: int
     
     +setStart(startLocation: Array coordinate)
     +setEnd(endLocation: Array coordinate)
     +getStart(): Array coordinate
     +getEnd(): Array coordinate
-    +distanceToEnd(Spot: Array coordinate):int
-    +copyMap(mapToCopy:Array):Array
-    +isValidMove(newSpot:Array coordinate):boolean
-    +possibleNewSpots(currentSpot:Array coordinate)
+    +distanceToEnd(potentialSpot: Array coordinate, end: Array coordinate):int
+    +Path(gridToCopy:Array):Array
+    +isValidMove(potentialSpot:Array coordinate):boolean
+    +possibleNewSpots(thisCurrentSpot:Array coordinate, newPossibleSpot: Array coordinate)
     +addToPath(newSpot:Array coordinate)
     +displaySuccessfulPath(successfulPath:ArrayList)
-    +setMapSize(map:Array)
+    +findMapSize(map:Array)
     */
 
 public class Path{
