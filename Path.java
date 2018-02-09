@@ -26,9 +26,6 @@ public class Path{
   private static int colEnd;*/
   private  static int COLS=5;
   private  static int ROWS=5;
-  private static int f;
-  private static int g;
-  private static int h;
   private static ArrayList<Path> openSet;
   private static ArrayList<Path> closedSet;
   private static int startRow;
@@ -42,9 +39,9 @@ public class Path{
 
 //Constructor to put value into each Spot on grid. With the F, G, and H values initialized
   public void createSpot(){
-    this.f =0;
-    this.g=0;
-    this.h=0;
+    int f =0;
+    int g=0;
+    int h=0;
     this.neighbours = []; //keeps track of each of its neighbouring nodes
   }
 
@@ -119,9 +116,20 @@ public class Path{
 
   //Calculation performed to find the distance from the endpoint the space will be.
   public static int heuristic((position variable) newNeighbour, (position variable) endPoint){
-    int distance = abs(newNeighbour.x - endPoint.x) + abs(newNeighbour.y - endPoint.y);
+    int distance = (newNeighbour.x - endPoint.x) + (newNeighbour.y - endPoint.y);
     return distance;
   }
+  
+  //Display the successful path once found
+  public static Path displayPath(Path[][] closedList){
+    for (int i=0; i<closedList.length; i++){
+      for (int j=0; j<closedList[i]; j++){
+        System.out.println(closedList[i][j]0;
+      }
+    }
+  }                     
+                           
+                          
 
 
   public static void main(String[] args){
@@ -163,6 +171,7 @@ public class Path{
       //through all of the successful points. This was done with JavaScript methods. Could probably use
       //the closedList for it.
       if (current == end){
+        closedSet.displayPath(closedSet);
         Path[][] foundPath =new Path[][];
         (variable type) temp = current;
         foundPath.add(temp);
