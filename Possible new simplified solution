@@ -146,35 +146,35 @@ public class Path{
     do{//loop through possible moves.
       if (x<columnNumber-1){
         //call method to see if this move is an improvement
-        possibleNewSpot(currentSpot[x][y], currentSpot[x+1],[y]);
+        possibleNewSpot(currentSpot[x][y], currentSpot[x+1][y]);
       }
       if (x>0){
       //call method to see if this move is an improvement
-        possibleNewSpot(currentSpot[x][y], currentSpot[x-1],[y]);
+        possibleNewSpot(currentSpot[x][y], currentSpot[x-1][y]);
       }
       if (y<rowNumber-1){
       //call method to see if this move is an improvement
-        possibleNewSpot(currentSpot[x][y], currentSpot[x],[y+1]);
+        possibleNewSpot(currentSpot[x][y], currentSpot[x][y+1]);
       }
       if (y>0){
       //call method to see if this move is an improvement
-        possibleNewSpot(currentSpot[x][y], currentSpot[x],[y-1]);
+        possibleNewSpot(currentSpot[x][y], currentSpot[x][y-1]);
       }
       if (x<columnNumber-1 && y>0){
       //call method to see if this move is an improvement
-        possibleNewSpot(currentSpot[x][y], currentSpot[x+1],[y-1]);
+        possibleNewSpot(currentSpot[x][y], currentSpot[x+1][y-1]);
       }
       if (x> 0 && y>0){
       //call method to see if this move is an improvement
-        possibleNewSpot(currentSpot[x][y], currentSpot[x-1],[y-1]);
+        possibleNewSpot(currentSpot[x][y], currentSpot[x-1][y-1]);
       }
       if (x >0  && y< rowNumber-1){
       //call method to see if this move is an improvement
-        possibleNewSpot(currentSpot[x][y], currentSpot[x-1],[y+1]);
+        possibleNewSpot(currentSpot[x][y], currentSpot[x-1][y+1]);
       }
       if (x< columnNumber-1 && y<rowNumber-1){
       //call method to see if this move is an improvement
-        possibleNewSpot(currentSpot[x][y], currentSpot[x+1],[y+1]);
+        possibleNewSpot(currentSpot[x][y], currentSpot[x+1][y+1]);
       }
       
       //add it to list
