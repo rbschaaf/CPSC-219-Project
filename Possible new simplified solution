@@ -1,4 +1,5 @@
-/**This is an attempt at simplified alternate solution for Friday
+/**This is an attempt at simplified alternate solution for Friday. I am not sure how to use a spot on the map, so I 
+am currently putting it as an ArrayList.
 Pseudocode:
   copyMap from Nicki
   setStart
@@ -27,7 +28,7 @@ Pseudocode:
     +setEnd(endLocation: Array coordinate)
     +getStart(): Array coordinate
     +getEnd(): Array coordinate
-    +distanceToEnd(newNeighbour: Array coordinate, endPoint:Array coordinate):int
+    +distanceToEnd(potentialSpot: Array coordinate):int
     +copyMap(mapToCopy:Array):Array
     +isValidMove(newSpot:Array coordinate):boolean
     +possibleNewSpots(currentSpot:Array coordinate)
@@ -71,9 +72,17 @@ public class Path{
   }
 
   //calculating the distance from a potnetial new spot to move to and the end point.
-  public int distanceToEnd (ArrayList <int> potentialSpot, ArrayList <int> endPoint){
-    int distance = (potentialSpot.x - endPoint.x) + (potentialSpot.y - endPoint.y);
+  public int distanceToEnd (ArrayList <int> potentialSpot, ArrayList <int> end){
+    int distance = (potentialSpot.x - end.x) + (potentialSpot.y - end.y);
     return distance;
+  }
+  
+  public boolean isValidMove(ArrayList <int> potentialSpot){
+    boolean validMove = false;
+    if (potentialSpot.equals(end) || (!potentialSpot.equals(0))){
+      validMove = true;
+    }
+    return validMove;
   }
   
   
