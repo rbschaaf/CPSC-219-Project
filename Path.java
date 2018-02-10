@@ -143,29 +143,30 @@ public class Path {
       else if((map.isMoveValid(currentX - oneMove, currentY)) &&
             !(previousMove == 'S')) {
 
-              map.grid[currentX - oneMove][currentY] =7;
-              currentX -= oneMove;
-              previousMove = 'N';
-              System.out.println("Moved North!");
+ if (findShortestDistance(currentX, currentY) > findShortestDistance(currentX-oneMove, currentY)){
+            
+            tempx -= oneMove;
+          }
 
             }
 
       else if((map.isMoveValid(currentX, currentY - oneMove)) &&
           !(previousMove == 'E')) {
 
-      map.grid[currentX][currentY - oneMove] = 7;
-      currentY -= oneMove;
-      previousMove = 'W';
-      System.out.println("Moved West!");
+ if (findShortestDistance(currentX, currentY) > findShortestDistance(currentX, currentY-oneMove)){
+            
+            tempY -= oneMove;
+          }
 
     }
 
     else if((map.isMoveValid(currentX + oneMove, currentY)) &&
             !(previousMove == 'N')) {
 
-      map.grid[currentX + oneMove][currentY] =7;
-      currentX += oneMove;
-      previousMove = 'S';
+if (findShortestDistance(currentX, currentY) > findShortestDistance(currentX+oneMove, currentY)){
+            
+            tempx += oneMove;
+          }
     }
       map.grid[tempX][tempY] = 7;
       currentX=tempX;
