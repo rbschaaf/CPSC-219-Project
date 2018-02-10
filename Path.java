@@ -111,44 +111,53 @@ public class Path {
 
   // Find the smallest amount of possible moves from point A to Point B
   // THIS DOES NOT ACCOUNT FOR OBSTACLES
-  public int findShortestDistance() {
+  public int findShortestDistance(int possibleX, int possibleY) {
     int moveCounter;
-    moveCounter = Math.abs(destY - startY) + Math.abs(destX - destY);
+    moveCounter = Math.abs(destY - possibleY) + Math.abs(destX - possibleX);
     return moveCounter;
   }
 
   public void createPath() {
     int oneMove = 1;
     char previousMove = ' '; //Either N (north), E (east), S (south), W (west)
+    currentX=startX;
+    currentY=startY;
+    int tempX=startX;
+    int tempY =startY;
+    
+    while(currentX!=destX || currentY!=destY){
 
-    if (map.grid[currentX][currentY] == 5) {
-      System.out.println("At destination");
-    }
-    else if ((map.isMoveValid(currentX, currentY + oneMove)) &&
+    //if (map.grid[currentX][currentY] == 5) {
+      //System.out.println("At destination");
+
+      if ((map.isMoveValid(currentX, currentY + oneMove)) &&
         !(previousMove == 'W')) {
+          
+          if (findShortestDistance(currentX, currentY) > findShortestDistance(currentX, currentY+oneMove)){
+            
+            tempY += oneMove;
+          }
 
-      map.grid[currentX][currentY + oneMove] = 7;
-      currentY += oneMove;
-      previousMove = 'E';
-      System.out.println("Moved East!");
-    }
+        }
 
-    else if((map.isMoveValid(currentX - oneMove, currentY)) &&
+      else if((map.isMoveValid(currentX - oneMove, currentY)) &&
             !(previousMove == 'S')) {
 
-      map.grid[currentX - oneMove][currentY] =7;
-      currentX -= oneMove;
-      previousMove = 'N';
-      System.out.println("Moved North!");
-    }
+              map.grid[currentX - oneMove][currentY] =7;
+              currentX -= oneMove;
+              previousMove = 'N';
+              System.out.println("Moved North!");
 
-    else if((map.isMoveValid(currentX, currentY - oneMove)) &&
-            !(previousMove == 'E')) {
+            }
+
+      else if((map.isMoveValid(currentX, currentY - oneMove)) &&
+          !(previousMove == 'E')) {
 
       map.grid[currentX][currentY - oneMove] = 7;
       currentY -= oneMove;
       previousMove = 'W';
       System.out.println("Moved West!");
+
     }
 
     else if((map.isMoveValid(currentX + oneMove, currentY)) &&
@@ -157,11 +166,18 @@ public class Path {
       map.grid[currentX + oneMove][currentY] =7;
       currentX += oneMove;
       previousMove = 'S';
-      System.out.println("Moved South!");
     }
+      map.grid[tempX][tempY] = 7;
+      currentX=tempX;
+      currentY=tempY;
+  } System.out.println("found destination");
 
   }
+}
+
+
+
+
 
 
   //public void drawPath()
-}
