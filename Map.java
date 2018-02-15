@@ -2,7 +2,17 @@
 
 public class Map{
   // Instance variables
-  // 25 is stair, 0 is wall and 1 is hallway, 9 is rooms, 200-series are room numbers.
+  private int startRoom;
+  private int endRoom;
+  private String Building; //This is probably fine as a string
+  /*
+  * NUMBERS       CORRESPONDING ROOM
+  *    0          Wall
+  *    1          Hallway - only thing path can move through
+  *    9          Portions of rooms, WILL NEED TO CHANGE THIS
+  *    25         Stairs that can be used later
+  *   >100        Room Numbers, represent doors
+  */
   public int[][] grid =
   {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
@@ -18,35 +28,67 @@ public class Map{
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,9,0,0},
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-  private int row;
-  private int column;
+
+  /*
+  * Removed Row and Column, they should not be instances rather variables
+  * within the methods below
+  */
+
 
   // Constructors
   public Map() {}
 
   // Copy constructor for testing and path manipulation
   public Map(Map gridToCopy){
-    for(row =0; row <14; row++){
-      for(column =0; column <18; column++){
+    for(int row =0; row <14; row++){
+      for(int column =0; column <18; column++){
         grid[row][column] = gridToCopy.grid[row][column];
       }
     }
   }
-  // Methods
-  //Formatting of the grid sizing for improved viewability
+
+  /**
+  * GETTER AND SETTER METHODS
+  */
+
+  // getter start room
+  public int getStartRoom() {
+    return startRoom;
+  }
+  // setter start room
+  public void setStartRoom(int newStartRoom) {
+    startRoom = newStartRoom;
+  }
+
+  // getter end room
+  public int getEndRoom() {
+    return endRoom;
+  }
+  // setter end room
+  public int setEndRoom(int newEndRoom) {
+    endRoom = newEndRoom;
+  }
+
+  /*
+  * Printing method for the Grid
+  */
+
   public void print(){
-    for (row = 0; row < 14;row++){
-      for (column = 0; column <18; column++){
+    for (int row = 0; row < 14; row++){
+      for (int column = 0; column <18; column++){
         System.out.printf("%4d", grid[row][column]);
       }
       System.out.println();
     }
   }
-  // Valid movement
+
+  /*
+  * Check for valid I think should be moved to the setter methods
+  *
   public boolean isMoveValid(int x, int y){
       return (grid[x][y] >0 && grid[x][y]!=7);// && grid[x][y]==9);// || //destination
               //grid[row][column] == 8 ||  //start
               //grid[row][column] == 7); //pathalreadytaken
   }
-
+  */
 }

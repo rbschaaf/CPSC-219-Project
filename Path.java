@@ -1,25 +1,27 @@
-/**This class is the majority of methods that are called. All involved in the
-pathfinding portion of the program*/
 
+/**
+* Class that finds the shortest path from point A to point B
+* from an array of integers
+* pathfinding portion of the program
+* Last Edited - Dayan J
+* 14 Feb 2018 from 7:00PM -
+*/
 public class Path {
-  private int startY;
-  private int startX;
-  private int destY;
-  private int destX;
-  private int currentX;
-  private int currentY;
+  /**
+  * Removed all of the instance variables that are not the map
+  * map object should contain the intial points to use in this
+  */
+
   private Map map;
 
 
 /** Constructors
 *
-* Create a map to manipulate in path formation
+* Require a map to manipulate in path formation
 */
   public Path(Map newMap){
-    map = new Map(newMap);
+    map = newMap;
   }
-
-  public Path() {}
 
   //setter for map creates a new copy as well
   public void setMap(Map newMap) {
