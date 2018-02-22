@@ -14,7 +14,11 @@ public class Map{
 
 
   // Constructors
-  public Map() {}
+  public Map (int newRoomNumber) {
+    roomNum = newRoomNumber;
+    floorPlan = new FloorPlans(floorPlan);
+    floorPlan.setGrid(building, roomNum);
+  }
 
 
 
@@ -23,12 +27,12 @@ public class Map{
   */
 
   // getter room
-  public int getRoom() {
-    return room;
+  public int getRoomNum() {
+    return roomNum;
   }
   // setter room
-  public void setRoom(int newRoom) {
-    room = newRoom;
+  public void setRoomNum(int newRoom) {
+    roomNum = newRoom;
   }
 
   public String getBuilding() {
@@ -74,4 +78,15 @@ public class Map{
     return (valid);
   }
 
+  /*
+  * get the room number for each point in the grid
+  */
+  public int getGridPointNum(int row, int column) {
+    int gridPointVal;
+    floorPlan.setGrid(building, roomNum);
+    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
+    int[][] copyGrid = copyFloorPlan.getGrid();
+    gridPointVal = copyGrid[row][column];
+    return gridPointVal;
+  }
 }

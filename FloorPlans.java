@@ -8,6 +8,8 @@ public class FloorPlans {
     grid = floorPlanCopy.getGrid();
   }
 
+  public FloorPlans(){}
+
   public int getFloorNum(int newRoomNumber) {
     int floorNum;
     //integer length
