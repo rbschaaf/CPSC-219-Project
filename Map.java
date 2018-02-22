@@ -7,6 +7,11 @@ public class Map{
   private String building = "Taylor Family Digital Library"; //This is probably fine as a string
   //private String endBuilding = "Taylor Family Digital Library";
   private FloorPlans floorPlan;
+
+  private boolean avoidStairs;
+  private boolean avoidElevator;
+
+  private int avoidRoomNum;
   /*
   * Removed Row and Column, they should not be instances rather variables
   * within the methods below
@@ -51,9 +56,7 @@ public class Map{
   */
 
   public void print(){
-    floorPlan.setGrid(building, roomNum);
-    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
-    int[][] copyGrid = copyFloorPlan.getGrid();
+    int[][] copyGrid = getCopyGrid();
     for (int row = 0; row < 14; row++){
       for (int column = 0; column <18; column++){
         System.out.printf("%4d", grid[row][column]);
@@ -69,9 +72,7 @@ public class Map{
 
   public boolean isMoveValid(int row, int column){
     boolean valid;
-    floorPlan.setGrid(building, roomNum);
-    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
-    int[][] copyGrid = copyFloorPlan.getGrid();
+    int[][] copyGrid = getCopyGrid();
     valid = (copyGrid[row][column] > 0 && copyGrid[row][column] != 9 && copyGrid[row][column] != 7);// && copyGrid[row][column]==9);// || //destination
             //copyGrid[row][column] == 8 ||  //start
             //copyGrid[row][column] == 7); //pathalreadytaken
@@ -83,10 +84,14 @@ public class Map{
   */
   public int getGridPointNum(int row, int column) {
     int gridPointVal;
-    floorPlan.setGrid(building, roomNum);
-    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
-    int[][] copyGrid = copyFloorPlan.getGrid();
+    int[][] copygetGrid = getCopyGrid();
     gridPointVal = copyGrid[row][column];
     return gridPointVal;
   }
 }
+
+  public int[][] getCopyGrid() {
+    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
+    int[][] copyGrid = copyFloorPlan.getGrid();
+    return copyGrid;
+  }

@@ -14,7 +14,12 @@ import javafx.scene.text.FontWeight;
 
 public class guiGrid extends Application {
   private FloorPlans floorPlan1;
-  private Map map1 = new newMap(); //There needs to be an argument for the room
+  /*
+  * There needs to be an argument for the new map creation to work with the
+  * changes I made, ideally this would come from a button click that would
+  * take in a room number - Dayan 22 Feb 2018
+  */
+  private Map map1 = new newMap();
   private int rowNum = 14;
   private int colNum = 18;
   private int roomNumbers;
@@ -60,6 +65,8 @@ public class guiGrid extends Application {
 
 
   public void start(Stage primaryStage){
+    int[][] copyGrid = map1.getCopyGrid();
+
     HBox topRow = new HBox();
     topRow.setAlignment(Pos.CENTER);
     Label appName = new Label ("Taylor Family Digital Library Pathfinder");
@@ -82,7 +89,7 @@ public class guiGrid extends Application {
     borderPane.setTop(topRow);
 
     Scene scene = new Scene(borderPane,700,700);
-    makeGUI(map1,gridPane);
+    makeGUI(copyGrid,gridPane);
     primaryStage.setTitle("GUI");
     primaryStage.setScene(scene);
     primaryStage.show();
