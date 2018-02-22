@@ -19,7 +19,7 @@ public class guiGrid extends Application {
   private int roomNumbers;
   private Map square = new Map();
 
-  public void makeGUI(Map aMap, GridPane aGridPane){
+  public void makeGUI(FloorPlans aFloorPlan, GridPane aGridPane){
     for (int row = 0; row < rowNum; row++){
       for(int col = 0; col < colNum; col++){
         Rectangle rect = new Rectangle();

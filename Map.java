@@ -2,33 +2,11 @@
 
 public class Map{
   // Instance variables
-  private int startRoom;
-  private int endRoom;
-  private String Building; //This is probably fine as a string
-  /*
-  * NUMBERS       CORRESPONDING ROOM
-  *    0          Wall
-  *    1          Hallway - only thing path can move through
-  *    9          Portions of rooms, WILL NEED TO CHANGE THIS
-  *    25         Stairs that can be used later
-  *   >100        Room Numbers, represent doors
-  */
-  public int[][] grid =
-  {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
-  {0,0,1,1,261,1,260,1,252,9,9,9,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,0,0,0,0},
-  {0,0,1,1,262,1,263,1,264,1,1,1,1,1,1,251,9,9,0},
-  {0,0,1,1,1,259,1,1,1,1,1,1,1,1,9,9,9,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,250,9,9,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,9,9,9,0},
-  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,9,0,0},
-  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-
+  private int roomNum;
+  //Defaults at TFDL
+  private String building = "Taylor Family Digital Library"; //This is probably fine as a string
+  //private String endBuilding = "Taylor Family Digital Library";
+  private FloorPlans floorPlan;
   /*
   * Removed Row and Column, they should not be instances rather variables
   * within the methods below
@@ -38,42 +16,40 @@ public class Map{
   // Constructors
   public Map() {}
 
-  // Copy constructor for testing and path manipulation
-  public Map(Map gridToCopy){
-    for(int row =0; row <14; row++){
-      for(int column =0; column <18; column++){
-        grid[row][column] = gridToCopy.grid[row][column];
-      }
-    }
-  }
+
 
   /**
   * GETTER AND SETTER METHODS
   */
 
-  // getter start room
-  public int getStartRoom() {
-    return startRoom;
+  // getter room
+  public int getRoom() {
+    return room;
   }
-  // setter start room
-  public void setStartRoom(int newStartRoom) {
-    startRoom = newStartRoom;
-  }
-
-  // getter end room
-  public int getEndRoom() {
-    return endRoom;
-  }
-  // setter end room
-  public int setEndRoom(int newEndRoom) {
-    endRoom = newEndRoom;
+  // setter room
+  public void setRoom(int newRoom) {
+    room = newRoom;
   }
 
+  public String getBuilding() {
+    return building;
+  }
+
+  public void setBuilding(String newBuilding) {
+    building = newBuilding;
+  }
+
+  public void setFloorPlan(FloorPlans newFloorPlan) {
+    floorPlan = newFloorPlan;
+  }
   /*
   * Printing method for the Grid
   */
 
   public void print(){
+    floorPlan.setGrid(building, roomNum);
+    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
+    int[][] copyGrid = copyFloorPlan.getGrid();
     for (int row = 0; row < 14; row++){
       for (int column = 0; column <18; column++){
         System.out.printf("%4d", grid[row][column]);
@@ -82,13 +58,20 @@ public class Map{
     }
   }
 
+
   /*
-  * Check for valid I think should be moved to the setter methods
-  *
-  public boolean isMoveValid(int x, int y){
-      return (grid[x][y] >0 && grid[x][y] != 9 && grid[x][y] != 7);// && grid[x][y]==9);// || //destination
-              //grid[row][column] == 8 ||  //start
-              //grid[row][column] == 7); //pathalreadytaken
-  }
+  * Checking move validity
   */
+
+  public boolean isMoveValid(int row, int column){
+    boolean valid;
+    floorPlan.setGrid(building, roomNum);
+    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
+    int[][] copyGrid = copyFloorPlan.getGrid();
+    valid = (copyGrid[row][column] > 0 && copyGrid[row][column] != 9 && copyGrid[row][column] != 7);// && copyGrid[row][column]==9);// || //destination
+            //copyGrid[row][column] == 8 ||  //start
+            //copyGrid[row][column] == 7); //pathalreadytaken
+    return (valid);
+  }
+
 }
