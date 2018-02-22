@@ -51,11 +51,35 @@ public class guiGrid extends Application {
         //https://stackoverflow.com/questions/35367060/gridpane-of-squares-in-javafx
       }
     }
+
   }
+
+
+
+
   public void start(Stage primaryStage){
+    HBox topRow = new HBox();
+    topRow.setAlignment(Pos.CENTER);
+    Label appName = new Label ("Taylor Family Digital Library Pathfinder");
+
+    //https://docs.oracle.com/javafx/2/ui_controls/combo-box.htm
+    ComboBox<String> buildingDropDown = new ComboBox<String>();
+    buildingDropDown.getItems().addAll("Taylor Family Digital Library");
+
+    TextField enterStartRoom = new TextField("Enter starting room");
+    TextField enterDestRoom= new TextField("Enter destination room");
+
+    topRow.getChildren().addAll(appName, buildingDropDown, enterStartRoom, enterDestRoom);
+
     GridPane gridPane = new GridPane();
     gridPane.setAlignment(Pos.CENTER);
-    Scene scene = new Scene(gridPane,700,700);
+
+    //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/BorderPane.html
+    BorderPane borderPane = new BorderPane();
+    borderPane.setCenter(gridPane);
+    borderPane.setTop(topRow);
+
+    Scene scene = new Scene(borderPane,700,700);
     makeGUI(map1,gridPane);
     primaryStage.setTitle("GUI");
     primaryStage.setScene(scene);
