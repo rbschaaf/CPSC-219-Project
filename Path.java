@@ -15,6 +15,7 @@ public class Path {
   private Map map;
 
 
+
 /** Constructors
 *
 * Require a map to manipulate in path formation
@@ -117,71 +118,200 @@ public class Path {
 
   // Find the smallest amount of possible moves from point A to Point B
   // THIS DOES NOT ACCOUNT FOR OBSTACLES. Not functional at this point
-  public int findShortestDistance() {
+  public int findShortestDistance(int positionX, int positionY) {
     int moveCounter;
-    moveCounter = Math.abs(destY - currentY) + Math.abs(destX - currentX);
+    moveCounter = Math.abs(destY - positionY) + Math.abs(destX - positionX);
     return moveCounter;
   }
+
+  //find the best possible move and returns the direction as a string.
+  public String bestMove(int positionX, int positionY, int oneMove){
+    int temporaryX = 0;
+    int temporaryY = 0;
+    String moveString = "a";
+    int moveValue = 0;
+
+    if (map.isMoveValid(positionX, positionY + oneMove)) {
+      if (temporaryX == 0 && temporaryY == 0){
+        temporaryX = positionX;
+        temporaryY = positionY + oneMove;
+        moveValue = findShortestDistance(positionX, positionY + oneMove);
+        moveString = "south";
+      }
+
+    }
+
+    if(map.isMoveValid(positionX - oneMove, positionY)) {
+      if (temporaryX == 0 && temporaryY == 0){
+        temporaryX = positionX - oneMove;
+        temporaryY = positionY;
+        moveValue = findShortestDistance(positionX - oneMove, positionY);
+      }
+      if (findShortestDistance(positionX - oneMove,positionY) <= moveValue){
+        moveValue = findShortestDistance(positionX - oneMove,positionY);
+        temporaryX = positionX - oneMove;
+        temporaryY = positionY;
+        moveString = "west";
+      }
+    }
+
+    if(map.isMoveValid(positionX, positionY - oneMove)) {
+      if (temporaryX == 0 && temporaryY == 0){
+        temporaryX = positionX;
+        temporaryY = positionY - oneMove;
+        moveValue = findShortestDistance(positionX, positionY - oneMove);
+      }
+      if (findShortestDistance(positionX,positionY - oneMove) <= moveValue){
+        moveValue = findShortestDistance(positionX,positionY - oneMove);
+        temporaryX = positionX;
+        temporaryY = positionY - oneMove;
+        moveString = "north";
+      }
+    }
+
+    if(map.isMoveValid(positionX + oneMove, positionY)) {
+      if (temporaryX == 0 && temporaryY == 0){
+        temporaryX = positionX + oneMove;
+        temporaryY = positionY;
+        moveValue = findShortestDistance(positionX + oneMove, positionY);
+      }
+      if (findShortestDistance(positionX + oneMove,positionY) <= moveValue){
+        moveValue = findShortestDistance(positionX + oneMove,positionY);
+        temporaryX = positionX + oneMove;
+        temporaryY = positionY;
+        moveString = "east";
+      }
+    }
+
+    if (map.isMoveValid(positionX + oneMove, positionY - oneMove)) {
+      if (temporaryX == 0 && temporaryY == 0){
+        temporaryX = positionX + oneMove;
+        temporaryY = positionY - oneMove;
+        moveValue = findShortestDistance(positionX  + oneMove, positionY - oneMove);
+      }
+      if (findShortestDistance(positionX  + oneMove,positionY - oneMove) <= moveValue){
+        moveValue = findShortestDistance(positionX  + oneMove,positionY - oneMove);
+        temporaryX = positionX + oneMove;
+        temporaryY = positionY - oneMove;
+        moveString = "northeast";
+      }
+    }
+
+    if (map.isMoveValid(positionX - oneMove, positionY - oneMove)) {
+      if (temporaryX == 0 && temporaryY == 0){
+        temporaryX = positionX - oneMove;
+        temporaryY = positionY - oneMove;
+        moveValue = findShortestDistance(positionX - oneMove, positionY + oneMove);
+      }
+      if (findShortestDistance(positionX - oneMove,positionY - oneMove) <= moveValue){
+        moveValue = findShortestDistance(positionX - oneMove,positionY - oneMove);
+        temporaryX = positionX - oneMove;
+        temporaryY = positionY - oneMove;
+        moveString = "northwest";
+      }
+    }
+
+    if (map.isMoveValid(positionX - oneMove, positionY + oneMove)) {
+      if (temporaryX == 0 && temporaryY == 0){
+        temporaryX = positionX - oneMove;
+        temporaryY = positionY + oneMove;
+        moveValue = findShortestDistance(positionX - oneMove, positionY + oneMove);
+      }
+      if (findShortestDistance(positionX - oneMove,positionY + oneMove) <= moveValue){
+        moveValue = findShortestDistance(positionX - oneMove,positionY + oneMove);
+        temporaryX = positionX - oneMove;
+        temporaryY = positionY + oneMove;
+        moveString = "southwest";
+      }
+
+
+    }
+    if (map.isMoveValid(positionX + oneMove, positionY + oneMove)) {
+      if (temporaryX == 0 && temporaryY == 0){
+        temporaryX = positionX + oneMove;
+        temporaryY = positionY + oneMove;
+        moveValue = findShortestDistance(positionX + oneMove, positionY + oneMove);
+      }
+      if (findShortestDistance(positionX + oneMove,positionY + oneMove) <= moveValue){
+        moveValue = findShortestDistance(positionX + oneMove,positionY + oneMove);
+        temporaryX = positionX + oneMove;
+        temporaryY = positionY + oneMove;
+        moveString = "southeast";
+      }
+    }
+
+    return moveString;
+  }
+
 
   //method to create a path between starting room and destination room.
   public void createPath() {
     int oneMove = 1;
-    char previousMove = ' '; //Either N (north), E (east), S (south), W (west)
+    //char previousMove = ' '; //Either N (north), E (east), S (south), W (west)
     currentX=startX;
     currentY=startY;
+    int temporaryX = currentX;
+    int temporaryY = currentY;
+    int temporaryX2 = 0;
+    int temporaryY2 = 0;
+    char previousMove = ' '; //Either N (north), E (east), S (south), W (west)
+    String moveDirection;
 
     //loops as long as the current location is not the destination room.
     while(currentX!=destX || currentY!=destY){
-
-    //if (map.grid[currentX][currentY] == 5) {
+      moveDirection = bestMove(currentX, currentY, oneMove);
+      //if (map.grid[currentX][currentY] == 5) {
       //System.out.println("At destination");
+      //if (temporaryX != temporaryX2 || temporaryY != temporaryY2){
+      //temporaryX2 = temporaryX;
+      //temporaryY2 = temporaryY;
 
       //allows this movement of current room east if it is valid and not the previous move
-      if ((map.isMoveValid(currentX, currentY + oneMove)) &&
-        !(previousMove == 'W')) {
-
-          map.grid[currentX][currentY + oneMove] = 7;
-          currentY += oneMove;
-          previousMove = 'E';
-
+      if (moveDirection.equals("south")){
+        map.grid[currentX][currentY + oneMove] = 7;
+        currentY += oneMove;
+        printMap();
       }
-      //allows this movement of current room north if it is valid and not the previous move
-      else if((map.isMoveValid(currentX - oneMove, currentY)) &&
-            !(previousMove == 'S')) {
-
-              map.grid[currentX - oneMove][currentY] =7;
-              currentX -= oneMove;
-              previousMove = 'N';;
-
+      if (moveDirection.equals("west")){
+        map.grid[currentX - oneMove][currentY] =7;
+        currentX -= oneMove;
+        printMap();
       }
-
-      //allows this movement of current room west if it is valid and not the previous move
-      else if((map.isMoveValid(currentX, currentY - oneMove)) &&
-          !(previousMove == 'E')) {
-
-      map.grid[currentX][currentY - oneMove] = 7;
-      currentY -= oneMove;
-      previousMove = 'W';
-
+      if (moveDirection.equals("north")){
+        map.grid[currentX][currentY - oneMove] = 7;
+        currentY -= oneMove;
+        printMap();
       }
-
-      //allows this movement of current room south if it is valid and not the previous move
-      else if((map.isMoveValid(currentX + oneMove, currentY)) &&
-            !(previousMove == 'N')) {
-
-      map.grid[currentX + oneMove][currentY] =7;
-      currentX += oneMove;
-      previousMove = 'S';
+      if (moveDirection.equals("east")){
+        map.grid[currentX + oneMove][currentY] =7;
+        currentX += oneMove;
+        printMap();
       }
+      if (moveDirection.equals("northeast")){
+        map.grid[currentX + oneMove][currentY - oneMove] = 7;
+        currentX += oneMove;
+        currentY -= oneMove;
+        printMap();
+      }
+      if (moveDirection.equals("northwest")){
+        map.grid[currentX - oneMove][currentY - oneMove] = 7;
+        currentX -= oneMove;
+        currentY -= oneMove;
+        printMap();
+      }
+      if (moveDirection.equals("southwest")){
+        map.grid[currentX - oneMove][currentY + oneMove] = 7;
+        currentX -= oneMove;
+        currentY += oneMove;
+        printMap();
+      }
+      if (moveDirection.equals("southeast")){
+        map.grid[currentX + oneMove][currentY + oneMove] = 7;
+        currentX += oneMove;
+        currentY += oneMove;
+        printMap();
+      }
+      System.out.println("found destination");
     }
-System.out.println("found destination");
   }
 }
-
-
-
-
-
-
-
-  //public void drawPath()
