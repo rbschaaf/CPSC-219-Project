@@ -139,7 +139,7 @@ public class Path {
     valid = (grid[row][column] > 0 && grid[row][column] != 9 && grid[row][column] != 7);// && floorGrid[row][column]==9);// || //destination
             //floorGrid[row][column] == 8 ||  //start
             //floorGrid[row][column] == 7); //pathalreadytaken
-    return (valid);
+    return valid;
   }
   // Find the smallest amount of possible moves from point A to Point B
   // THIS DOES NOT ACCOUNT FOR OBSTACLES. Not functional at this point
@@ -156,7 +156,7 @@ public class Path {
     String moveString = "a";
     int moveValue = 0;
 
-    if (map.isMoveValid(positionX, positionY + oneMove, map.getCopyGrid())) {
+    if (isMoveValid(positionX, positionY + oneMove)) {
       if (temporaryX == 0 && temporaryY == 0) {
         temporaryX = positionX;
         temporaryY = positionY + oneMove;
@@ -166,7 +166,7 @@ public class Path {
 
     }
 
-    if(map.isMoveValid(positionX - oneMove, positionY, map.getCopyGrid())) {
+    if(isMoveValid(positionX - oneMove, positionY)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX - oneMove;
         temporaryY = positionY;
@@ -180,7 +180,7 @@ public class Path {
       }
     }
 
-    if(map.isMoveValid(positionX, positionY - oneMove, map.getCopyGrid())) {
+    if(isMoveValid(positionX, positionY - oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX;
         temporaryY = positionY - oneMove;
@@ -194,7 +194,7 @@ public class Path {
       }
     }
 
-    if(map.isMoveValid(positionX + oneMove, positionY, map.getCopyGrid())) {
+    if(isMoveValid(positionX + oneMove, positionY)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX + oneMove;
         temporaryY = positionY;
@@ -208,7 +208,7 @@ public class Path {
       }
     }
 
-    if (map.isMoveValid(positionX + oneMove, positionY - oneMove, map.getCopyGrid())) {
+    if (isMoveValid(positionX + oneMove, positionY - oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX + oneMove;
         temporaryY = positionY - oneMove;
@@ -222,7 +222,7 @@ public class Path {
       }
     }
 
-    if (map.isMoveValid(positionX - oneMove, positionY - oneMove, map.getCopyGrid())) {
+    if (isMoveValid(positionX - oneMove, positionY - oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX - oneMove;
         temporaryY = positionY - oneMove;
@@ -236,7 +236,7 @@ public class Path {
       }
     }
 
-    if (map.isMoveValid(positionX - oneMove, positionY + oneMove, map.getCopyGrid())) {
+    if (isMoveValid(positionX - oneMove, positionY + oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX - oneMove;
         temporaryY = positionY + oneMove;
@@ -251,7 +251,7 @@ public class Path {
 
 
     }
-    if (map.isMoveValid(positionX + oneMove, positionY + oneMove)) {
+    if (isMoveValid(positionX + oneMove, positionY + oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX + oneMove;
         temporaryY = positionY + oneMove;
@@ -293,45 +293,45 @@ public class Path {
 
       //allows this movement of current room east if it is valid and not the previous move
       if (moveDirection.equals("south")){
-        map.grid[currentRow][currentCol + oneMove] = 7;
+        grid[currentRow][currentCol + oneMove] = 7;
         currentCol += oneMove;
         printMap();
       }
       if (moveDirection.equals("west")){
-        map.grid[currentRow - oneMove][currentCol] =7;
+        grid[currentRow - oneMove][currentCol] =7;
         currentRow -= oneMove;
         printMap();
       }
       if (moveDirection.equals("north")){
-        map.grid[currentRow][currentCol - oneMove] = 7;
+        grid[currentRow][currentCol - oneMove] = 7;
         currentCol -= oneMove;
         printMap();
       }
       if (moveDirection.equals("east")){
-        map.grid[currentRow + oneMove][currentCol] =7;
+        grid[currentRow + oneMove][currentCol] =7;
         currentRow += oneMove;
         printMap();
       }
       if (moveDirection.equals("northeast")){
-        map.grid[currentRow + oneMove][currentCol - oneMove] = 7;
+        grid[currentRow + oneMove][currentCol - oneMove] = 7;
         currentRow += oneMove;
         currentCol -= oneMove;
         printMap();
       }
       if (moveDirection.equals("northwest")){
-        map.grid[currentRow - oneMove][currentCol - oneMove] = 7;
+        grid[currentRow - oneMove][currentCol - oneMove] = 7;
         currentRow -= oneMove;
         currentCol -= oneMove;
         printMap();
       }
       if (moveDirection.equals("southwest")){
-        map.grid[currentRow - oneMove][currentCol + oneMove] = 7;
+        grid[currentRow - oneMove][currentCol + oneMove] = 7;
         currentRow -= oneMove;
         currentCol += oneMove;
         printMap();
       }
       if (moveDirection.equals("southeast")){
-        map.grid[currentRow + oneMove][currentCol + oneMove] = 7;
+        grid[currentRow + oneMove][currentCol + oneMove] = 7;
         currentRow += oneMove;
         currentCol += oneMove;
         printMap();
