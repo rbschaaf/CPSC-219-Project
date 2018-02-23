@@ -6,7 +6,7 @@ public class Map{
   //Defaults at TFDL
   private String building = "Taylor Family Digital Library"; //This is probably fine as a string
   //private String endBuilding = "Taylor Family Digital Library";
-  private FloorPlans floorPlan;
+  private int[][] floorGrid;
 
   private boolean avoidStairs;
   private boolean avoidElevator;
@@ -21,8 +21,9 @@ public class Map{
   // Constructors
   public Map (int newRoomNumber) {
     roomNum = newRoomNumber;
-    floorPlan = new FloorPlans(floorPlan);
+    FloorPlans floorPlan = new FloorPlans();
     floorPlan.setGrid(building, roomNum);
+    floorGrid = floorPlan.getGrid();
   }
 
 
@@ -47,45 +48,34 @@ public class Map{
   public void setBuilding(String newBuilding) {
     building = newBuilding;
   }
-
+/*
   public void setFloorPlan(FloorPlans newFloorPlan) {
     floorPlan = newFloorPlan;
   }
+
+*/
   /*
   * Printing method for the Grid
   */
 
-  public void print(){
-    int[][] copyGrid = getCopyGrid();
-    for (int row = 0; row < 14; row++){
-      for (int column = 0; column <18; column++){
-        System.out.printf("%4d", grid[row][column]);
+  public void printGrid() {
+    for (int row = 0; row < 14; row++) {
+      for (int column = 0; column <18; column++) {
+        System.out.printf("%4d", floorGrid[row][column]);
       }
       System.out.println();
     }
   }
 
 
-  /*
-  * Checking move validity
-  */
 
-  public boolean isMoveValid(int row, int column){
-    boolean valid;
-    int[][] copyGrid = getCopyGrid();
-    valid = (copyGrid[row][column] > 0 && copyGrid[row][column] != 9 && copyGrid[row][column] != 7);// && copyGrid[row][column]==9);// || //destination
-            //copyGrid[row][column] == 8 ||  //start
-            //copyGrid[row][column] == 7); //pathalreadytaken
-    return (valid);
-  }
 
   /*
   * get the room number for each point in the grid
   */
   public int getGridPointNum(int row, int column) {
     int gridPointVal;
-    int[][] copygetGrid = getCopyGrid();
-    gridPointVal = copyGrid[row][column];
+    gridPointVal = floorGrid[row][column];
     return gridPointVal;
   }
 }
