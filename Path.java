@@ -15,7 +15,7 @@ public class Path {
   private int endRow;
   private int startCol;
   private int endCol;
-  private int grid[][];
+  private int[][] grid;
   /*
   * Added the instances again, I think the map class should only be used
   * to deliver various floorplans and do stuff to thems
@@ -34,36 +34,40 @@ public class Path {
     grid = newGrid;
   }
 
+  /*
+  * Copy Class for Path
+  */
+  public Path(Path prevPath) {
+    startRow = prevPath.getStartRow();
+    endRow = prevPath.getEndRow();
+    startCol = prevPath.getStartCol();
+    endCol = prevPath.getEndCol();
+    grid = prevPath.getGrid();
+  }
+
   //setter for grid
   public void setGrid(int[][] newGrid) {
     grid = newGrid;
   }
+  public int[][] getGrid() {
+    return grid;
+  }
 
   //getter and setter methods for startX and startY
-  public int getStartX(){
-    return startX;
+  public int getStartRow(){
+    return startRow;
   }
-  public void setStartX(int newStartX){
-    startX = newStartX;
-  }
-  public int getStartY(){
-    return startY;
-  }
-  public void setStartY(int newStartY){
-    startY = newStartY;
+
+  public int getStartCol(){
+    return startCol;
   }
   //getter and setter methods for destRow and destColumn
-  public int getDestY(){
-    return destY;
+  public int getEndRow(){
+    return endRow;
   }
-  public void setDestY(int newDestY){
-    destY = newDestY;
-  }
-  public int getDestX(){
-    return destX;
-  }
-  public void setDestX(int newDestX){
-    destX = newDestX;
+
+  public int getEndCol(){
+    return endCol;
   }
 
   // setter method for the destination row and column based on Room Number
@@ -120,10 +124,18 @@ public class Path {
   public Map getMap() {
     return map;
   }
+
   //Print method to print the manipulated copy of the map
-  public void printMap() {
-    map.print();
+  public void printGrid() {
+    for (int row = 0; row < 14; row++) {
+      for (int column = 0; column <18; column++) {
+        System.out.printf("%4d", grid[row][column]);
+      }
+      System.out.println();
+    }
   }
+
+
 
 
   /**
@@ -285,7 +297,7 @@ public class Path {
     //loops as long as the current location is not the destination room.
     while(currentRow != endRow || currentCol != endCol){
       moveDirection = bestMove(currentRow, currentCol, oneMove);
-      //if (map.grid[currentRow][currentCol] == 5) {
+      //if (grid[currentRow][currentCol] == 5) {
       //System.out.println("At destination");
       //if (temporaryX != temporaryX2 || temporaryY != temporaryY2){
       //temporaryX2 = temporaryX;
