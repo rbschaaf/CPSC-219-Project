@@ -13,27 +13,34 @@ import javafx.scene.text.FontWeight;
 
 
 public class guiGrid extends Application {
-  private Map map1 = new Map();
+  private FloorPlans floorPlan1;
+  /*
+  * There needs to be an argument for the new map creation to work with the
+  * changes I made, ideally this would come from a button click that would
+  * take in a room number - Dayan 22 Feb 2018
+  */
+  private Map map1 = new newMap();
   private int rowNum = 14;
   private int colNum = 18;
   private int roomNumbers;
-  private Map square = new Map();
+  private Map copy = new Map(map1);
 
-  public void makeGUI(Map aMap, GridPane aGridPane){
+  public void makeGUI(int[][] aGrid, GridPane aGridPane){
+    int[][] copyGrid = aGrid;
     for (int row = 0; row < rowNum; row++){
       for(int col = 0; col < colNum; col++){
         Rectangle rect = new Rectangle();
-        if (aMap.grid[row][col] == 0){
+        if (aGrid[row][col] == 0){
           rect.setFill(Color.BLACK);
-        } else if (aMap.grid[row][col] == 1){
+        } else if (aGrid[row][col] == 1){
           rect.setFill(Color.TRANSPARENT);
-        } else if (aMap.grid[row][col] == 9){
+        } else if (aGrid[row][col] == 9){
           rect.setFill(Color.GREY);
         } else{
           rect.setFill(Color.LIGHTBLUE);
         }
         int roomNumber = 0;
-        roomNumber = square.getRoomNumber(row,col);
+        roomNumber = copy.getGridPointNum(row,col);
         Label rooms = new Label("");
         //conditional to add room numbers to the grid map.
         if (roomNumber != 0 && roomNumber != 1 && roomNumber != 9){
@@ -58,6 +65,8 @@ public class guiGrid extends Application {
 
 
   public void start(Stage primaryStage){
+    int[][] copyGrid = map1.getCopyGrid();
+
     HBox topRow = new HBox();
     topRow.setAlignment(Pos.CENTER);
     Label appName = new Label ("Taylor Family Digital Library Pathfinder");
@@ -80,7 +89,7 @@ public class guiGrid extends Application {
     borderPane.setTop(topRow);
 
     Scene scene = new Scene(borderPane,700,700);
-    makeGUI(map1,gridPane);
+    makeGUI(copyGrid,gridPane);
     primaryStage.setTitle("GUI");
     primaryStage.setScene(scene);
     primaryStage.show();

@@ -2,51 +2,86 @@
 
 public class Map{
   // Instance variables
-  // 25 is stair, 0 is wall and 1 is hallway, 9 is rooms, 200-series are room numbers.
-  public int[][] grid =
-  {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
-  {0,0,1,1,261,1,260,1,252,9,9,9,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,0,0,0,0},
-  {0,0,1,1,262,1,263,1,264,1,1,1,1,1,1,251,9,9,0},
-  {0,0,1,1,1,259,1,1,1,1,1,1,1,1,9,9,9,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,250,9,9,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,9,9,9,0},
-  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,9,0,0},
-  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-  private int row;
-  private int column;
+  private int roomNum;
+  //Defaults at TFDL
+  private String building = "Taylor Family Digital Library"; //This is probably fine as a string
+  //private String endBuilding = "Taylor Family Digital Library";
+  private int[][] floorGrid;
+
+  private boolean avoidStairs;
+  private boolean avoidElevator;
+
+  private int avoidRoomNum;
+  /*
+  * Removed Row and Column, they should not be instances rather variables
+  * within the methods below
+  */
+
 
   // Constructors
-  public Map() {}
-
-  // Copy constructor for testing and path manipulation
-  public Map(Map gridToCopy){
-    for(row =0; row <14; row++){
-      for(column =0; column <18; column++){
-        grid[row][column] = gridToCopy.grid[row][column];
-      }
-    }
+  public Map (int newRoomNumber) {
+    roomNum = newRoomNumber;
+    FloorPlans floorPlan = new FloorPlans();
+    floorPlan.setGrid(building, roomNum);
+    floorGrid = floorPlan.getGrid();
   }
-  // Methods
-  //Formatting of the grid sizing for improved viewability
-  public void print(){
-    for (row = 0; row < 14;row++){
-      for (column = 0; column <18; column++){
-        System.out.printf("%4d", grid[row][column]);
+
+
+
+  /**
+  * GETTER AND SETTER METHODS
+  */
+
+  // getter room
+  public int getRoomNum() {
+    return roomNum;
+  }
+  // setter room
+  public void setRoomNum(int newRoom) {
+    roomNum = newRoom;
+  }
+
+  public String getBuilding() {
+    return building;
+  }
+
+  public void setBuilding(String newBuilding) {
+    building = newBuilding;
+  }
+/*
+  public void setFloorPlan(FloorPlans newFloorPlan) {
+    floorPlan = newFloorPlan;
+  }
+
+*/
+  /*
+  * Printing method for the Grid
+  */
+
+  public void printGrid() {
+    for (int row = 0; row < 14; row++) {
+      for (int column = 0; column <18; column++) {
+        System.out.printf("%4d", floorGrid[row][column]);
       }
       System.out.println();
     }
   }
-  // Valid movement
-  public boolean isMoveValid(int x, int y){
-      return (grid[x][y] >0 && grid[x][y] != 9 && grid[x][y] != 7);// && grid[x][y]==9);// || //destination
-              //grid[row][column] == 8 ||  //start
-              //grid[row][column] == 7); //pathalreadytaken
-  }
 
+
+
+
+  /*
+  * get the room number for each point in the grid
+  */
+  public int getGridPointNum(int row, int column) {
+    int gridPointVal;
+    gridPointVal = floorGrid[row][column];
+    return gridPointVal;
+  }
 }
+
+  public int[][] getCopyGrid() {
+    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
+    int[][] copyGrid = copyFloorPlan.getGrid();
+    return copyGrid;
+  }

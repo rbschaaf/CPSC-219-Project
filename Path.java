@@ -1,119 +1,158 @@
-/**This class is the majority of methods that are called. All involved in the
-pathfinding portion of the program*/
 
+/**
+* Class that finds the shortest path from point A to point B
+* on a single array of integers, avoiding any obstacles
+* pathfinding portion of the program
+* Last Edited - Dayan J
+* 14 Feb 2018 from 7:00PM -
+*/
 public class Path {
-  private int startY;
-  private int startX;
-  private int destY;
-  private int destX;
-  private int currentX;
-  private int currentY;
-  private Map map;
+  /**
+  * Removed all of the instance variables that are not the map
+  * map object should contain the intial points to use in this
+  */
+  private int startRow;
+  private int endRow;
+  private int startCol;
+  private int endCol;
+  private int[][] grid;
+  /*
+  * Added the instances again, I think the map class should only be used
+  * to deliver various floorplans and do stuff to thems
+  *
+  //private String startBuilding = "Taylor Family Digital Library";
+  //  private String endBuilding = "Taylor Family Digital Library";
+  */
 
 
 
 /** Constructors
 *
-* Create a map to manipulate in path formation
+* Require a grid to manipulate in path formation
 */
-  public Path(Map newMap){
-    map = new Map(newMap);
+  public Path(int[][] newGrid){
+    grid = newGrid;
   }
 
-  public Path() {}
+  /*
+  * Copy Class for Path
+  */
+  public Path(Path prevPath) {
+    startRow = prevPath.getStartRow();
+    endRow = prevPath.getEndRow();
+    startCol = prevPath.getStartCol();
+    endCol = prevPath.getEndCol();
+    grid = prevPath.getGrid();
+  }
 
-  //setter for map creates a new copy as well
-  public void setMap(Map newMap) {
-    map = new Map(newMap);
+  //setter for grid
+  public void setGrid(int[][] newGrid) {
+    grid = newGrid;
+  }
+  public int[][] getGrid() {
+    return grid;
   }
 
   //getter and setter methods for startX and startY
-  public int getStartX(){
-    return startX;
-  }
-  public void setStartX(int newStartX){
-    startX = newStartX;
-  }
-  public int getStartY(){
-    return startY;
-  }
-  public void setStartY(int newStartY){
-    startY = newStartY;
-  }
-  //getter and setter methods for destX and destY
-  public int getDestY(){
-    return destY;
-  }
-  public void setDestY(int newDestY){
-    destY = newDestY;
-  }
-  public int getDestX(){
-    return destX;
-  }
-  public void setDestX(int newDestX){
-    destX = newDestX;
+  public int getStartRow(){
+    return startRow;
   }
 
-  //Getter methods for Current X and Current Y
-  public int getCurrentX(){
-    return currentX;
+  public int getStartCol(){
+    return startCol;
+  }
+  //getter and setter methods for destRow and destColumn
+  public int getEndRow(){
+    return endRow;
   }
 
-  public int getCurrentY(){
-    return currentY;
+  public int getEndCol(){
+    return endCol;
   }
 
-  // place Start marker
-  public void placeStart(){
-    map.grid[startX][startY] = 8;
-  }
-  // place Destination marker
-  public void placeDest(){
-    map.grid[destX][destY] = 5;
-  }
-
-  // setter method for the destination location based on user input
+  // setter method for the destination row and column based on Room Number
   public void setDestLoc(int roomDest){
     int row;
     int column;
 
     for(row =0; row<14;row++){
       for(column =0; column<18;column++){
-        if(map.grid[row][column]==roomDest){
-          destX = row;
-          destY = column;
+        if(grid[row][column]==roomDest){
+          endRow = row;
+          endCol = column;
         }
       }
     }
   }
-  // setter method for the starting location based on user input.
+  // setter method for the starting row and column based on user input.
   public void setStartLoc(int roomStart){
     int row;
     int column;
 
     for(row =0; row<14;row++){
       for(column =0; column<18;column++){
-        if(map.grid[row][column] == roomStart){
-          startX = row;
-          startY = column;
+        if(grid[row][column] == roomStart){
+          startRow = row;
+          startCol = column;
         }
       }
     }
   }
+
+  /* UNSURE IF THIS IS NEEDED
+  //Getter methods for Current X and Current Y
+  public int getcurrentRow(){
+    return currentRow;
+  }
+
+  public int getcurrentCol(){
+    return currentCol;
+  }
+
+  // place Start marker
+  public void placeStart(){
+    grid[startRow][startCol] = 8;
+  }
+  // place Destination marker
+  public void placeDest(){
+    grid[endRow][endCol] = 5;
+  }
+
+  */
+
   //Getter method for the map
   public Map getMap() {
     return map;
   }
+
   //Print method to print the manipulated copy of the map
-  public void printMap() {
-    map.print();
+  public void printGrid() {
+    for (int row = 0; row < 14; row++) {
+      for (int column = 0; column <18; column++) {
+        System.out.printf("%4d", grid[row][column]);
+      }
+      System.out.println();
+    }
   }
+
+
 
 
   /**
   *Creation of the actual path
   */
 
+  /*
+  * Checking move validity
+  */
+
+  public boolean isMoveValid(int row, int column){
+    boolean valid;
+    valid = (grid[row][column] > 0 && grid[row][column] != 9 && grid[row][column] != 7);// && floorGrid[row][column]==9);// || //destination
+            //floorGrid[row][column] == 8 ||  //start
+            //floorGrid[row][column] == 7); //pathalreadytaken
+    return valid;
+  }
   // Find the smallest amount of possible moves from point A to Point B
   // THIS DOES NOT ACCOUNT FOR OBSTACLES. Not functional at this point
   public int findShortestDistance(int positionX, int positionY) {
@@ -129,8 +168,8 @@ public class Path {
     String moveString = "a";
     int moveValue = 0;
 
-    if (map.isMoveValid(positionX, positionY + oneMove)) {
-      if (temporaryX == 0 && temporaryY == 0){
+    if (isMoveValid(positionX, positionY + oneMove)) {
+      if (temporaryX == 0 && temporaryY == 0) {
         temporaryX = positionX;
         temporaryY = positionY + oneMove;
         moveValue = findShortestDistance(positionX, positionY + oneMove);
@@ -139,7 +178,7 @@ public class Path {
 
     }
 
-    if(map.isMoveValid(positionX - oneMove, positionY)) {
+    if(isMoveValid(positionX - oneMove, positionY)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX - oneMove;
         temporaryY = positionY;
@@ -153,7 +192,7 @@ public class Path {
       }
     }
 
-    if(map.isMoveValid(positionX, positionY - oneMove)) {
+    if(isMoveValid(positionX, positionY - oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX;
         temporaryY = positionY - oneMove;
@@ -167,7 +206,7 @@ public class Path {
       }
     }
 
-    if(map.isMoveValid(positionX + oneMove, positionY)) {
+    if(isMoveValid(positionX + oneMove, positionY)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX + oneMove;
         temporaryY = positionY;
@@ -181,7 +220,7 @@ public class Path {
       }
     }
 
-    if (map.isMoveValid(positionX + oneMove, positionY - oneMove)) {
+    if (isMoveValid(positionX + oneMove, positionY - oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX + oneMove;
         temporaryY = positionY - oneMove;
@@ -195,7 +234,7 @@ public class Path {
       }
     }
 
-    if (map.isMoveValid(positionX - oneMove, positionY - oneMove)) {
+    if (isMoveValid(positionX - oneMove, positionY - oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX - oneMove;
         temporaryY = positionY - oneMove;
@@ -209,7 +248,7 @@ public class Path {
       }
     }
 
-    if (map.isMoveValid(positionX - oneMove, positionY + oneMove)) {
+    if (isMoveValid(positionX - oneMove, positionY + oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX - oneMove;
         temporaryY = positionY + oneMove;
@@ -224,7 +263,7 @@ public class Path {
 
 
     }
-    if (map.isMoveValid(positionX + oneMove, positionY + oneMove)) {
+    if (isMoveValid(positionX + oneMove, positionY + oneMove)) {
       if (temporaryX == 0 && temporaryY == 0){
         temporaryX = positionX + oneMove;
         temporaryY = positionY + oneMove;
@@ -246,19 +285,19 @@ public class Path {
   public void createPath() {
     int oneMove = 1;
     //char previousMove = ' '; //Either N (north), E (east), S (south), W (west)
-    currentX=startX;
-    currentY=startY;
-    int temporaryX = currentX;
-    int temporaryY = currentY;
-    int temporaryX2 = 0;
-    int temporaryY2 = 0;
+    int currentRow = startRow;
+    int currentCol = startCol;
+    int temporaryRow = currentRow;
+    int temporaryCol = currentCol;
+    int temporaryRow2 = 0;
+    int temporaryCol2 = 0;
     char previousMove = ' '; //Either N (north), E (east), S (south), W (west)
     String moveDirection;
 
     //loops as long as the current location is not the destination room.
-    while(currentX!=destX || currentY!=destY){
-      moveDirection = bestMove(currentX, currentY, oneMove);
-      //if (map.grid[currentX][currentY] == 5) {
+    while(currentRow != endRow || currentCol != endCol){
+      moveDirection = bestMove(currentRow, currentCol, oneMove);
+      //if (grid[currentRow][currentCol] == 5) {
       //System.out.println("At destination");
       //if (temporaryX != temporaryX2 || temporaryY != temporaryY2){
       //temporaryX2 = temporaryX;
@@ -266,47 +305,47 @@ public class Path {
 
       //allows this movement of current room east if it is valid and not the previous move
       if (moveDirection.equals("south")){
-        map.grid[currentX][currentY + oneMove] = 7;
-        currentY += oneMove;
+        grid[currentRow][currentCol + oneMove] = 7;
+        currentCol += oneMove;
         printMap();
       }
       if (moveDirection.equals("west")){
-        map.grid[currentX - oneMove][currentY] =7;
-        currentX -= oneMove;
+        grid[currentRow - oneMove][currentCol] =7;
+        currentRow -= oneMove;
         printMap();
       }
       if (moveDirection.equals("north")){
-        map.grid[currentX][currentY - oneMove] = 7;
-        currentY -= oneMove;
+        grid[currentRow][currentCol - oneMove] = 7;
+        currentCol -= oneMove;
         printMap();
       }
       if (moveDirection.equals("east")){
-        map.grid[currentX + oneMove][currentY] =7;
-        currentX += oneMove;
+        grid[currentRow + oneMove][currentCol] =7;
+        currentRow += oneMove;
         printMap();
       }
       if (moveDirection.equals("northeast")){
-        map.grid[currentX + oneMove][currentY - oneMove] = 7;
-        currentX += oneMove;
-        currentY -= oneMove;
+        grid[currentRow + oneMove][currentCol - oneMove] = 7;
+        currentRow += oneMove;
+        currentCol -= oneMove;
         printMap();
       }
       if (moveDirection.equals("northwest")){
-        map.grid[currentX - oneMove][currentY - oneMove] = 7;
-        currentX -= oneMove;
-        currentY -= oneMove;
+        grid[currentRow - oneMove][currentCol - oneMove] = 7;
+        currentRow -= oneMove;
+        currentCol -= oneMove;
         printMap();
       }
       if (moveDirection.equals("southwest")){
-        map.grid[currentX - oneMove][currentY + oneMove] = 7;
-        currentX -= oneMove;
-        currentY += oneMove;
+        grid[currentRow - oneMove][currentCol + oneMove] = 7;
+        currentRow -= oneMove;
+        currentCol += oneMove;
         printMap();
       }
       if (moveDirection.equals("southeast")){
-        map.grid[currentX + oneMove][currentY + oneMove] = 7;
-        currentX += oneMove;
-        currentY += oneMove;
+        grid[currentRow + oneMove][currentCol + oneMove] = 7;
+        currentRow += oneMove;
+        currentCol += oneMove;
         printMap();
       }
       System.out.println("found destination");
