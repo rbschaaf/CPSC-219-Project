@@ -12,10 +12,10 @@ public class FloorPlans {
 
   public int getFloorNum(int newRoomNumber) {
     int floorNum;
-    //integer length
-    int intLength;
-    intLength = (int) Math.log10(newRoomNumber) + 1;
-    if (intLength < 3) {
+    //integer length - i suggest we make this numDigits
+    int numDigits;
+    numDigits = (int) Math.log10(newRoomNumber) + 1;
+    if (numDigits < 3) {
       floorNum = 0;
     }
     // floor number from first digit of room number
