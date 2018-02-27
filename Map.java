@@ -1,4 +1,6 @@
-/**Class for the creations of the maps, sizing of the maps, and contains the path restriction for the pathfinding.*/
+/**Class for the creations of the maps, sizing of the maps, and contains the path restriction for the pathfinding.
+*Last edited by Riley S
+* 26 Feb 2018 20:50-*/
 
 public class Map{
   // Instance variables
