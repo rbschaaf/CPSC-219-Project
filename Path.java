@@ -3,8 +3,8 @@
 * Class that finds the shortest path from point A to point B
 * on a single array of integers, avoiding any obstacles
 * pathfinding portion of the program
-* Last Edited - Dayan J
-* 14 Feb 2018 from 7:00PM -
+* Last Edited - Riley S
+* 26 Feb 2018 20:50-
 */
 public class Path {
   /**
