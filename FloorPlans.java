@@ -14,7 +14,7 @@ public class FloorPlans {
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,9,0,0},
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-  
+
   private static int[][] tfdlTwo = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
   {0,0,1,1,261,1,260,1,252,9,9,9,1,1,0,0,0,0},
@@ -29,20 +29,20 @@ public class FloorPlans {
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,9,0,0},
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-  
+
   private static int[][] grid;
   private static int row;
   private static int column;
-  
+
   /**
   * Copy constructor for the grid
   */
   public FloorPlans(FloorPlans floorPlanCopy) {
     grid = floorPlanCopy.getGrid();
   }
-  
+
   public FloorPlans(){}
-    
+
     public static int getFloorNum(int newRoomNumber) {
       int floorNum;
       //integer length - i suggest we make this numDigits
@@ -60,7 +60,7 @@ public class FloorPlans {
       }
       return floorNum;
     }
-    
+
     /*
     * Method to set the appropriate grid
     *
@@ -71,25 +71,25 @@ public class FloorPlans {
     *    25         Stairs that can be used later
     *   >= 100        Room Numbers, represent doors
     */
-    public static void setGrid(String building, int roomNum) {
+    public static int[][] setGrid(String building, int roomNum) {
       int floor = getFloorNum(roomNum);
       if (building == "Taylor Family Digital Library") {
         if (floor == 1) {
           grid = tfdlOne;
-          print(tfdlOne);
+
         }
-        
+
         else if (floor == 2) {
           grid = tfdlTwo;
-          print(tfdlTwo);
+
         }
-      }
+      }return grid;
     }
-    
+
     public static int[][] getGrid() {
       return grid;
     }
-    
+
     public static void print(int[][] aBuildingFloor){
       for (row = 0; row < 14;row++){
         for (column = 0; column <18; column++){
@@ -98,11 +98,14 @@ public class FloorPlans {
         System.out.println();
       }
     }
-    
+
     public static void main(String[] args){
-      setGrid("Taylor Family Digital Library", 161);
-      int[][] aGrid = getGrid();
-      print(aGrid);
+      //setGrid("Taylor Family Digital Library", 161);
+      //int[][] aGrid = getGrid();
+      /*int room = 161;
+      Map map = new Map(room);
+      map.printGrid();*/
     }
-    
+
   }
+
