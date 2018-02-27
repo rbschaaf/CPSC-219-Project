@@ -26,7 +26,7 @@ public class Map{
     floorGrid = floorPlan.getGrid();
   }
 
-
+  public Map(){};
 
   /**
   * GETTER AND SETTER METHODS
