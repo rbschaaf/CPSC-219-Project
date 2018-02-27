@@ -16,6 +16,8 @@ public class Path {
   private int startCol;
   private int endCol;
   private int[][] grid;
+  private int currentCol;
+  private int currentRow;
   /*
   * Added the instances again, I think the map class should only be used
   * to deliver various floorplans and do stuff to thems
@@ -44,6 +46,10 @@ public class Path {
     endCol = prevPath.getEndCol();
     grid = prevPath.getGrid();
   }
+
+  /*public Path(Map aNewMap){
+    Map aMap = new Map(aNewMap);
+  }*/
 
   //setter for grid
   public void setGrid(int[][] newGrid) {
@@ -100,15 +106,15 @@ public class Path {
   }
 
   /* UNSURE IF THIS IS NEEDED
-  //Getter methods for Current X and Current Y
-  public int getcurrentRow(){
+  //Getter methods for Current X and Current Y*/
+  public int getCurrentX(){
     return currentRow;
   }
 
-  public int getcurrentCol(){
+  public int getCurrentY(){
     return currentCol;
   }
-
+/*
   // place Start marker
   public void placeStart(){
     grid[startRow][startCol] = 8;
@@ -120,10 +126,10 @@ public class Path {
 
   */
 
-  //Getter method for the map
+/*  //Getter method for the map
   public Map getMap() {
     return map;
-  }
+  }*/
 
   //Print method to print the manipulated copy of the map
   public void printGrid() {
@@ -157,7 +163,7 @@ public class Path {
   // THIS DOES NOT ACCOUNT FOR OBSTACLES. Not functional at this point
   public int findShortestDistance(int positionX, int positionY) {
     int moveCounter;
-    moveCounter = Math.abs(destY - positionY) + Math.abs(destX - positionX);
+    moveCounter = Math.abs(endCol - positionY) + Math.abs(endRow - positionX);
     return moveCounter;
   }
 
@@ -307,46 +313,46 @@ public class Path {
       if (moveDirection.equals("south")){
         grid[currentRow][currentCol + oneMove] = 7;
         currentCol += oneMove;
-        printMap();
+        //printMap();
       }
       if (moveDirection.equals("west")){
         grid[currentRow - oneMove][currentCol] =7;
         currentRow -= oneMove;
-        printMap();
+        //printMap();
       }
       if (moveDirection.equals("north")){
         grid[currentRow][currentCol - oneMove] = 7;
         currentCol -= oneMove;
-        printMap();
+        //printMap();
       }
       if (moveDirection.equals("east")){
         grid[currentRow + oneMove][currentCol] =7;
         currentRow += oneMove;
-        printMap();
+        //printMap();
       }
       if (moveDirection.equals("northeast")){
         grid[currentRow + oneMove][currentCol - oneMove] = 7;
         currentRow += oneMove;
         currentCol -= oneMove;
-        printMap();
+        //printMap();
       }
       if (moveDirection.equals("northwest")){
         grid[currentRow - oneMove][currentCol - oneMove] = 7;
         currentRow -= oneMove;
         currentCol -= oneMove;
-        printMap();
+        //printMap();
       }
       if (moveDirection.equals("southwest")){
         grid[currentRow - oneMove][currentCol + oneMove] = 7;
         currentRow -= oneMove;
         currentCol += oneMove;
-        printMap();
+        //printMap();
       }
       if (moveDirection.equals("southeast")){
         grid[currentRow + oneMove][currentCol + oneMove] = 7;
         currentRow += oneMove;
         currentCol += oneMove;
-        printMap();
+        //printMap();
       }
       System.out.println("found destination");
     }
