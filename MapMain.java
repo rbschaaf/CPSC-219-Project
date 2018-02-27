@@ -50,8 +50,9 @@ public class MapMain {
 
 
 
-
-  public void main(){
+/*I just got rid of this for the time being. Not sure if still neeede,
+but method names currently causing errors.*/
+/*  public void main(){
     //call method to print the map
     newMap.print();
 
@@ -62,7 +63,7 @@ public class MapMain {
     //place the number 8 as a marker for the starting room
     newPath.placeStart();
     //call method to print map again with starting maker
-    newPath.printMap();
+    newPath.printGrid();
 
     //call method to get destination room from user
     getDestRoom();
@@ -72,7 +73,7 @@ public class MapMain {
     newPath.placeDest();
     System.out.println("With destination.");
     //print the map to show markers for starting and destination rooms
-    newPath.printMap();
+    newPath.printGrid();
     System.out.println(" ");
 
   //  System.out.println("Current X: "+ newPath.getCurrentX());
@@ -84,8 +85,8 @@ public class MapMain {
 
     System.out.println("A new grid: ");
     //print the map again with the number 7 showing a path between the rooms
-    newPath.printMap();
-  }
+    newPath.printGrid();
+  }*/
 
 
   public static void main(String[] args){
