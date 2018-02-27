@@ -78,10 +78,19 @@ public class Map{
     gridPointVal = floorGrid[row][column];
     return gridPointVal;
   }
-}
+
 
   public int[][] getCopyGrid() {
-    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
+    FloorPlans copyFloorPlan = new FloorPlans();
     int[][] copyGrid = copyFloorPlan.getGrid();
     return copyGrid;
   }
+
+
+  /*public static void main(String[] args){
+    int room = 161;
+    Map map = new Map(room);
+    map.printGrid();
+
+  }*/
+}
