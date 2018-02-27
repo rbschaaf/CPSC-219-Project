@@ -1,7 +1,9 @@
 /**Main portion of the pathfinding program. Finds a path between a destination room from a starting
 room from the user. Floor is modelled off of north portion of 2nd floor Taylor Family Digital Library.
 1s are hallway, 0s are walls, 200-series numbers are room names, 9s are rooms themselves, 8 marks starting room,
-5 marks destination room, 7s mark path found between rooms. Created by Nicki Lindstrom, Dayan Jayasuriya, and Riley Schaaf*/
+5 marks destination room, 7s mark path found between rooms. Created by Nicki Lindstrom, Dayan Jayasuriya, and Riley Schaaf
+*Last edited by Riley S
+** 26 Feb 2018 20:50-*/
 
 import java.util.Scanner;
 
