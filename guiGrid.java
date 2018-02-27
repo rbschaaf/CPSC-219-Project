@@ -7,38 +7,51 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.geometry.Pos;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.text.*;
 
 
 
 public class guiGrid extends Application {
-  private Map map1 = new Map();
+  private FloorPlans floorPlan1;
+  /*
+  * There needs to be an argument for the new map creation to work with the
+  * changes I made, ideally this would come from a button click that would
+  * take in a room number - Dayan 22 Feb 2018
+  */
+
+  private int roomNumber;
+  private Map map1 = new Map(roomNumber);
   private int rowNum = 14;
   private int colNum = 18;
-  private int roomNumbers;
-  private Map square = new Map();
+  //private Map copy = new Map(map1);
+  private String building;
+  private int roomNumbers = 0;
 
-  public void makeGUI(Map aMap, GridPane aGridPane){
+
+
+  public void makeGUI(int[][] aGrid, GridPane aGridPane){
+    int[][] copyGrid = aGrid;
     for (int row = 0; row < rowNum; row++){
       for(int col = 0; col < colNum; col++){
         Rectangle rect = new Rectangle();
-        if (aMap.grid[row][col] == 0){
+        if (aGrid[row][col] == 0){
           rect.setFill(Color.BLACK);
-        } else if (aMap.grid[row][col] == 1){
+        } else if (aGrid[row][col] == 1){
           rect.setFill(Color.TRANSPARENT);
-        } else if (aMap.grid[row][col] == 9){
+        } else if (aGrid[row][col] == 9){
           rect.setFill(Color.GREY);
         } else{
           rect.setFill(Color.LIGHTBLUE);
         }
-        int roomNumber = 0;
-        roomNumber = square.getRoomNumber(row,col);
+        //int roomNumbers = 0;
+        roomNumbers = map1.getGridPointNum(row,col);
         Label rooms = new Label("");
         //conditional to add room numbers to the grid map.
-        if (roomNumber != 0 && roomNumber != 1 && roomNumber != 9){
+        if (roomNumbers != 0 && roomNumbers != 1 && roomNumbers != 9){
           rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, 10));
-          rooms.setText("" + roomNumber);
+          rooms.setText("" + roomNumbers);
         }
         rect.setStroke(Color.BLACK);
         rect.setWidth(30);
@@ -58,6 +71,34 @@ public class guiGrid extends Application {
 
 
   public void start(Stage primaryStage){
+    // Create a startScreen scene.
+    BorderPane borderPane2 = new BorderPane();
+
+    Label appTitle = new Label("Room-Finder App!");
+    appTitle.setFont(Font.font("Verdana", FontWeight.BOLD,20));
+
+    Button startButton = new Button("Start");
+
+    TextField buildingText = new TextField("Enter the building name.");
+
+    TextField roomText = new TextField("Enter the room number.");
+
+
+    VBox startVBox = new VBox(10);
+    startVBox.getChildren().addAll(appTitle, buildingText, roomText,startButton);
+
+
+    //add all boxes to borderPane2
+    borderPane2.setCenter(startVBox);
+    startVBox.setAlignment(Pos.CENTER);
+
+
+    Group root = new Group();
+    root.getChildren().add(borderPane2);
+    Scene sceneStart = new Scene(root,700,700);
+
+    int[][] copyGrid = map1.getCopyGrid();
+
     HBox topRow = new HBox();
     topRow.setAlignment(Pos.CENTER);
     Label appName = new Label ("Taylor Family Digital Library Pathfinder");
@@ -79,10 +120,20 @@ public class guiGrid extends Application {
     borderPane.setCenter(gridPane);
     borderPane.setTop(topRow);
 
-    Scene scene = new Scene(borderPane,700,700);
-    makeGUI(map1,gridPane);
+    Scene scene2 = new Scene(borderPane,700,700);
+    //makeGUI(copyGrid,gridPane);
+
+    //handle when start button is clicked
+    startButton.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        String building = buildingText.getText();
+        int roomNumber = Integer.parseInt(roomText.getText());
+        primaryStage.setScene(scene2);
+      }
+    });
+
     primaryStage.setTitle("GUI");
-    primaryStage.setScene(scene);
+    primaryStage.setScene(sceneStart);
     primaryStage.show();
   }
 }
