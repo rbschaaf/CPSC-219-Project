@@ -26,7 +26,8 @@ public class guiGrid extends Application {
   //private Map map1 = new Map(roomNumber,building);
   private int rowNum = 14;
   private int colNum = 18;
-  private FloorPlans currentFloorPlan;
+  private int[][] currentGrid;
+  private FloorPlans currentFloorPlan = new FloorPlans();
   /* private int[][] testGrid = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
   {0,0,1,1,261,1,260,1,252,9,9,9,1,1,0,0,0,0},
@@ -45,8 +46,15 @@ public class guiGrid extends Application {
   //private Map copy = new Map(map1);
 
   private int roomNumbers = 0;
-
-
+  public void setCurrentFloorPlan(FloorPlans newFloorPlan){
+    currentFloorPlan = newFloorPlan;
+  }
+  public void setRoomNumber(int newRoomNumber){
+    roomNumber = newRoomNumber;
+  }
+  public void setBuildingName(String newBuildingName){
+    building = newBuildingName;
+  }
   // Make the image of the map grid.
   public void makeGUI(int[][] aGrid, GridPane aGridPane){
     for (int row = 0; row < rowNum; row++){
@@ -61,8 +69,8 @@ public class guiGrid extends Application {
         } else{
           rect.setFill(Color.LIGHTBLUE);
         }
-        //int roomNumbers = 0;
-        //roomNumbers = map1.getGridPointNum(row,col);
+        int roomNumbers = 0;
+        roomNumbers = aGrid[row][col];
         Label rooms = new Label("");
         //conditional to add room numbers to the grid map.
         if (roomNumbers != 0 && roomNumbers != 1 && roomNumbers != 9){
@@ -95,7 +103,7 @@ public class guiGrid extends Application {
 
     Button startButton = new Button("Start");
 
-    TextField buildingText = new TextField("Enter the building name.");
+    TextField buildingText = new TextField("Taylor Family Digital Library");
 
     TextField roomText = new TextField("Enter the room number.");
 
@@ -122,7 +130,7 @@ public class guiGrid extends Application {
     ComboBox<String> buildingDropDown = new ComboBox<String>();
     buildingDropDown.getItems().addAll("Taylor Family Digital Library");
 
-    TextField enterStartRoom = new TextField("Enter starting room");
+    TextField enterStartRoom = new TextField("Enter the start room");
     TextField enterDestRoom= new TextField("Enter destination room");
 
     topRow.getChildren().addAll(appName, buildingDropDown, enterStartRoom, enterDestRoom);
@@ -138,17 +146,26 @@ public class guiGrid extends Application {
     Scene scene2 = new Scene(borderPanes2,700,700);
 
     // Create the GUI for the map
-    currentFloorPlan = new FloorPlans();
+    FloorPlans firstPlan = new FloorPlans();
+    firstPlan.setGrid(building,roomNumber);
+    setCurrentFloorPlan(firstPlan);
     currentFloorPlan.setGrid(building,roomNumber);
-    int[][] newGrid = currentFloorPlan.getGrid();
-    makeGUI(newGrid,gridPane);
+    System.out.print(building + roomNumber);
+    //int[][] newGrid = currentFloorPlan.getGrid();
 
+    //makeGUI(newGrid,gridPane);
+    makeGUI(currentFloorPlan.getGrid(),gridPane);
 
     //handle when start button (in scene 1) is clicked
     startButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
         String building = buildingText.getText();
         int roomNumber = Integer.parseInt(roomText.getText());
+        FloorPlans updatedPlan = new FloorPlans();
+        setBuildingName(building);
+        setRoomNumber(roomNumber);
+        setCurrentFloorPlan(updatedPlan);
+        System.out.print(building + roomNumber);
         primaryStage.setScene(scene2);
       }
     });
