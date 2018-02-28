@@ -7,8 +7,9 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.geometry.Pos;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.text.*;
 
 
 
@@ -19,14 +20,34 @@ public class guiGrid extends Application {
   * changes I made, ideally this would come from a button click that would
   * take in a room number - Dayan 22 Feb 2018
   */
-  private Map map1 = new newMap();
+
+  private int roomNumber;
+  private String building;
+  //private Map map1 = new Map(roomNumber,building);
   private int rowNum = 14;
   private int colNum = 18;
-  private int roomNumbers;
-  private Map copy = new Map(map1);
+  private FloorPlans currentFloorPlan = new FloorPlans();
+  private int[][] testGrid = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+  {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
+  {0,0,1,1,261,1,260,1,252,9,9,9,1,1,0,0,0,0},
+  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
+  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
+  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,0,0,0,0},
+  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,0,0,0,0},
+  {0,0,1,1,262,1,263,1,264,1,1,1,1,1,1,251,9,9,0},
+  {0,0,1,1,1,259,1,1,1,1,1,1,1,1,9,9,9,0},
+  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,250,9,9,0},
+  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,9,9,9,0},
+  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,9,0,0},
+  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
+  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+  //private Map copy = new Map(map1);
 
+  private int roomNumbers = 0;
+
+
+  // Make the image of the map grid.
   public void makeGUI(int[][] aGrid, GridPane aGridPane){
-    int[][] copyGrid = aGrid;
     for (int row = 0; row < rowNum; row++){
       for(int col = 0; col < colNum; col++){
         Rectangle rect = new Rectangle();
@@ -39,13 +60,13 @@ public class guiGrid extends Application {
         } else{
           rect.setFill(Color.LIGHTBLUE);
         }
-        int roomNumber = 0;
-        roomNumber = copy.getGridPointNum(row,col);
+        //int roomNumbers = 0;
+        //roomNumbers = map1.getGridPointNum(row,col);
         Label rooms = new Label("");
         //conditional to add room numbers to the grid map.
-        if (roomNumber != 0 && roomNumber != 1 && roomNumber != 9){
+        if (roomNumbers != 0 && roomNumbers != 1 && roomNumbers != 9){
           rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, 10));
-          rooms.setText("" + roomNumber);
+          rooms.setText("" + roomNumbers);
         }
         rect.setStroke(Color.BLACK);
         rect.setWidth(30);
@@ -65,8 +86,33 @@ public class guiGrid extends Application {
 
 
   public void start(Stage primaryStage){
-    int[][] copyGrid = map1.getCopyGrid();
+    // Create a new scene to start the app
+    BorderPane borderPanes1 = new BorderPane();
 
+    Label appTitle = new Label("Room-Finder App!");
+    appTitle.setFont(Font.font("Verdana", FontWeight.BOLD,20));
+
+    Button startButton = new Button("Start");
+
+    TextField buildingText = new TextField("Enter the building name.");
+
+    TextField roomText = new TextField("Enter the room number.");
+
+
+    VBox startVBox = new VBox(10);
+    startVBox.getChildren().addAll(appTitle, buildingText, roomText,startButton);
+
+
+    //add all boxes to borderPane2
+    borderPanes1.setCenter(startVBox);
+    startVBox.setAlignment(Pos.CENTER);
+
+
+    // create the scene itself
+    Scene scene1 = new Scene(borderPanes1,700,700);
+
+
+    // Main screen (second scene)
     HBox topRow = new HBox();
     topRow.setAlignment(Pos.CENTER);
     Label appName = new Label ("Taylor Family Digital Library Pathfinder");
@@ -84,14 +130,29 @@ public class guiGrid extends Application {
     gridPane.setAlignment(Pos.CENTER);
 
     //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/BorderPane.html
-    BorderPane borderPane = new BorderPane();
-    borderPane.setCenter(gridPane);
-    borderPane.setTop(topRow);
+    BorderPane borderPanes2 = new BorderPane();
+    borderPanes2.setCenter(gridPane);
+    borderPanes2.setTop(topRow);
 
-    Scene scene = new Scene(borderPane,700,700);
-    makeGUI(copyGrid,gridPane);
+    Scene scene2 = new Scene(borderPanes2,700,700);
+
+    // Create the GUI for the map
+    currentFloorPlan.setGrid(building,roomNumber);
+
+    //makeGUI(currentFloorPlan.getGrid(),gridPane);
+    makeGUI(testGrid, gridPane);
+
+    //handle when start button (in scene 1) is clicked
+    startButton.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        String building = buildingText.getText();
+        int roomNumber = Integer.parseInt(roomText.getText());
+        primaryStage.setScene(scene2);
+      }
+    });
+
     primaryStage.setTitle("GUI");
-    primaryStage.setScene(scene);
+    primaryStage.setScene(scene1);
     primaryStage.show();
   }
 }
