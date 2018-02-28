@@ -1,4 +1,6 @@
-/**Class for the creations of the maps, sizing of the maps, and contains the path restriction for the pathfinding.*/
+/**Class for the creations of the maps, sizing of the maps, and contains the path restriction for the pathfinding.
+*Last edited by Riley S
+* 26 Feb 2018 20:50-*/
 
 public class Map{
   // Instance variables
@@ -26,7 +28,7 @@ public class Map{
     floorGrid = floorPlan.getGrid();
   }
 
-
+  public Map(){};
 
   /**
   * GETTER AND SETTER METHODS
@@ -78,10 +80,19 @@ public class Map{
     gridPointVal = floorGrid[row][column];
     return gridPointVal;
   }
-}
+
 
   public int[][] getCopyGrid() {
-    FloorPlans copyFloorPlan = new FloorPlans(floorPlan);
+    FloorPlans copyFloorPlan = new FloorPlans();
     int[][] copyGrid = copyFloorPlan.getGrid();
     return copyGrid;
   }
+
+
+  /*public static void main(String[] args){
+    int room = 161;
+    Map map = new Map(room);
+    map.printGrid();
+
+  }*/
+}
