@@ -14,20 +14,20 @@ import javafx.scene.text.*;
 
 
 public class guiGrid extends Application {
-  private FloorPlans floorPlan1;
+
   /*
   * There needs to be an argument for the new map creation to work with the
   * changes I made, ideally this would come from a button click that would
   * take in a room number - Dayan 22 Feb 2018
   */
 
-  private int roomNumber;
-  private String building;
+  private int roomNumber =160;
+  private String building = "Taylor Family Digital Library";
   //private Map map1 = new Map(roomNumber,building);
   private int rowNum = 14;
   private int colNum = 18;
-  private FloorPlans currentFloorPlan = new FloorPlans();
-  private int[][] testGrid = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+  private FloorPlans currentFloorPlan;
+  /* private int[][] testGrid = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
   {0,0,1,1,261,1,260,1,252,9,9,9,1,1,0,0,0,0},
   {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
@@ -41,6 +41,7 @@ public class guiGrid extends Application {
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,9,0,0},
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+  */
   //private Map copy = new Map(map1);
 
   private int roomNumbers = 0;
@@ -137,10 +138,11 @@ public class guiGrid extends Application {
     Scene scene2 = new Scene(borderPanes2,700,700);
 
     // Create the GUI for the map
+    currentFloorPlan = new FloorPlans();
     currentFloorPlan.setGrid(building,roomNumber);
+    int[][] newGrid = currentFloorPlan.getGrid();
+    makeGUI(newGrid,gridPane);
 
-    //makeGUI(currentFloorPlan.getGrid(),gridPane);
-    makeGUI(testGrid, gridPane);
 
     //handle when start button (in scene 1) is clicked
     startButton.setOnAction(new EventHandler<ActionEvent>(){
