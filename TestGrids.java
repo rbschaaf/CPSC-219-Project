@@ -1,7 +1,10 @@
-/** Last Edited by Riley S
-*26 Feb 2018 20:50-*/
+/**
+*Class used to test the path on various grids
+*
+*Last Edited by Dayan J.
+*3 Mar 2018 -*/
 
-public class FloorPlans {
+public class TestGrids {
   //private int[][] grid;
   private static int[][] tfdlOne = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
@@ -111,4 +114,3 @@ public class FloorPlans {
     }
 
   }
-
