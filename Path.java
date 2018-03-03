@@ -68,29 +68,29 @@ public class Path {
   }
 
   /**
-  * Add node to the arraylist list of nodes
+  * Add node to an arraylist list of nodes
   */
-  public void addNode(Node aNode) {
+  public void addNodeToList(ArrayList<Node> nodes, Node aNode) {
     nodes.add(new Node(aNode));
   }
 
   /**
-  * Return a list of the nodes
+  * Return a copy Arraylist
   */
-  public ArrayList<Node> getNodes() {
+  public ArrayList<Node> getNodes(ArrayList<Node> nodes) {
     ArrayList<Node> copyNodes = new ArrayList<Node>();
     if (nodes != null) {
       for(int i = 0; i < nodes.size(); i++) {
-        copyNodes.add(new Node(nodes.get(i)));
+        addNodeToList(copyNodes, nodes.get(i));
       }
     }
     return copyNodes;
   }
 
   /**
-  * get the Start node from the ArrayList
+  * get the Start node from an ArrayList
   */
-  public Node getStartNode() {
+  public Node getStartNode(ArrayList<Node> nodes) {
     Node startNode = null;
     if (nodes != null) {
       for(int i = 0; i < nodes.size(); i++) {
@@ -105,25 +105,27 @@ public class Path {
   /**
   * From a grid create an array of nodes that are traversable
   */
-  public void createNodeArray() {
+  public ArrayList<Node> createNodeArray(int[][] aGrid) {
+    ArrayList<Node> nodes = new ArrayList<Node>();
     for (int row = 0; row < 14;row++){
       for (int column = 0; column < 18; column++){
         //used for the Node constuctor
         boolean endNode = false;
 
-        if (floorGrid[row][column] == 1) {
-          addNode(new Node(row, column, endNode));
+        if (aGrid[row][column] == 1) {
+          addNodeToList(nodes, new Node(row, column, endNode));
         }
         else if (floorGrid[row][column] == endRoomNum) {
           endNode = true;
-          addNode(new Node(row, column, endNode));
+          addNodeToList(nodes, new Node(row, column, endNode));
         }
 
         else if(floorGrid[row][column] == startRoomNum) {
-          addNode(new Node(row, column, 0));
+          addNodeToList(nodes, new Node(row, column, 0));
         }
       }
     }
+    return nodes;
   }
 
 
@@ -134,5 +136,4 @@ public class Path {
   *
   */
 
-  //Method to find a distance between points
 }
