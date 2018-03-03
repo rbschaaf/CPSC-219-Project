@@ -1,12 +1,13 @@
 /**
-*Class used to test the path on various grids
+* Class used to test the path on various grids
 *
-*Last Edited by Dayan J.
-*3 Mar 2018 -*/
+* Last Edited by Dayan J.
+* 3 Mar 2018
+*/
 
-public class TestGrids {
+public class TestGrid {
   //private int[][] grid;
-  private static int[][] tfdlOne = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+  private int[][] tfdlOne = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
   {0,0,1,1,161,1,160,1,152,9,9,9,1,1,0,0,0,0},
   {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
@@ -21,7 +22,7 @@ public class TestGrids {
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 
-  private static int[][] tfdlTwo = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+  private int[][] tfdlTwo = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
   {0,0,1,1,261,1,260,1,252,9,9,9,1,1,0,0,0,0},
   {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
@@ -36,20 +37,18 @@ public class TestGrids {
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 
-  private static int[][] grid;
-  private static int row;
-  private static int column;
+  private int[][] grid;
 
   /**
   * Copy constructor for the grid
   */
-  public FloorPlans(FloorPlans floorPlanCopy) {
-    grid = floorPlanCopy.getGrid();
+  public TestGrid(TestGrid gridCopy) {
+    grid = gridCopy.getGrid();
   }
 
-  public FloorPlans(){}
+  public TestGrid(){}
 
-    public static int getFloorNum(int newRoomNumber) {
+    public int getFloorNum(int newRoomNumber) {
       int floorNum;
       //integer length - i suggest we make this numDigits
       int numDigits;
@@ -77,7 +76,7 @@ public class TestGrids {
     *    25         Stairs that can be used later
     *   >= 100        Room Numbers, represent doors
     */
-    public static int[][] setGrid(String building, int roomNum) {
+    public int[][] setGrid(String building, int roomNum) {
       int floor = getFloorNum(roomNum);
       if (building == "Taylor Family Digital Library") {
         if (floor == 1) {
@@ -92,25 +91,17 @@ public class TestGrids {
       }return grid;
     }
 
-    public static int[][] getGrid() {
+    public int[][] getGrid() {
       return grid;
     }
 
-    public static void print(int[][] aBuildingFloor){
-      for (row = 0; row < 14;row++){
-        for (column = 0; column <18; column++){
-          System.out.printf("%4d", aBuildingFloor[row][column]);
+    public void print(int[][] grid){
+      for (int row = 0; row < 14;row++){
+        for (int column = 0; column <18; column++){
+          System.out.printf("%4d", grid[row][column]);
         }
         System.out.println();
       }
     }
 
-    public static void main(String[] args){
-      //setGrid("Taylor Family Digital Library", 161);
-      //int[][] aGrid = getGrid();
-      /*int room = 161;
-      Map map = new Map(room);
-      map.printGrid();*/
-    }
-
-  }
+}
