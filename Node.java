@@ -4,6 +4,7 @@ public class Node {
   private boolean startNodeVal = false;
   private boolean endNodeVal = false;
   private double startDistance = Double.POSITIVE_INFINITY;
+  private Node connectedNode = null;
 
 
   /**
@@ -82,6 +83,14 @@ public class Node {
   }
   public void setStartDistance(double newDistance) {
     startDistance = newDistance;
+  }
+
+  public void setConnectedNode(Node prevNode) {
+    connectedNode = new Node(prevNode);
+  }
+
+  public Node getConnectedNode() {
+    return new Node(connectedNode);
   }
 
   //Move Up method

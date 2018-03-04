@@ -4,7 +4,7 @@ import java.util.ArrayList;
 * on a single array of integers, avoiding any obstacles
 * pathfinding portion of the program
 * Last Edited by Dayan J.
-* 3 Mar 2018
+* 4 Mar 2018
 */
 public class Path {
   int[][] floorGrid;
@@ -12,7 +12,6 @@ public class Path {
   int startRoomNum;
   int endRoomNum;
   ArrayList<Node> nodes = new ArrayList<Node>();
-  boolean pathFound = false;
   /**
   * Contructor requires a grid on which to find a path
   */
@@ -172,7 +171,8 @@ public class Path {
     return nodes;
   }
 
-  public void setNeighborWeightedNodeDistance(Node initialNode, Node newNode) {
+
+  public void setNeighborInstances(Node initialNode, Node newNode) {
     double diagonalMoveWeight = 1/2;
     double otherMoveWeight = 1;
     double initialNodeDistance = initialNode.getStartDistance();
@@ -185,12 +185,14 @@ public class Path {
       if(newNode.calcDistance(initialNode) > 1) {
         if (newNodeDistance > finalDiagonalDistance) {
           newNode.setStartDistance(finalDiagonalDistance);
+          newNode.setConnectedNode(new Node(initialNode));
         }
       }
       //Euclidean distance for Horizontal; move weighted higher
       else {
         if (newNodeDistance > finalOtherDistance) {
           newNode.setStartDistance(finalOtherDistance);
+          newNode.setConnectedNode(new Node(initialNode));
         }
       }
     }
@@ -202,25 +204,67 @@ public class Path {
   *
   *
   */
+
+  /**
+  * Takes the arraylist of nodes and initializes different values
+  * for the distance based on the best move
+  */
   public ArrayList<Node> setNodeDistances (ArrayList<Node> nodes) {
     ArrayList<Node> unvisitedNodes = getCopyNodes(nodes);
     Node endNode = getEndNode(unvisitedNodes);
     ArrayList<Node> visitedNodes = null;
     boolean endNodeVisited = false;
-    while (unvisitedNodes != null) {
       while (endNodeVisited != true) {
-        Node vertex = getLowestDistanceNode(nodes);
-        if (vertex.equals(endNode)) {
-          endNodeVisited = true;
+        while (unvisitedNodes != null) {
+          Node vertex = getLowestDistanceNode(nodes);
+          if (vertex.equals(endNode)) {
+            endNodeVisited = true;
+          }
+          removeNodeFromList(unvisitedNodes, vertex);
+          addNodeToList(visitedNodes, vertex);
+          for (Node eachNode : unvisitedNodes) {
+            setNeighborInstances(vertex, eachNode);
+          }
         }
-        removeNodeFromList(unvisitedNodes, vertex);
-        addNodeToList(visitedNodes, vertex);
-        for (Node eachNode : unvisitedNodes) {
-          setNeighborWeightedNodeDistance(vertex, eachNode);
-        }
-      }
     }
-    return visitedNodes;
+    return getCopyNodes(visitedNodes);
   }
 
+  /**
+  * Returns a list of only the fully created path nodes to be used when
+  * altering the grid
+  */
+
+  public ArrayList<Node> getConnectedNodes(ArrayList<Node> visitedNodes) {
+    ArrayList<Node> shortestPathNodes = new ArrayList<Node>();
+    Node currentNode = getEndNode(visitedNodes);
+    if(visitedNodes != null) {
+      while(currentNode.getConnectedNode() != null) {
+        addNodeToList(shortestPathNodes, currentNode);
+        Node nextNode = currentNode.getConnectedNode();
+        currentNode = nextNode;
+      }
+    }
+    return getCopyNodes(shortestPathNodes);
+  }
+
+  /**
+  * Takes an Arraylist of connected nodes forming the shortest path
+  * and alters the grid to show the final path
+  */
+  public int[][] addPathToGrid(ArrayList<Node> shortPathNodes) {
+    for (Node aNode : shortPathNodes) {
+      int nodeRow = aNode.getXCoord();
+      int nodeCol = aNode.getYCoord();
+      copyGrid[nodeRow][nodeCol] = 7;
+    }
+    return copyGrid;
+  }
+
+  /**
+  * method that will combine other methods into simpler step
+  */
+  //public void createPath() {
+
+  
 }
