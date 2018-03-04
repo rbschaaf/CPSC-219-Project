@@ -1,8 +1,8 @@
 public class Node {
   private int xcoord;
   private int ycoord;
-  private boolean startNode = false;
-  private boolean endNode = false;
+  private boolean startNodeVal = false;
+  private boolean endNodeVal = false;
   private double startDistance = Double.POSITIVE_INFINITY;
 
 
@@ -14,7 +14,7 @@ public class Node {
     setXCoord(initX);
     setYCoord(initY);
     setStartDistance(newStartDistance);
-    setStartNode(true);
+    setStartNodeVal(true);
   }
 
   /**
@@ -24,7 +24,7 @@ public class Node {
   public Node(int initX, int initY, boolean val) {
     setXCoord(initX);
     setYCoord(initY);
-    setEndNode(val);
+    setEndNodeVal(val);
   }
 
 
@@ -62,18 +62,18 @@ public class Node {
     return ycoord;
   }
 
-  public void setStartNode(boolean value) {
-    startNode = value;
+  public void setStartNodeVal(boolean value) {
+    startNodeVal = value;
   }
-  public boolean getStartNode() {
-    return startNode;
+  public boolean getStartNodeVal() {
+    return startNodeVal;
   }
 
-  public void setEndNode(boolean value) {
-    endNode = value;
+  public void setEndNodeVal(boolean value) {
+    endNodeVal = value;
   }
-  public boolean getEndNode() {
-    return endNode;
+  public boolean getEndNodeVal() {
+    return endNodeVal;
   }
 
 

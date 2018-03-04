@@ -68,6 +68,35 @@ public class Path {
   }
 
   /**
+  * Get Start Node
+  */
+  public Node getStartNode(ArrayList<Node> nodes) {
+    Node startNode = null;
+    if (nodes != null) {
+      for(Node node : nodes) {
+        if (node.getStartNodeVal() == true) {
+          startNode = new Node(node);
+        }
+      }
+    }
+    return startNode;
+  }
+  /**
+  * Get End Node
+  */
+  public Node getEndNode(ArrayList<Node> nodes) {
+    Node endNode = null;
+    if (nodes != null) {
+      for(Node node : nodes) {
+        if (node.getEndNodeVal() == true) {
+          endNode = new Node(node);
+        }
+      }
+    }
+    return endNode;
+  }
+
+  /**
   * Add node to an arraylist list of nodes
   */
   public void addNodeToList(ArrayList<Node> nodes, Node aNode) {
@@ -175,11 +204,15 @@ public class Path {
   */
   public ArrayList<Node> setNodeDistances (ArrayList<Node> nodes) {
     ArrayList<Node> unvisitedNodes = getCopyNodes(nodes);
+    Node endNode = getEndNode(unvisitedNodes);
     ArrayList<Node> visitedNodes = null;
     boolean endNodeVisited = false;
     while (unvisitedNodes != null) {
-      while (endNodeVisited == false) {
+      while (endNodeVisited != true) {
         Node vertex = getLowestDistanceNode(nodes);
+        if (vertex.equals(endNode)) {
+          endNodeVisited = true;
+        }
         removeNodeFromList(unvisitedNodes, vertex);
         addNodeToList(visitedNodes, vertex);
         for (Node eachNode : unvisitedNodes) {
@@ -189,4 +222,5 @@ public class Path {
     }
     return visitedNodes;
   }
+
 }
