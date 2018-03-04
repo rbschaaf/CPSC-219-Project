@@ -74,10 +74,18 @@ public class Path {
     nodes.add(new Node(aNode));
   }
 
+  public void removeNodeFromList(ArrayList<Node> nodes, Node newNode) {
+    for (Node node : nodes) {
+      if (node.equals(newNode) == true) {
+        nodes.remove(node);
+      }
+    }
+  }
+
   /**
   * Return a copy Arraylist
   */
-  public ArrayList<Node> getNodes(ArrayList<Node> nodes) {
+  public ArrayList<Node> getCopyNodes(ArrayList<Node> nodes) {
     ArrayList<Node> copyNodes = new ArrayList<Node>();
     if (nodes != null) {
       for(int i = 0; i < nodes.size(); i++) {
@@ -90,16 +98,23 @@ public class Path {
   /**
   * get the Start node from an ArrayList
   */
-  public Node getStartNode(ArrayList<Node> nodes) {
-    Node startNode = null;
+  public Node getLowestDistanceNode(ArrayList<Node> nodes) {
+    Node lowestNode = null;
+    Node finalLowestNode = null;
     if (nodes != null) {
       for(int i = 0; i < nodes.size(); i++) {
-        if (nodes.get(i).getStartNode() == true){
-          startNode = new Node(nodes.get(i));
+        if (lowestNode != null) {
+          if (lowestNode.getStartDistance() > nodes.get(i).getStartDistance()) {
+            lowestNode = nodes.get(i);
+          }
         }
+        else {
+          lowestNode = nodes.get(i);
+        }
+        finalLowestNode = new Node(lowestNode);
       }
     }
-    return startNode;
+    return finalLowestNode;
   }
 
   /**
@@ -128,6 +143,29 @@ public class Path {
     return nodes;
   }
 
+  public void setNeighborWeightedNodeDistance(Node initialNode, Node newNode) {
+    double diagonalMoveWeight = 1/2;
+    double otherMoveWeight = 1;
+    double initialNodeDistance = initialNode.getStartDistance();
+    double newNodeDistance = newNode.getStartDistance();
+    double finalDiagonalDistance = diagonalMoveWeight + initialNodeDistance;
+    double finalOtherDistance = otherMoveWeight + initialNodeDistance;
+    //Checking Euclidean distance for Neighboring Nodes, includes diagonals
+    if (newNode.calcDistance(initialNode) > 2) {
+      //Euclidean distance for Diagonal; move weighted lower
+      if(newNode.calcDistance(initialNode) > 1) {
+        if (newNodeDistance > finalDiagonalDistance) {
+          newNode.setStartDistance(finalDiagonalDistance);
+        }
+      }
+      //Euclidean distance for Horizontal; move weighted higher
+      else {
+        if (newNodeDistance > finalOtherDistance) {
+          newNode.setStartDistance(finalOtherDistance);
+        }
+      }
+    }
+  }
 
 
   /**
@@ -135,5 +173,20 @@ public class Path {
   *
   *
   */
-
+  public ArrayList<Node> setNodeDistances (ArrayList<Node> nodes) {
+    ArrayList<Node> unvisitedNodes = getCopyNodes(nodes);
+    ArrayList<Node> visitedNodes = null;
+    boolean endNodeVisited = false;
+    while (unvisitedNodes != null) {
+      while (endNodeVisited == false) {
+        Node vertex = getLowestDistanceNode(nodes);
+        removeNodeFromList(unvisitedNodes, vertex);
+        addNodeToList(visitedNodes, vertex);
+        for (Node eachNode : unvisitedNodes) {
+          setNeighborWeightedNodeDistance(vertex, eachNode);
+        }
+      }
+    }
+    return visitedNodes;
+  }
 }

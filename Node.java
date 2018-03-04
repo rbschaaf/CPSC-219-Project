@@ -31,6 +31,7 @@ public class Node {
   public Node(Node copyNode) {
     setXCoord(copyNode.getXCoord());
     setYCoord(copyNode.getYCoord());
+
   }
 
   /*
@@ -100,10 +101,10 @@ public class Node {
     setXCoord(xcoord - amountLeft);
   }
 
-  public void calcDistance(Node newNode) {
+  public double calcDistance(Node newNode) {
     int xDistance = xcoord - newNode.getXCoord();
     int yDistance = ycoord - newNode.getYCoord();
-    setStartDistance(Math.sqrt((xDistance*xDistance) + (yDistance*yDistance)));
+    return (Math.sqrt((xDistance*xDistance) + (yDistance*yDistance)));
   }
 
   public boolean equals(Node newNode) {
