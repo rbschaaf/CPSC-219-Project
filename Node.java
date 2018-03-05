@@ -32,7 +32,10 @@ public class Node {
   public Node(Node copyNode) {
     setXCoord(copyNode.getXCoord());
     setYCoord(copyNode.getYCoord());
-
+    setStartNodeVal(copyNode.getStartNodeVal());
+    setEndNodeVal(copyNode.getEndNodeVal());
+    setStartDistance(copyNode.getStartDistance());
+    setConnectedNode(copyNode.getConnectedNode());
   }
 
   /*
@@ -86,11 +89,23 @@ public class Node {
   }
 
   public void setConnectedNode(Node prevNode) {
-    connectedNode = new Node(prevNode);
+    if (prevNode != null) {
+      connectedNode = new Node(prevNode);
+    }
+    else {
+      connectedNode = null;
+    }
   }
 
   public Node getConnectedNode() {
-    return new Node(connectedNode);
+    Node newConnectedNode = null;
+    if (connectedNode != null) {
+      newConnectedNode = new Node(connectedNode);
+    }
+    else {
+      newConnectedNode = null;
+    }
+    return newConnectedNode;
   }
 
   //Move Up method

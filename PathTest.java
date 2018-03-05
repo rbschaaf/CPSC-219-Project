@@ -15,12 +15,20 @@ public class PathTest {
     int[][] grid = testGrid.getGrid();
     //path.print(grid);
     Path path = new Path(grid, 160, 161);
-    ArrayList<Node> nodeList = new ArrayList<Node>();
-    nodeList = path.createNodeArray(grid);
-    //System.out.println(nodeList);
+    ArrayList<Node> nodeList = path.createNodeArray(grid);
+    //nodeList = path.createNodeArray(grid);
+    Node lowStartNode = path.getLowestDistanceNode(nodeList);
+    boolean val = lowStartNode.getStartNodeVal();
+
+    Node startNode = path.getStartNode(nodeList);
+    Node endNode = path.getEndNode(nodeList);
+    System.out.println(val);
+    System.out.println(lowStartNode);
+    System.out.println(startNode);
+    System.out.println(endNode);
     ArrayList<Node> nodeDistanceList = new ArrayList<Node>();
     nodeDistanceList = path.setNodeDistances(nodeList);
-    System.out.println(nodeDistanceList);
+  //  System.out.println(nodeDistanceList);
 
   }
 }
