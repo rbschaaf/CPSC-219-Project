@@ -212,7 +212,7 @@ public class Path {
   public ArrayList<Node> setNodeDistances (ArrayList<Node> nodes) {
     ArrayList<Node> unvisitedNodes = getCopyNodes(nodes);
     Node endNode = getEndNode(unvisitedNodes);
-    ArrayList<Node> visitedNodes = null;
+    ArrayList<Node> visitedNodes = new ArrayList<Node>();
     boolean endNodeVisited = false;
       while (endNodeVisited != true) {
         while (unvisitedNodes != null) {
@@ -220,8 +220,8 @@ public class Path {
           if (vertex.equals(endNode)) {
             endNodeVisited = true;
           }
+          addNodeToList(visitedNodes, vertex));
           removeNodeFromList(unvisitedNodes, vertex);
-          addNodeToList(visitedNodes, vertex);
           for (Node eachNode : unvisitedNodes) {
             setNeighborInstances(vertex, eachNode);
           }
