@@ -102,12 +102,18 @@ public class Path {
     nodes.add(new Node(aNode));
   }
 
-  public void removeNodeFromList(ArrayList<Node> nodes, Node newNode) {
-    for (Node node : nodes) {
-      if (node.equals(newNode) == true) {
-        nodes.remove(node);
+  public ArrayList<Node> removeNodeFromList(ArrayList<Node> nodes, Node newNode) {
+    ArrayList<Node> copyList = getCopyNodes(nodes);
+    ArrayList<Node> removeList = new ArrayList<Node>();
+    for (Node node : copyList) {
+      if (node.equals(newNode)) {
+        removeList.add(node);
       }
     }
+    for (Node removeNode : removeList) {
+      copyList.remove(removeNode);
+    }
+    return copyList;
   }
 
   /**
@@ -180,7 +186,7 @@ public class Path {
     double finalDiagonalDistance = diagonalMoveWeight + initialNodeDistance;
     double finalOtherDistance = otherMoveWeight + initialNodeDistance;
     //Checking Euclidean distance for Neighboring Nodes, includes diagonals
-    if (newNode.calcDistance(initialNode) > 2) {
+    if (newNode.calcDistance(initialNode) < 2) {
       //Euclidean distance for Diagonal; move weighted lower
       if(newNode.calcDistance(initialNode) > 1) {
         if (newNodeDistance > finalDiagonalDistance) {
@@ -210,23 +216,29 @@ public class Path {
   * for the distance based on the best move
   */
   public ArrayList<Node> setNodeDistances (ArrayList<Node> nodes) {
+    int counter = 0;
     ArrayList<Node> unvisitedNodes = getCopyNodes(nodes);
     Node endNode = getEndNode(unvisitedNodes);
     ArrayList<Node> visitedNodes = new ArrayList<Node>();
-    boolean endNodeVisited = false;
-      while (endNodeVisited != true) {
-        while (unvisitedNodes != null) {
-          Node vertex = getLowestDistanceNode(nodes);
-          if (vertex.equals(endNode)) {
-            endNodeVisited = true;
-          }
-          addNodeToList(visitedNodes, vertex));
+
+    do {
+        counter += 1;
+
+          Node vertex = getLowestDistanceNode(unvisitedNodes);
+
+          //System.out.println(counter);
+          addNodeToList(visitedNodes, vertex);
           removeNodeFromList(unvisitedNodes, vertex);
+          System.out.println(unvisitedNodes);
+          //System.out.println(visitedNodes);
           for (Node eachNode : unvisitedNodes) {
+            //System.out.println(eachNode.getStartDistance());
             setNeighborInstances(vertex, eachNode);
+            System.out.println(eachNode.getStartDistance());
           }
-        }
-    }
+        } while (unvisitedNodes != null);
+
+
     return getCopyNodes(visitedNodes);
   }
 

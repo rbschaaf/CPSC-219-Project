@@ -20,15 +20,27 @@ public class PathTest {
     Node lowStartNode = path.getLowestDistanceNode(nodeList);
     boolean val = lowStartNode.getStartNodeVal();
 
+    /*
+    * WORKING
+    */
     Node startNode = path.getStartNode(nodeList);
     Node endNode = path.getEndNode(nodeList);
-    System.out.println(val);
-    System.out.println(lowStartNode);
-    System.out.println(startNode);
-    System.out.println(endNode);
-    ArrayList<Node> nodeDistanceList = new ArrayList<Node>();
-    nodeDistanceList = path.setNodeDistances(nodeList);
-  //  System.out.println(nodeDistanceList);
+    System.out.println(nodeList);
+    /*
+    *Working
+    */
+    //path.addNodeToList(nodeList, endNode);
+    /*
+    * Working
+    */
+  //ArrayList<Node> removedArrays = new ArrayList<Node>();
+  //  removedArrays = path.removeNodeFromList(nodeList,endNode);
+    //System.out.println(removedArrays);
+
+
+    //ArrayList<Node> nodeDistanceList = new ArrayList<Node>();
+    //nodeDistanceList = path.setNodeDistances(nodeList);
+    //System.out.println(nodeDistanceList);
 
   }
 }
