@@ -102,6 +102,9 @@ public class Path {
     nodes.add(new Node(aNode));
   }
 
+  /**
+  * Removing a specific node from a list
+  */
   public ArrayList<Node> removeNodeFromList(ArrayList<Node> nodes, Node newNode) {
     ArrayList<Node> copyList = getCopyNodes(nodes);
     ArrayList<Node> removeList = new ArrayList<Node>();
@@ -228,13 +231,14 @@ public class Path {
 
           //System.out.println(counter);
           addNodeToList(visitedNodes, vertex);
-          removeNodeFromList(unvisitedNodes, vertex);
+          //ArrayList<Node> removeList = new ArrayList<Node>();
+          unvisitedNodes = removeNodeFromList(unvisitedNodes, vertex);
           System.out.println(unvisitedNodes);
           //System.out.println(visitedNodes);
           for (Node eachNode : unvisitedNodes) {
             //System.out.println(eachNode.getStartDistance());
             setNeighborInstances(vertex, eachNode);
-            System.out.println(eachNode.getStartDistance());
+            //System.out.println(eachNode.getStartDistance());
           }
         } while (unvisitedNodes != null);
 

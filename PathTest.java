@@ -38,9 +38,9 @@ public class PathTest {
     //System.out.println(removedArrays);
 
 
-    //ArrayList<Node> nodeDistanceList = new ArrayList<Node>();
-    //nodeDistanceList = path.setNodeDistances(nodeList);
-    //System.out.println(nodeDistanceList);
+    ArrayList<Node> nodeDistanceList = new ArrayList<Node>();
+    nodeDistanceList = path.setNodeDistances(nodeList);
+    System.out.println(nodeDistanceList);
 
   }
 }
