@@ -237,7 +237,7 @@ public class Path {
           addNodeToList(visitedNodes, vertex);
           //ArrayList<Node> removeList = new ArrayList<Node>();
           unvisitedNodes = removeNodeFromList(unvisitedNodes, vertex);
-          System.out.println(visitedNodes);
+          //System.out.println(unvisitedNodes);
           //System.out.println(visitedNodes);
           for (Node eachNode : unvisitedNodes) {
             //System.out.println(eachNode.getStartDistance());
