@@ -14,7 +14,7 @@ public class PathTest {
     testGrid.setGrid(building, roomNum);
     int[][] grid = testGrid.getGrid();
     //path.print(grid);
-    Path path = new Path(grid, 160, 161);
+    Path path = new Path(grid, 160, 164);
     ArrayList<Node> nodeList = path.createNodeArray(grid);
     //nodeList = path.createNodeArray(grid);
     Node lowStartNode = path.getLowestDistanceNode(nodeList);
@@ -40,7 +40,14 @@ public class PathTest {
 
     ArrayList<Node> nodeDistanceList = new ArrayList<Node>();
     nodeDistanceList = path.setNodeDistances(nodeList);
-    System.out.println(nodeDistanceList);
+    //System.out.println(nodeDistanceList);
+
+    ArrayList<Node> shortestDistanceList = new ArrayList<Node>();
+    shortestDistanceList = path.getConnectedNodes(nodeDistanceList);
+    //System.out.println(shortestDistanceList);
+
+    int[][] finalGrid = path.addPathToGrid(shortestDistanceList);
+    testGrid.print(finalGrid);
 
   }
 }

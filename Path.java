@@ -99,7 +99,9 @@ public class Path {
   * Add node to an arraylist list of nodes
   */
   public void addNodeToList(ArrayList<Node> nodes, Node aNode) {
-    nodes.add(new Node(aNode));
+    if (aNode != null) {
+      nodes.add(new Node(aNode));
+    }
   }
 
   /**
@@ -223,24 +225,26 @@ public class Path {
     ArrayList<Node> unvisitedNodes = getCopyNodes(nodes);
     Node endNode = getEndNode(unvisitedNodes);
     ArrayList<Node> visitedNodes = new ArrayList<Node>();
-
+    boolean endNodeVisited = false;
     do {
         counter += 1;
 
           Node vertex = getLowestDistanceNode(unvisitedNodes);
-
+          if (vertex.equals(endNode)) {
+            endNodeVisited = true;
+          }
           //System.out.println(counter);
           addNodeToList(visitedNodes, vertex);
           //ArrayList<Node> removeList = new ArrayList<Node>();
           unvisitedNodes = removeNodeFromList(unvisitedNodes, vertex);
-          System.out.println(unvisitedNodes);
+          System.out.println(visitedNodes);
           //System.out.println(visitedNodes);
           for (Node eachNode : unvisitedNodes) {
             //System.out.println(eachNode.getStartDistance());
             setNeighborInstances(vertex, eachNode);
             //System.out.println(eachNode.getStartDistance());
           }
-        } while (unvisitedNodes != null);
+      } while (endNodeVisited != true);
 
 
     return getCopyNodes(visitedNodes);
