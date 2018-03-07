@@ -1,52 +1,72 @@
-/**Class for the creations of the maps, sizing of the maps, and contains the path restriction for the pathfinding.*/
+/**Class for the creations of the maps, sizing of the maps, and contains the path restriction for the pathfinding.
+*Last Edited by Nicki Feb 28*/
 
 public class Map{
   // Instance variables
-  // 25 is stair, 0 is wall and 1 is hallway, 9 is rooms, 200-series are room numbers.
-  public int[][] grid =
-  {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
-  {0,0,1,1,261,1,260,1,252,9,9,9,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,0,0,0,0},
-  {0,0,1,1,262,1,263,1,264,1,1,1,1,1,1,251,9,9,0},
-  {0,0,1,1,1,259,1,1,1,1,1,1,1,1,9,9,9,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,250,9,9,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,9,9,9,0},
-  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,9,0,0},
-  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-  private int row;
-  private int column;
+  private int roomNum;
+  //Defaults at TFDL
+  private String building = "Taylor Family Digital Library"; //This is probably fine as a string
+  //private String endBuilding = "Taylor Family Digital Library";
+
+  private boolean avoidStairs;
+  private boolean avoidElevator;
+  private FloorPlans currentFloorPlan = new FloorPlans();
+  private int avoidRoomNum;
+  /*
+  * Removed Row and Column, they should not be instances rather variables
+  * within the methods below
+  */
+
 
   // Constructors
-  public Map() {}
-
-  // Copy constructor for testing and path manipulation
-  public Map(Map gridToCopy){
-    for(row =0; row <14; row++){
-      for(column =0; column <18; column++){
-        grid[row][column] = gridToCopy.grid[row][column];
-      }
-    }
+  public Map (FloorPlans newFloorPlan){
+    currentFloorPlan = newFloorPlan;
   }
-  // Methods
-  //Formatting of the grid sizing for improved viewability
-  public void print(){
-    for (row = 0; row < 14;row++){
-      for (column = 0; column <18; column++){
-        System.out.printf("%4d", grid[row][column]);
+  public Map (int newRoomNumber) {
+    roomNum = newRoomNumber;
+    FloorPlans floorPlan = new FloorPlans();
+    //floorPlan.setGrid(building, roomNum);
+    //floorGrid = floorPlan.getGrid();
+  }
+
+  public Map(){};
+
+  public void setCurrentFloorPlan(FloorPlans newFloorPlan){
+    currentFloorPlan = newFloorPlan;
+  }
+  public FloorPlans getCurrentFloorPlan(){
+    return currentFloorPlan;
+  }
+  /*
+  * Printing method for the Grid
+  */
+
+  public void printGrid() {
+    for (int row = 0; row < 14; row++) {
+      for (int column = 0; column <18; column++) {
+        System.out.printf("%4d", currentFloorPlan.getGrid()[row][column]);
       }
       System.out.println();
     }
   }
-  // Valid movement
-  public boolean isMoveValid(int x, int y){
-      return (grid[x][y] >0 && grid[x][y] != 9 && grid[x][y] != 7);// && grid[x][y]==9);// || //destination
-              //grid[row][column] == 8 ||  //start
-              //grid[row][column] == 7); //pathalreadytaken
+
+  // place start marker
+  public void placeStart(int startRow, int startCol){
+    currentFloorPlan.getGrid()[startRow][startCol]=8;
+  }
+
+  // place Destination marker
+  public void placeDest(int endRow, int endCol){
+    currentFloorPlan.getGrid()[endRow][endCol] = 5;
+  }
+
+  /*
+  * get the room number for each point in the grid
+  */
+  public int getGridPointNum(int row, int column) {
+    int gridPointVal;
+    gridPointVal = currentFloorPlan.getGrid()[row][column];
+    return gridPointVal;
   }
 
 }
