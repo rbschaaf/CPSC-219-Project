@@ -184,8 +184,8 @@ public class Path {
 
 
   public void setNeighborInstances(Node initialNode, Node newNode) {
-    double diagonalMoveWeight = 1/2;
-    double otherMoveWeight = 1;
+    double diagonalMoveWeight = 14;
+    double otherMoveWeight = 10;
     double initialNodeDistance = initialNode.getStartDistance();
     double newNodeDistance = newNode.getStartDistance();
     double finalDiagonalDistance = diagonalMoveWeight + initialNodeDistance;
@@ -238,7 +238,7 @@ public class Path {
           //ArrayList<Node> removeList = new ArrayList<Node>();
           unvisitedNodes = removeNodeFromList(unvisitedNodes, vertex);
           //System.out.println(unvisitedNodes);
-          //System.out.println(visitedNodes);
+          System.out.println(visitedNodes);
           for (Node eachNode : unvisitedNodes) {
             //System.out.println(eachNode.getStartDistance());
             setNeighborInstances(vertex, eachNode);
@@ -276,6 +276,9 @@ public class Path {
     for (Node aNode : shortPathNodes) {
       int nodeRow = aNode.getXCoord();
       int nodeCol = aNode.getYCoord();
+      if (aNode.getEndNodeVal() == false) {
+
+      }
       copyGrid[nodeRow][nodeCol] = 7;
     }
     return copyGrid;

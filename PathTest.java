@@ -9,12 +9,12 @@ import java.util.ArrayList;
 public class PathTest {
   public static void main(String[] args) {
     String building = "Taylor Family Digital Library";
-    int roomNum = 161;
+    int roomNum = 250;
     TestGrid testGrid = new TestGrid();
     testGrid.setGrid(building, roomNum);
     int[][] grid = testGrid.getGrid();
     //path.print(grid);
-    Path path = new Path(grid, 160, 164);
+    Path path = new Path(grid, 261, 262);
     ArrayList<Node> nodeList = path.createNodeArray(grid);
     //nodeList = path.createNodeArray(grid);
     Node lowStartNode = path.getLowestDistanceNode(nodeList);

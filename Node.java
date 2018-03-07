@@ -108,22 +108,6 @@ public class Node {
     return newConnectedNode;
   }
 
-  //Move Up method
-  public void moveUp(int amountUp) {
-    setYCoord(ycoord - amountUp);
-  }
-  //Move down method
-  public void moveDown(int amountDown) {
-    setYCoord(ycoord + amountDown);
-  }
-  //Move Right
-  public void moveRight(int amountRight) {
-    setXCoord(xcoord + amountRight);
-  }
-  //Move left
-  public void moveLeft(int amountLeft) {
-    setXCoord(xcoord - amountLeft);
-  }
 
   public double calcDistance(Node newNode) {
     int xDistance = xcoord - newNode.getXCoord();
