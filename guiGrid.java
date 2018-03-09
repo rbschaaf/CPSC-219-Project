@@ -13,7 +13,7 @@ import javafx.scene.text.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.layout.BackgroundFill;
-
+import javafx.stage.Popup;
 
 public class FinderApp extends Application {
 
@@ -31,7 +31,9 @@ public class FinderApp extends Application {
   private int roomNumbers = 0;
   private Label invalidEntry = new Label ("");
 
-
+  private final int POPUP_WINDOW_HEIGHT = 600;
+  private final int HELP_POPUP_WIDTH = 130;
+  private final int ABOUT_POPUP_WIDTH = 170;
   private final int SCENESIZE = 700;
   private final int RECTD =30;
   private final int HALL = 1;
@@ -95,6 +97,13 @@ public class FinderApp extends Application {
         makeGrid(updatedPlan.getGrid(),gridPane);
     }
   }
+
+  /*
+  * Handle button click for About button. User clicks button to display information About
+  * the program, how to use it, and the creators.
+  */
+  //public
+
 
   /*
   * Method to confirm whether an array contains a value.
@@ -265,6 +274,7 @@ public class FinderApp extends Application {
     topRow2.setAlignment(Pos.CENTER);
     topRow2.getChildren().add(appName);
 
+
     HBox invalidHBox = new HBox(10);
     invalidHBox.getChildren().add(invalidEntry);
     invalidHBox.setAlignment(Pos.CENTER);
@@ -299,6 +309,106 @@ public class FinderApp extends Application {
       }
     });
 
+    // Add an About button to provide information about the app such as creators and how to use app.
+    Button aboutButton = new Button("About this App");
+    bottomHBox.getChildren().add(aboutButton);
+
+    //Add a popup window when user clicks the About button.
+    //Source: https://gist.github.com/jewelsea/1926196 jewelsea
+    Popup aboutPopup = new Popup();
+    Label aboutLabel = new Label("This app allows the user to select a building and \n" +
+    "enter a starting room location and a desired destination location. The app will \n" +
+    "then highlight the path between these two destinations.\n" +
+    "To use this app: Select a building from the dropdown box, enter a starting room\n" +
+    "number in the first textbox and a destination room in the second textbox. Then press\n" +
+    "the submit button.\n" +
+    "Creators: Nicki, Dayan, and Riley. Created Winter 2018 for CPSC 219.");
+
+
+    //Add a Hide button to hide the About app popup window.
+    Button hideAboutButton = new Button("Hide \"About this App\"");
+    bottomHBox.getChildren().add(hideAboutButton);
+
+    /* Create VBox to hold the information and the button to hide the information
+    when the About popup is clicked. */
+    VBox aboutVBox = new VBox();
+    aboutVBox.setAlignment(Pos.CENTER);
+    aboutVBox.getChildren().addAll(aboutLabel, hideAboutButton);
+
+    // Create stackpane for the About popup window with a light-blue background.
+    Rectangle aboutBackground = new Rectangle();
+    aboutBackground.setFill(Color.LIGHTBLUE);
+    aboutBackground.setWidth(POPUP_WINDOW_HEIGHT);
+    aboutBackground.setHeight(ABOUT_POPUP_WIDTH);
+    StackPane aboutStackPane = new StackPane(aboutBackground);
+    aboutStackPane.getChildren().add(aboutVBox);
+
+    aboutPopup.getContent().add(aboutStackPane);
+
+    /** Handles a click of the About button to open the About popup with
+    * information on the app. */
+    aboutButton.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent event){
+        aboutPopup.show(primaryStage);
+      }
+    });
+
+
+    /** Handles a click of the Hide About this App button. */
+    hideAboutButton.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        aboutPopup.hide();
+      }
+    });
+
+    // Add a Help button to provide guidance on using the app.
+    Button helpButton = new Button("Help!");
+    bottomHBox.getChildren().add(helpButton);
+
+    //Add a popup window when user clicks the Help button.
+    //Source: https://gist.github.com/jewelsea/1926196 jewelsea
+    Popup helpPopup = new Popup();
+    Label helpLabel = new Label(
+    "To use this app: Select a building from the dropdown box, enter a starting room\n" +
+    "number in the first textbox and a destination room in the second textbox. Then press\n" +
+    "the submit button. If you enter an invalid room, example room numbers will be provided\n" +
+    "in a message.");
+
+
+    //Add a Hide button to hide the Help popup window.
+    Button hideHelpButton = new Button("Hide \"Help\"");
+    bottomHBox.getChildren().add(hideHelpButton);
+
+    /* Create VBox to hold the information and the button to hide the information
+    when the Help popup is clicked. */
+    VBox helpVBox = new VBox();
+    helpVBox.setAlignment(Pos.CENTER);
+    helpVBox.getChildren().addAll(helpLabel, hideHelpButton);
+
+    // Create stackpane for the Help popup window with a light-green background.
+    Rectangle helpBackground = new Rectangle();
+    helpBackground.setFill(Color.LIGHTGREEN);
+    helpBackground.setWidth(POPUP_WINDOW_HEIGHT);
+    helpBackground.setHeight(HELP_POPUP_WIDTH);
+    StackPane helpStackPane = new StackPane(helpBackground);
+    helpStackPane.getChildren().add(helpVBox);
+
+    helpPopup.getContent().add(helpStackPane);
+
+    // Handles a click of the Help button to open the Help popup.
+    helpButton.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent event){
+        helpPopup.show(primaryStage);
+      }
+    });
+
+
+    /** Handles a click of the Hide Help button. */
+    hideHelpButton.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        helpPopup.hide();
+      }
+    });
 
     BorderPane borderPanes2 = new BorderPane();
     borderPanes2.setCenter(gridPane);
@@ -321,4 +431,3 @@ public class FinderApp extends Application {
     primaryStage.show();
   }
 }
-
