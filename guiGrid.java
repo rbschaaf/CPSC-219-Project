@@ -14,6 +14,14 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.layout.BackgroundFill;
 import javafx.stage.Popup;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.RadioButton;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.ScrollPane;
 
 public class FinderApp extends Application {
 
@@ -21,7 +29,7 @@ public class FinderApp extends Application {
   * Runs the GUI application, including scene creation, button handling
   * and the production of a visual grid.
   *
-  * Last edited March 7, 2008 by Nicki.
+  * Last edited March 9, 2008 by Riley.
   */
 
   private int rowNum = 14;
@@ -30,6 +38,7 @@ public class FinderApp extends Application {
   private GridPane gridPane = new GridPane();
   private int roomNumbers = 0;
   private Label invalidEntry = new Label ("");
+  private int rectLength;
 
   private final int POPUP_WINDOW_HEIGHT = 600;
   private final int HELP_POPUP_WIDTH = 130;
@@ -53,13 +62,19 @@ public class FinderApp extends Application {
   private ComboBox<String> buildingDropDown = new ComboBox<String>();
   //https://docs.oracle.com/javafx/2/ui_controls/combo-box.htm
 
-  private Image imgRestroom = new Image("RestroomImage.png",RECTD,RECTD, true, false);
+  private ToggleGroup sizeGroup = new ToggleGroup();
+  private RadioButton smallButton = new RadioButton("Small Map");
+  private RadioButton mediumButton = new RadioButton("Medium Map");
+  private RadioButton largeButton = new RadioButton("Large Map");
+  //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/RadioButton.html
+
+  private Image imgRestroom = new Image("RestroomImage.png",rectLength,rectLength, true, false);
   //Image source: http://maxpixel.freegreatpicture.com/Rest-Room-Restroom-Ladies-Restroom-Public-Restroom-99226
-  private Image imgCoffee = new Image("Coffee.png",RECTD,RECTD,true,false);
+  private Image imgCoffee = new Image("Coffee.png",rectLength,rectLength,true,false);
   //Image source: https://www.freepik.com/free-icon/hot-coffee-rounded-cup-on-a-plate-from-side-view_732944.htm
-  private Image imgStairs = new Image("Stairs.png", RECTD, RECTD, true, false);
+  private Image imgStairs = new Image("Stairs.png", rectLength, rectLength, true, false);
   //Image source:https://pixabay.com/en/stairs-climb-levels-descend-44071/
-  private Image imgElevator = new Image("Elevator.png", RECTD, RECTD, true, false);
+  private Image imgElevator = new Image("Elevator.png", rectLength, rectLength, true, false);
   //Image source: https://pixabay.com/en/elevator-people-silhouette-down-44013//
 
 /*
@@ -94,16 +109,9 @@ public class FinderApp extends Application {
         // Create the path from the start location to the dest location.
         path.createPath();
         // Create the updated GUI for the map
-        makeGrid(updatedPlan.getGrid(),gridPane);
+        makeGrid(updatedPlan.getGrid(),gridPane, rectLength);
     }
   }
-
-  /*
-  * Handle button click for About button. User clicks button to display information About
-  * the program, how to use it, and the creators.
-  */
-  //public
-
 
   /*
   * Method to confirm whether an array contains a value.
@@ -121,14 +129,14 @@ public class FinderApp extends Application {
   /*
   * Generate a visual of the current grid.
   */
-  public void makeGrid(int[][] aGrid, GridPane aGridPane){
+  public void makeGrid(int[][] aGrid, GridPane aGridPane, int rectLength){
     // Clear the gridPane.
     aGridPane.getChildren().clear();
 
     // Set up the grid for the floor.
     for (int row = 0; row < rowNum; row++){
       for(int col = 0; col < colNum; col++){
-        Rectangle rect = setRectangles(row, col, aGrid);
+        Rectangle rect = setRectangles(row, col, aGrid, rectLength);
 
         int roomNumbers = 0;
         roomNumbers = aGrid[row][col];
@@ -148,7 +156,7 @@ public class FinderApp extends Application {
   /*
   * Method that sets the rectangles for the grid.
   */
-  public Rectangle setRectangles(int row, int col, int[][] aGrid){
+  public Rectangle setRectangles(int row, int col, int[][] aGrid, int rectLength){
 
     Rectangle rect = new Rectangle();
     if (aGrid[row][col] == 0){
@@ -176,8 +184,8 @@ public class FinderApp extends Application {
       rect.setFill(Color.LIGHTBLUE);
     }
     rect.setStroke(Color.BLACK);
-    rect.setWidth(RECTD);
-    rect.setHeight(RECTD);
+    rect.setWidth(rectLength);
+    rect.setHeight(rectLength);
 
     return rect;
   }
@@ -210,8 +218,8 @@ public class FinderApp extends Application {
     aStartRoom != 252&&  aStartRoom != 259&& aStartRoom != 260&&
     aStartRoom != 261&&  aStartRoom != 262&& aStartRoom != 263&&
     aStartRoom != 264){
-      System.out.println("Please enter a valid start room. Example: 162 or 164");
-      invalidEntry.setText("Please enter a valid start room. Example: 162 or 164");
+      System.out.println("Please enter a valid start room. Example: 262 or 264");
+      invalidEntry.setText("Please enter a valid start room. Example: 262 or 264");
       isValidStart = false;
     }return isValidStart;
   }
@@ -227,8 +235,8 @@ public class FinderApp extends Application {
     aDestRoom != 252&&  aDestRoom != 259&& aDestRoom != 260&&
     aDestRoom != 261&&  aDestRoom != 262&& aDestRoom != 263&&
     aDestRoom != 264){
-      System.out.println("Please enter a valid end room. Example: 151 or 161");
-      invalidEntry.setText("Please enter a valid end room. Example: 151 or 161");
+      System.out.println("Please enter a valid end room. Example: 251 or 261");
+      invalidEntry.setText("Please enter a valid end room. Example: 251 or 261");
       isValidDest = false;
     }return isValidDest;
   }
@@ -269,6 +277,34 @@ public class FinderApp extends Application {
     appName.setFont(Font.font("Verdana", FontWeight.BOLD,15));
 
     buildingDropDown.getItems().addAll("Taylor Family Digital Library");
+
+    // Set the radio buttons that control the size of the map into one group and in a VBox.
+
+    smallButton.setToggleGroup(sizeGroup);
+    smallButton.setUserData(30);
+    smallButton.setSelected(true); //http://www.learningaboutelectronics.com/Articles/How-to-select-an-item-by-default-in-JavaFX.php
+    String defaultSelection = (String)sizeGroup.getSelectedToggle().getUserData().toString();
+    rectLength = Integer.parseInt(defaultSelection);
+    mediumButton.setToggleGroup(sizeGroup);
+    mediumButton.setUserData(60);
+    largeButton.setToggleGroup(sizeGroup);
+    largeButton.setUserData(90);
+    VBox mapSize = new VBox();
+    mapSize.setAlignment(Pos.TOP_LEFT);
+    mapSize.getChildren().addAll(smallButton, mediumButton, largeButton);
+
+    /*Sets the size of the map based on the users selection of the map size radiobutton group.
+    * https://stackoverflow.com/questions/32424915/how-to-get-selected-radio-button-from-togglegroup */
+    sizeGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+
+         if (sizeGroup.getSelectedToggle() != null) {
+
+             String userSelection = (String)sizeGroup.getSelectedToggle().getUserData().toString();
+             rectLength = Integer.parseInt(userSelection);
+         }
+     }
+});
 
     HBox topRow2 = new HBox();
     topRow2.setAlignment(Pos.CENTER);
@@ -410,12 +446,24 @@ public class FinderApp extends Application {
       }
     });
 
+
     BorderPane borderPanes2 = new BorderPane();
     borderPanes2.setCenter(gridPane);
     borderPanes2.setTop(topVBox);
     borderPanes2.setBottom(bottomHBox);
+    borderPanes2.setRight(mapSize);
 
-    Scene scene2 = new Scene(borderPanes2,SCENESIZE,SCENESIZE);
+    /* Scrollable display. Only shows scroll bars when needed.
+    * https://docs.oracle.com/javafx/2/ui_controls/scrollpane.htm
+    * https://stackoverflow.com/questions/17568688/how-to-resize-javafx-scrollpane-content-to-fit-current-size*/
+    ScrollPane scrollPane = new ScrollPane(borderPanes2);
+    scrollPane.setFitToHeight(true);
+    scrollPane.setFitToWidth(true);
+    scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+
+
+    Scene scene2 = new Scene(scrollPane,SCENESIZE,SCENESIZE);
 
     /*
     * Handles a button click to change the scene to scene 2.
