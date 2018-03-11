@@ -38,13 +38,17 @@ public class FinderApp extends Application {
   private GridPane gridPane = new GridPane();
   private int roomNumbers = 0;
   private Label invalidEntry = new Label ("");
+  private Label buildingAndFloorLabel = new Label("");
   private int rectLength;
 
   private final int POPUP_WINDOW_HEIGHT = 600;
   private final int HELP_POPUP_WIDTH = 130;
   private final int ABOUT_POPUP_WIDTH = 170;
   private final int SCENESIZE = 700;
-  private final int RECTD =30;
+  private final int SMALL_RECT = 30;
+  private final int MEDIUM_RECT = 60;
+  private final int LARGE_RECT = 90;
+  private final int BUILDING_AND_FLOOR_LABEL_FONTSIZE = 18;
   private final int HALL = 1;
   private final int WALL = 0;
   private final int ROOM = 9;
@@ -110,8 +114,29 @@ public class FinderApp extends Application {
         path.createPath();
         // Create the updated GUI for the map
         makeGrid(updatedPlan.getGrid(),gridPane, rectLength);
+        // Updates the label above the map providing building name and floor number
+        buildingAndFloorLabel.setText(setBuildingAndFloorLabel(updatedPlan.getFloorNum(startNumberInput), buildingInput));
+      }
     }
+
+
+  /*
+  * Method to set the building and floor label above the map. Returns a string for the label
+  * and requires a floor number and building name.
+  */
+  public String setBuildingAndFloorLabel(int floorNumber, String buildingName){
+    String currentBuildingAndFloor = "";
+    if (floorNumber%10 == 1){
+      currentBuildingAndFloor = buildingName + " " + floorNumber + "st Floor";
+    } else if (floorNumber%10 == 2){
+      currentBuildingAndFloor = buildingName + " " + floorNumber +  "nd Floor";
+    } else if (floorNumber%10 == 3){
+      currentBuildingAndFloor = buildingName + " " + floorNumber +  "rd Floor";
+    } else{
+      currentBuildingAndFloor = buildingName + " " + floorNumber +  "th Floor";
+    }return currentBuildingAndFloor;
   }
+
 
   /*
   * Method to confirm whether an array contains a value.
@@ -270,8 +295,14 @@ public class FinderApp extends Application {
     // Main screen (second scene)
     //**
 
-    // Set the alignment of the grid pane.
+    /* Put gridpane in VBox with a title above it infoming the user of the building
+    and floor number. Both are set to the center. */
+    VBox gridPaneVBox = new VBox();
     gridPane.setAlignment(Pos.CENTER);
+    buildingAndFloorLabel.setFont(Font.font("Verdana", BUILDING_AND_FLOOR_LABEL_FONTSIZE));
+    gridPaneVBox.getChildren().addAll(buildingAndFloorLabel,gridPane);
+    gridPaneVBox.setAlignment(Pos.CENTER);
+
 
     Label appName = new Label ("Taylor Family Digital Library Pathfinder");
     appName.setFont(Font.font("Verdana", FontWeight.BOLD,15));
@@ -279,16 +310,15 @@ public class FinderApp extends Application {
     buildingDropDown.getItems().addAll("Taylor Family Digital Library");
 
     // Set the radio buttons that control the size of the map into one group and in a VBox.
-
     smallButton.setToggleGroup(sizeGroup);
-    smallButton.setUserData(30);
+    smallButton.setUserData(SMALL_RECT);
     smallButton.setSelected(true); //http://www.learningaboutelectronics.com/Articles/How-to-select-an-item-by-default-in-JavaFX.php
     String defaultSelection = (String)sizeGroup.getSelectedToggle().getUserData().toString();
     rectLength = Integer.parseInt(defaultSelection);
     mediumButton.setToggleGroup(sizeGroup);
-    mediumButton.setUserData(60);
+    mediumButton.setUserData(MEDIUM_RECT);
     largeButton.setToggleGroup(sizeGroup);
-    largeButton.setUserData(90);
+    largeButton.setUserData(LARGE_RECT);
     VBox mapSize = new VBox();
     mapSize.setAlignment(Pos.TOP_LEFT);
     mapSize.getChildren().addAll(smallButton, mediumButton, largeButton);
@@ -448,7 +478,7 @@ public class FinderApp extends Application {
 
 
     BorderPane borderPanes2 = new BorderPane();
-    borderPanes2.setCenter(gridPane);
+    borderPanes2.setCenter(gridPaneVBox);
     borderPanes2.setTop(topVBox);
     borderPanes2.setBottom(bottomHBox);
     borderPanes2.setRight(mapSize);
