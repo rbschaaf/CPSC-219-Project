@@ -40,6 +40,8 @@ public class FinderApp extends Application {
   private Label invalidEntry = new Label ("");
   private Label buildingAndFloorLabel = new Label("");
   private int rectLength;
+  private int startNumberInput;
+  private int destNumberInput ;
 
   private final int POPUP_WINDOW_HEIGHT = 600;
   private final int HELP_POPUP_WIDTH = 130;
@@ -86,8 +88,6 @@ public class FinderApp extends Application {
 * creates the grid.
 */
   public class HandleButtonClick implements EventHandler<ActionEvent>{
-    private int startNumberInput;
-    private int destNumberInput ;
     private String buildingInput;
     public HandleButtonClick (){}
     public void handle(ActionEvent event){
@@ -165,12 +165,27 @@ public class FinderApp extends Application {
 
         int roomNumbers = 0;
         roomNumbers = aGrid[row][col];
+
+        // An overlaying stackpane that is mouse transparent containing the rect and room labels.
+        StackPane overlayStack = new StackPane();
+
         //Add room numbers to the grid map.
         Label rooms = setNumbers(roomNumbers);
+        overlayStack.getChildren().addAll(rect,rooms);
+        overlayStack.setMouseTransparent(true); //https://stackoverflow.com/questions/9899347/when-adding-a-second-item-to-my-stackpane-the-first-item-loses-its-event-mouseo
 
+        // Complete stackpane containing the overlay stackpane and the clickable buttons hidden underneath.
         StackPane stack = new StackPane();
+        
+        //Add buttons at the room numbers on the map, if there is a room number there.
+        if (rooms.getText().isEmpty()){ //https://stackoverflow.com/questions/25189027/how-to-check-if-lable-is-not-empty
+          stack.getChildren().add(overlayStack);
+        } else{
+          Button roomButton = setRoomButtons(roomNumbers, startNumberInput, destNumberInput);
+          roomButton.setMaxSize(rectLength, rectLength); //https://stackoverflow.com/questions/35344702/how-do-i-get-buttons-to-fill-a-javafx-gridpane
+            stack.getChildren().addAll(roomButton, overlayStack);
+        }
 
-        stack.getChildren().addAll(rect,rooms);
         GridPane.setRowIndex(stack, row);
         GridPane.setColumnIndex(stack, col);
         aGridPane.getChildren().add(stack);
@@ -230,6 +245,24 @@ public class FinderApp extends Application {
       rooms.setText("" + "D");
     }
     return rooms;
+  }
+
+  /*
+  * Method that creates buttons for the room numbers on the map.
+  */
+  public Button  setRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput){
+    Button aRoomButton = new Button();
+    if (contains(notMap,roomNumbers) == false){
+      aRoomButton = new Button (""+roomNumbers);
+      //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
+    } else if(roomNumbers == START){
+      aRoomButton = new Button (""+startNumberInput);
+      //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
+    } else if(roomNumbers == DEST){
+      aRoomButton = new Button (""+destNumberInput);
+      //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
+    }
+    return aRoomButton;
   }
 
   /*
@@ -327,9 +360,7 @@ public class FinderApp extends Application {
     * https://stackoverflow.com/questions/32424915/how-to-get-selected-radio-button-from-togglegroup */
     sizeGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
     public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-
          if (sizeGroup.getSelectedToggle() != null) {
-
              String userSelection = (String)sizeGroup.getSelectedToggle().getUserData().toString();
              rectLength = Integer.parseInt(userSelection);
          }
@@ -383,11 +414,12 @@ public class FinderApp extends Application {
     //Source: https://gist.github.com/jewelsea/1926196 jewelsea
     Popup aboutPopup = new Popup();
     Label aboutLabel = new Label("This app allows the user to select a building and \n" +
-    "enter a starting room location and a desired destination location. The app will \n" +
-    "then highlight the path between these two destinations.\n" +
+    "enter a starting room location and a desired destination location. The user also\n"+
+    "has the option to click the labelled room numbers instead of entering a room number.\n"+
+    "The app will then highlight the path between these two destinations.\n" +
     "To use this app: Select a building from the dropdown box, enter a starting room\n" +
     "number in the first textbox and a destination room in the second textbox. Then press\n" +
-    "the submit button.\n" +
+    "the submit button. Or, click a starting room label and a destination room label on the map.\n" +
     "Creators: Nicki, Dayan, and Riley. Created Winter 2018 for CPSC 219.");
 
 
@@ -438,7 +470,8 @@ public class FinderApp extends Application {
     "To use this app: Select a building from the dropdown box, enter a starting room\n" +
     "number in the first textbox and a destination room in the second textbox. Then press\n" +
     "the submit button. If you enter an invalid room, example room numbers will be provided\n" +
-    "in a message.");
+    "in a message. Or, click a starting room label and a destination room label on the map and \n"+
+    "follow the dialogue box instructions.");
 
 
     //Add a Hide button to hide the Help popup window.
