@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.text.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.layout.BackgroundFill;
 import javafx.stage.Popup;
@@ -116,6 +117,8 @@ public class FinderApp extends Application {
         makeGrid(updatedPlan.getGrid(),gridPane, rectLength);
         // Updates the label above the map providing building name and floor number
         buildingAndFloorLabel.setText(setBuildingAndFloorLabel(updatedPlan.getFloorNum(startNumberInput), buildingInput));
+        buildingAndFloorLabel.setTextFill(Color.GREEN);
+        //http://www.java2s.com/Code/Java/JavaFX/SetLabelTextcolor.htm
       }
     }
 
@@ -134,7 +137,8 @@ public class FinderApp extends Application {
       currentBuildingAndFloor = buildingName + " " + floorNumber +  "rd Floor";
     } else{
       currentBuildingAndFloor = buildingName + " " + floorNumber +  "th Floor";
-    }return currentBuildingAndFloor;
+    }
+    return currentBuildingAndFloor;
   }
 
 
@@ -176,12 +180,12 @@ public class FinderApp extends Application {
 
         // Complete stackpane containing the overlay stackpane and the clickable buttons hidden underneath.
         StackPane stack = new StackPane();
-        
+
         //Add buttons at the room numbers on the map, if there is a room number there.
         if (rooms.getText().isEmpty()){ //https://stackoverflow.com/questions/25189027/how-to-check-if-lable-is-not-empty
           stack.getChildren().add(overlayStack);
         } else{
-          Button roomButton = setRoomButtons(roomNumbers, startNumberInput, destNumberInput);
+          Button roomButton = createRoomButtons(roomNumbers, startNumberInput, destNumberInput);
           roomButton.setMaxSize(rectLength, rectLength); //https://stackoverflow.com/questions/35344702/how-do-i-get-buttons-to-fill-a-javafx-gridpane
             stack.getChildren().addAll(roomButton, overlayStack);
         }
@@ -250,20 +254,78 @@ public class FinderApp extends Application {
   /*
   * Method that creates buttons for the room numbers on the map.
   */
-  public Button  setRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput){
+  public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput){
     Button aRoomButton = new Button();
     if (contains(notMap,roomNumbers) == false){
-      aRoomButton = new Button (""+roomNumbers);
+     aRoomButton = new Button (""+roomNumbers);
       //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
     } else if(roomNumbers == START){
-      aRoomButton = new Button (""+startNumberInput);
+     aRoomButton = new Button (""+startNumberInput);
       //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
     } else if(roomNumbers == DEST){
-      aRoomButton = new Button (""+destNumberInput);
+     aRoomButton = new Button (""+destNumberInput);
       //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
     }
+    Integer roomNumberValue = Integer.parseInt(aRoomButton.getText());
+    aRoomButton.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        createPopup(roomNumberValue);
+      }
+    });
     return aRoomButton;
   }
+
+  /*
+  * Method that handles the clicking of a room button/room number on the map.
+  *http://code.makery.ch/blog/javafx-8-event-handling-examples/
+  */
+  public void createPopup(int roomNumber){
+    //Integer roomNumber = Integer.parseInt(roomNumberText);
+    System.out.println("Button works");
+    System.out.println("Room number is: "+ roomNumber);}
+    /*Integer roomValue = Integer.parseInt(buttonValue);
+    Popup roomChooserPopup = new Popup();
+    VBox roomChooserVBox = new VBox();
+    Label roomChooserLabel = new Label("Would you like this room to be the Starting or Destination Room?");
+    Rectangle roomChooserBackground = new Rectangle();
+    roomChooserBackground.setFill(Color.YELLOW);
+    roomChooserBackground.setWidth(POPUP_WINDOW_HEIGHT);
+    roomChooserBackground.setHeight(ABOUT_POPUP_WIDTH);
+    Button startRoomButton = new Button("Starting Room");
+    Button destRoomButton = new Button("Destination Room");
+    Button hideRoomChooserButton = new Button ("Hide");
+    roomChooserVBox.getChildren().addAll(roomChooserLabel,startRoomButton, destRoomButton, hideRoomChooserButton);
+    StackPane roomChooserStackPane = new StackPane(roomChooserBackground);
+    roomChooserStackPane.getChildren().add(roomChooserVBox);
+
+    roomChooserPopup.getContent().add(roomChooserStackPane);
+
+    //Set the starting room to the value of the room button chosen.
+    startRoomButton.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        startNumberInput = roomValue;
+        System.out.println(startNumberInput);
+        roomChooserPopup.hide();
+      }
+    });
+
+    //Set the destination room to the value of the room button chosen.
+    destRoomButton.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        destNumberInput = roomValue;
+        System.out.println(destNumberInput);
+        roomChooserPopup.hide();
+      }
+    });
+
+    //Hide the room chooser button pop up.
+    hideRoomChooserButton.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        roomChooserPopup.hide();
+      }
+    });
+    return roomChooserPopup;
+  }*/
 
   /*
   * Check if entered valid start is entered.
@@ -314,10 +376,12 @@ public class FinderApp extends Application {
     appTitle.setFont(Font.font("Verdana", FontWeight.BOLD,40));
 
     Button startButton = new Button("Find a Room");
-
+    Image uOfCCoat = new Image("UofCcoat.png");
+    ImageView uOfCImage = new ImageView(uOfCCoat);
+    //https://docs.oracle.com/javafx/2/api/javafx/scene/image/ImageView.html
 
     VBox startVBox = new VBox(10);
-    startVBox.getChildren().addAll(appTitle, startButton);
+    startVBox.getChildren().addAll(appTitle, startButton, uOfCImage);
     borderPanes1.setCenter(startVBox);
     startVBox.setAlignment(Pos.CENTER);
 
@@ -380,11 +444,23 @@ public class FinderApp extends Application {
     Button submitB = new Button("Submit");
     submitB.setOnAction(new HandleButtonClick());
 
-    // Create an HBox to hold items in the top row of the border pane.
-    HBox topRow = new HBox();
+    Label buildingDropDownLabel = new Label("Building:");
+    VBox buildingDropDownVBox = new VBox();
+    buildingDropDownVBox.getChildren().addAll(buildingDropDownLabel, buildingDropDown);
+
+    Label enterStartRoomLabel = new Label ("Start Room:");
+    VBox enterStartRoomVBox = new VBox();
+    enterStartRoomVBox.getChildren().addAll(enterStartRoomLabel, enterStartRoom);
+
+    Label enterDestRoomLabel = new Label("Destination Room:");
+    VBox enterDestRoomVBox = new VBox();
+    enterDestRoomVBox.getChildren().addAll(enterDestRoomLabel, enterDestRoom);
+
+    // Create FlowPane to hold items in the top row of the border pane.
+    FlowPane topRow = new FlowPane();
     topRow.setAlignment(Pos.CENTER);
-    topRow.getChildren().addAll(buildingDropDown, enterStartRoom,
-    enterDestRoom, submitB);
+    topRow.getChildren().addAll(buildingDropDownVBox, enterStartRoomVBox,
+    enterDestRoomVBox, submitB);
 
     VBox topVBox = new VBox(15);
     topVBox.getChildren().addAll(topRow2,topRow,invalidHBox);
@@ -393,9 +469,11 @@ public class FinderApp extends Application {
     // Create an HBox to hold items in the  bottom row of the border pane.
     HBox bottomHBox = new HBox(10);
 
+
+
     // Add a new button to go back to scene 1.
     Button backButton = new Button("Back");
-    bottomHBox.getChildren().add(backButton);
+    bottomHBox.getChildren().addAll(backButton);
 
     /*
     * Handles a button click to change scene.
