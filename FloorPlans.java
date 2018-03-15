@@ -67,7 +67,7 @@ public class FloorPlans {
 
 
   /*
-  * default constructor for a FloorPlans
+  * default constructor for FloorPlans
   */
   public FloorPlans(){}
 
