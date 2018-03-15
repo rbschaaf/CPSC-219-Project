@@ -43,6 +43,11 @@ public class FinderApp extends Application {
   private int rectLength;
   private int startNumberInput;
   private int destNumberInput ;
+  private int clickedRoom;
+  private VBox enterStartRoomVBox = new VBox();
+  private VBox enterDestRoomVBox = new VBox();
+
+
 
   private final int POPUP_WINDOW_HEIGHT = 600;
   private final int HELP_POPUP_WIDTH = 130;
@@ -185,7 +190,7 @@ public class FinderApp extends Application {
         if (rooms.getText().isEmpty()){ //https://stackoverflow.com/questions/25189027/how-to-check-if-lable-is-not-empty
           stack.getChildren().add(overlayStack);
         } else{
-          Button roomButton = createRoomButtons(roomNumbers, startNumberInput, destNumberInput);
+          Button roomButton = createRoomButtons(roomNumbers, startNumberInput, destNumberInput, stack);
           roomButton.setMaxSize(rectLength, rectLength); //https://stackoverflow.com/questions/35344702/how-do-i-get-buttons-to-fill-a-javafx-gridpane
             stack.getChildren().addAll(roomButton, overlayStack);
         }
@@ -254,7 +259,7 @@ public class FinderApp extends Application {
   /*
   * Method that creates buttons for the room numbers on the map.
   */
-  public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput){
+  public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput, StackPane stack){
     Button aRoomButton = new Button();
     if (contains(notMap,roomNumbers) == false){
      aRoomButton = new Button (""+roomNumbers);
@@ -267,65 +272,84 @@ public class FinderApp extends Application {
       //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
     }
     Integer roomNumberValue = Integer.parseInt(aRoomButton.getText());
+
+    /*
+    * Clciking a room button calls the selectRoom method
+    */
     aRoomButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
-        createPopup(roomNumberValue);
+          selectRoom(roomNumberValue,stack);
       }
     });
     return aRoomButton;
   }
 
+
   /*
   * Method that handles the clicking of a room button/room number on the map.
+  * Allows user to select to store the room value in the start room or destination
+  * room. The user can also unselect the room by clicking the temporary button generated
+  * at it.
   *http://code.makery.ch/blog/javafx-8-event-handling-examples/
   */
-  public void createPopup(int roomNumber){
-    //Integer roomNumber = Integer.parseInt(roomNumberText);
+  public void selectRoom (int roomNumber, StackPane stack){
+    clickedRoom = roomNumber;
     System.out.println("Button works");
-    System.out.println("Room number is: "+ roomNumber);}
-    /*Integer roomValue = Integer.parseInt(buttonValue);
-    Popup roomChooserPopup = new Popup();
-    VBox roomChooserVBox = new VBox();
-    Label roomChooserLabel = new Label("Would you like this room to be the Starting or Destination Room?");
-    Rectangle roomChooserBackground = new Rectangle();
-    roomChooserBackground.setFill(Color.YELLOW);
-    roomChooserBackground.setWidth(POPUP_WINDOW_HEIGHT);
-    roomChooserBackground.setHeight(ABOUT_POPUP_WIDTH);
-    Button startRoomButton = new Button("Starting Room");
-    Button destRoomButton = new Button("Destination Room");
-    Button hideRoomChooserButton = new Button ("Hide");
-    roomChooserVBox.getChildren().addAll(roomChooserLabel,startRoomButton, destRoomButton, hideRoomChooserButton);
-    StackPane roomChooserStackPane = new StackPane(roomChooserBackground);
-    roomChooserStackPane.getChildren().add(roomChooserVBox);
+    System.out.println("Room number is: "+ roomNumber);
 
-    roomChooserPopup.getContent().add(roomChooserStackPane);
+    Button selectedRoom = new Button(""+ roomNumber);
+    selectedRoom.setTextFill(Color.RED);
+    stack.getChildren().add(selectedRoom);
 
-    //Set the starting room to the value of the room button chosen.
+    Button startRoomButton = new Button("Store selection in start room");
+    enterStartRoomVBox.getChildren().add(startRoomButton);
+
+    Button destRoomButton = new Button("Store selection in destination room");
+    enterDestRoomVBox.getChildren().add(destRoomButton);
+
+    /*
+    * Hides all generated buttons if the room is clicked again
+    */
+    selectedRoom.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        System.out.println("removed");
+        clickedRoom = 0;
+        stack.getChildren().remove(selectedRoom);
+        enterStartRoomVBox.getChildren().remove(startRoomButton);
+        enterDestRoomVBox.getChildren().remove(destRoomButton);
+
+      }
+    });
+
+    /*
+    * Clicking the button below the Start room textfield stores the selected room
+    * number in the textfield.
+    */
     startRoomButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
-        startNumberInput = roomValue;
-        System.out.println(startNumberInput);
-        roomChooserPopup.hide();
+        enterStartRoom.setText(""+clickedRoom);
+        stack.getChildren().remove(selectedRoom);
+        enterStartRoomVBox.getChildren().remove(startRoomButton);
+        enterDestRoomVBox.getChildren().remove(destRoomButton);
+        clickedRoom = 0;
       }
     });
 
-    //Set the destination room to the value of the room button chosen.
+    /*
+    * Clicking the button below the Destination room textfield stores the selected room
+    * number in the textfield.
+    */
     destRoomButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
-        destNumberInput = roomValue;
-        System.out.println(destNumberInput);
-        roomChooserPopup.hide();
+        enterDestRoom.setText(""+clickedRoom);
+        stack.getChildren().remove(selectedRoom);
+        enterStartRoomVBox.getChildren().remove(startRoomButton);
+        enterDestRoomVBox.getChildren().remove(destRoomButton);
+        clickedRoom = 0;
       }
     });
+  }
 
-    //Hide the room chooser button pop up.
-    hideRoomChooserButton.setOnAction(new EventHandler<ActionEvent>(){
-      public void handle(ActionEvent event){
-        roomChooserPopup.hide();
-      }
-    });
-    return roomChooserPopup;
-  }*/
 
   /*
   * Check if entered valid start is entered.
@@ -449,11 +473,9 @@ public class FinderApp extends Application {
     buildingDropDownVBox.getChildren().addAll(buildingDropDownLabel, buildingDropDown);
 
     Label enterStartRoomLabel = new Label ("Start Room:");
-    VBox enterStartRoomVBox = new VBox();
     enterStartRoomVBox.getChildren().addAll(enterStartRoomLabel, enterStartRoom);
 
     Label enterDestRoomLabel = new Label("Destination Room:");
-    VBox enterDestRoomVBox = new VBox();
     enterDestRoomVBox.getChildren().addAll(enterDestRoomLabel, enterDestRoom);
 
     // Create FlowPane to hold items in the top row of the border pane.
