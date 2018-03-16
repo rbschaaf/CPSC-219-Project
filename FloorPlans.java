@@ -1,17 +1,4 @@
-/**
-* This class is for the FloorPlans that form the basis of each map/grid. They are based
-* on the floorplans of a building.
-*
-* NUMBERS       CORRESPONDING ROOM
-*    0          Wall
-*    1          Hallway - only thing path can move through
-*    9          Portions of rooms
-*    25         Stairs
-*   >= 100        Room Numbers, represent doors
-*  888 Bathrooms
-*  777 Stairs
-*  555 Elevators
-*/
+import java.util.ArrayList;
 
 public class FloorPlans {
   private int[][] tfdlOne =
@@ -29,23 +16,23 @@ public class FloorPlans {
   {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,701,555},
   {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,702,555},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-  
+
   private int[][] tfdlTwo =
   {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
-  {0,0,1,1,261,1,260,1,252,9,9,9,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,0,0,0,0,1,1,0,0,0,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,0,0,0,0},
-  {0,0,1,1,9,262,9,263,9,264,1,1,1,1,0,0,0,0},
-  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,251,888,9,0},
+  {0,0,1,1,1,1,1,1,1252,1252,9,9,1,1,0,0,0,0},
+  {0,0,1,1,1,1,1,1,252,1252,9,9,1,1,0,0,0,0},
+  {0,0,1,1,261,1261,260,1260,0,0,0,0,1,1,0,0,0,0},
+  {0,0,1,1,1261,1261,1260,1260,0,0,0,0,1,1,0,0,0,0},
+  {0,0,1,1,1262,1262,1263,1263,1264,1264,1,1,1,1,0,0,0,0},
+  {0,0,1,1,1262,262,1263,263,1264,264,1,1,1,1,0,0,0,0},
+  {0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,251,1251,1251,0},
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,9,0},
-  {0,0,1,1,9,259,9,9,9,9,1,1,1,1,250,888,9,0},
-  {0,0,1,1,9,9,9,9,9,9,1,1,1,1,9,9,9,0},
+  {0,0,1,1,9,259,1259,9,9,9,1,1,1,1,250,888,1250,0},
+  {0,0,1,1,9,1259,1259,9,9,9,1,1,1,1,9,9,9,0},
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,777,0,0},
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-  
+
   private int[][] grid =
   {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -61,16 +48,17 @@ public class FloorPlans {
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-  
+
   private int destNum;
   private String building;
-  
-  
+  private ArrayList<Room> roomList = new ArrayList<Room>();
+
+
   /**
   * default constructor for FloorPlans
   */
   public FloorPlans(){}
-    
+
     /**
     * Copy constructor for FloorPlans
     * @param: an object of type FloorPlans to be copied.
@@ -85,7 +73,7 @@ public class FloorPlans {
         }
       }
     }
-    
+
     /**
     * Constructor with a building and room number.
     * @param: a building name of type String and a destination room of type int.
@@ -94,8 +82,10 @@ public class FloorPlans {
       building = aBuilding;
       destNum = theDestNum;
       setGrid(aBuilding,theDestNum);
+      makeRooms();
+      populateRooms();
     }
-    
+
     /**
     * Getter method for destinaton room number.
     * @return: destination room number as an int.
@@ -103,7 +93,7 @@ public class FloorPlans {
     public int getDestNumber(){
       return destNum;
     }
-    
+
     /**
     * Getter method for building name of current flooplan.
     * @return: the building name as a String.
@@ -111,7 +101,7 @@ public class FloorPlans {
     public String getBuildingName(){
       return building;
     }
-    
+
     /**
     * Method provides the floor number a provided room is on.
     * @param: a room as an int.
@@ -135,7 +125,7 @@ public class FloorPlans {
       }
       return floorNum;
     }
-    
+
     /**
     * Method that is a getter method for the current grid of the floorplan.
     * @return: the current grid from the floorplan as an 2-dimensional int array.
@@ -143,7 +133,7 @@ public class FloorPlans {
     public int[][] getGrid(){
       return grid;
     }
-    
+
     /**
     * Method to set the appropriate grid for the floorplan based on the building
     * and room of choice.
@@ -162,4 +152,63 @@ public class FloorPlans {
         }
       }
     }
+
+    // get room method
+ public Room getRoom(int gridNum){
+   Room room = null;
+   for(int i = 0; i <roomList.size();i++){
+     if (roomList.get(i).getRoomsNumber() == gridNum){
+       room = roomList.get(i);
+     }
+   }
+   return room;
+ }
+    // add a room to the roomlist in the floorplan
+    public void addRoom(int gridNum){
+      // if number is not in roomlist... **
+      roomList.add(new Room(gridNum));
+    }
+    // make a room for each corresponding room on a grid
+    // meant to be used in a for-loop
+    public void makeRooms(){
+      int gridNum;
+      for (int row = 0; row<14; row++ ){
+        for(int col = 0; col<18; col++){
+          gridNum = grid[row][col];
+          if(gridNum>1000){
+            if (getRoom(gridNum)== null){
+              addRoom(gridNum);
+            }
+          }
+        }
+      }
+    }
+
+    // populate each room within the floorplan with tiles and a door
+    // meant to be used in a for-loop
+    public void populateRooms(){
+      int gridNum;
+      for (int row = 0; row<14;row++){
+        for (int col =0; col<18; col++){
+          gridNum = grid[row][col];
+          if (getRoom(gridNum) != null){
+            getRoom(gridNum).addNode(row,col);
+          }
+          else if(gridNum < 1000){
+              // get the room for a door (1000+ item) and subtract 1000 to find
+              // which room it is for. Set the door as the current tile in the loop.
+              if(getRoom(gridNum)!=null){
+                Room tempRoom = getRoom(gridNum);
+                tempRoom.setDoor(row,col);
+              }
+
+          }
+
+        }
+      }
+    }
+
+
+
+
   }
