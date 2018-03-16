@@ -29,7 +29,7 @@ public class FloorPlans {
   {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,701,555},
   {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,702,555},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-
+  
   private int[][] tfdlTwo =
   {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,1,1,1,1,1,1,9,9,9,9,1,1,0,0,0,0},
@@ -45,7 +45,7 @@ public class FloorPlans {
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,25,777,0,0},
   {0,0,1,1,1,1,1,1,1,1,1,1,1,1,9,9,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-
+  
   private int[][] grid =
   {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -61,17 +61,17 @@ public class FloorPlans {
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-
+  
   private int destNum;
   private String building;
-
-
-  /*
+  
+  
+  /**
   * default constructor for FloorPlans
   */
   public FloorPlans(){}
-
-    /*
+    
+    /**
     * Copy constructor for FloorPlans
     * @param: an object of type FloorPlans to be copied.
     * Includes destination room, building name, and the actual floorplan.
@@ -85,8 +85,8 @@ public class FloorPlans {
         }
       }
     }
-
-    /*
+    
+    /**
     * Constructor with a building and room number.
     * @param: a building name of type String and a destination room of type int.
     */
@@ -95,24 +95,24 @@ public class FloorPlans {
       destNum = theDestNum;
       setGrid(aBuilding,theDestNum);
     }
-
-    /*
+    
+    /**
     * Getter method for destinaton room number.
     * @return: destination room number as an int.
     */
     public int getDestNumber(){
       return destNum;
     }
-
-    /*
+    
+    /**
     * Getter method for building name of current flooplan.
     * @return: the building name as a String.
     */
     public String getBuildingName(){
       return building;
     }
-
-    /*
+    
+    /**
     * Method provides the floor number a provided room is on.
     * @param: a room as an int.
     * @return: the floor number the room is on as int.
@@ -135,16 +135,16 @@ public class FloorPlans {
       }
       return floorNum;
     }
-
-    /*
+    
+    /**
     * Method that is a getter method for the current grid of the floorplan.
     * @return: the current grid from the floorplan as an 2-dimensional int array.
     */
     public int[][] getGrid(){
       return grid;
     }
-
-    /*
+    
+    /**
     * Method to set the appropriate grid for the floorplan based on the building
     * and room of choice.
     * @param: the current building as a String and the desired room number as an int.
