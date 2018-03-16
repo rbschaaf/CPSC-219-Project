@@ -28,7 +28,14 @@ public class Path {
     setEndRoomNum(aEndRoomNum);
   }
 
-
+  /**
+  * Copy constructor
+  */
+  public Path(Path aCopyPath) {
+    setFloorGrid(aCopyPath.getFloorGrid());
+    setStartRoomNum(aCopyPath.getStartRoomNum());
+    setEndRoomNum(aCopyPath.getEndRoomNum());
+  }
   /**
   * Getter and Setter methods for the Grid
   */
