@@ -182,7 +182,10 @@ public class Path {
     return nodes;
   }
 
-
+  /**
+  * Sets the instance variables of the Neighboring nodes to their appropriate
+  * value
+  */
   public void setNeighborInstances(Node initialNode, Node newNode) {
     double diagonalMoveWeight = 14;
     double otherMoveWeight = 10;
@@ -238,7 +241,7 @@ public class Path {
           //ArrayList<Node> removeList = new ArrayList<Node>();
           unvisitedNodes = removeNodeFromList(unvisitedNodes, vertex);
           //System.out.println(unvisitedNodes);
-          System.out.println(visitedNodes);
+          //System.out.println(visitedNodes);
           for (Node eachNode : unvisitedNodes) {
             //System.out.println(eachNode.getStartDistance());
             setNeighborInstances(vertex, eachNode);
@@ -277,9 +280,9 @@ public class Path {
       int nodeRow = aNode.getXCoord();
       int nodeCol = aNode.getYCoord();
       if (aNode.getEndNodeVal() == false) {
-
+        copyGrid[nodeRow][nodeCol] = 7;
       }
-      copyGrid[nodeRow][nodeCol] = 7;
+
     }
     return copyGrid;
   }
@@ -287,7 +290,9 @@ public class Path {
   /**
   * method that will combine other methods into simpler step
   */
-  //public void createPath() {
-
-
+  public int[][] createPath() {
+    ArrayList<Node> gridNodes = createNodeArray(floorGrid);
+    int[][] finGrid = addPathToGrid(getConnectedNodes(setNodeDistances(gridNodes)));
+    return finGrid;
+  }
 }
