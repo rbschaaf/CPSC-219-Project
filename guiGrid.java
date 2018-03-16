@@ -24,7 +24,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.ScrollPane;
 
-public class FinderApp extends Application {
+public class guiGrid extends Application {
 
   /*
   * Runs the GUI application, including scene creation, button handling
@@ -110,16 +110,22 @@ public class FinderApp extends Application {
         updatedPlan.setGrid(buildingInput, destNumberInput);
         map1.setCurrentFloorPlan(updatedPlan);
         // Create a new path and set its start and dest inputs.
-        Path path = new Path(updatedPlan);
-        path.setDestLoc(destNumberInput);
-        path.setStartLoc(startNumberInput);
+        Path path = new Path(updatedPlan.getGrid(),
+                              startNumberInput, destNumberInput);
+
+
         // Place markers on the map for the start and end points of the path.
-        map1.placeDest(path.getEndRow(), path.getEndCol());
-        map1.placeStart(path.getStartRow(),path.getStartCol());
+        /*
+        * I got rid of start and end placers as the new path does not require
+        * them - Dayan J.
+        * --15 Mar 2018
+        */
+        //  map1.placeDest(path.getEndRow(), path.getEndCol());
+        //   map1.placeStart(path.getStartRow(),path.getStartCol());
         // Create the path from the start location to the dest location.
-        path.createPath();
+        // path.createPath();
         // Create the updated GUI for the map
-        makeGrid(updatedPlan.getGrid(),gridPane, rectLength);
+        makeGrid(path.createPath(),gridPane, rectLength);
         // Updates the label above the map providing building name and floor number
         buildingAndFloorLabel.setText(setBuildingAndFloorLabel(updatedPlan.getFloorNum(startNumberInput), buildingInput));
         buildingAndFloorLabel.setTextFill(Color.GREEN);
