@@ -220,6 +220,7 @@ public class FinderApp extends Application {
 
         makeGrid(finalGrid,gridPane,rectLength);
         highlight(updatedPlan, 251);
+        
         // Updates the label above the map providing building name and floor number
         buildingAndFloorLabel.setText(setBuildingAndFloorLabel(updatedPlan.getFloorNum(startNumberInput), buildingInput));
         buildingAndFloorLabel.setTextFill(Color.GREEN);
@@ -291,6 +292,7 @@ public class FinderApp extends Application {
         Rectangle rect = setRectangles(row, col, aGrid, rectLength);
 
         int roomNumbers = 0;
+
         roomNumbers = aGrid[row][col];
 
         // An overlaying stackpane that is mouse transparent containing the rect and room labels.
@@ -298,6 +300,7 @@ public class FinderApp extends Application {
 
         //Add room numbers to the grid map.
         Label rooms = setNumbers(roomNumbers);
+
         overlayStack.getChildren().addAll(rect,rooms);
         overlayStack.setMouseTransparent(true); //https://stackoverflow.com/questions/9899347/when-adding-a-second-item-to-my-stackpane-the-first-item-loses-its-event-mouseo
 
@@ -363,16 +366,19 @@ public class FinderApp extends Application {
   */
   public Label setNumbers(int roomNumbers){
     Label rooms = new Label("");
-    if (contains(notMap,roomNumbers) == false){
-      rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, 10));
-      rooms.setText("" + roomNumbers);
-    } else if (roomNumbers == START){
-      rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, 10));
-      rooms.setText("" + "S");
-    } else if (roomNumbers == DEST){
-      rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, 10));
-      rooms.setText("" + "D");
+    if(roomNumbers<1000){
+      if (contains(notMap,roomNumbers) == false){
+        rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, 10));
+        rooms.setText("" + roomNumbers);
+      } else if (roomNumbers == START){
+        rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, 10));
+        rooms.setText("" + "S");
+      } else if (roomNumbers == DEST){
+        rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, 10));
+        rooms.setText("" + "D");
+      }
     }
+
     return rooms;
   }
 
