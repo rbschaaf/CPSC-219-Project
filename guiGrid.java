@@ -291,7 +291,7 @@ public class guiGrid extends Application {
   }
 
 
-  /*
+  /**
   * Method that handles the clicking of a room button/room number on the map.
   * Allows user to select to store the room value in the start room or destination
   * room. The user can also unselect the room by clicking the temporary button generated
@@ -318,12 +318,7 @@ public class guiGrid extends Application {
     */
     selectedRoom.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
-        System.out.println("removed");
-        clickedRoom = 0;
-        stack.getChildren().remove(selectedRoom);
-        enterStartRoomVBox.getChildren().remove(startRoomButton);
-        enterDestRoomVBox.getChildren().remove(destRoomButton);
-
+        clearTemporaryButtons(selectedRoom, startRoomButton, destRoomButton, stack);
       }
     });
 
@@ -334,10 +329,7 @@ public class guiGrid extends Application {
     startRoomButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
         enterStartRoom.setText(""+clickedRoom);
-        stack.getChildren().remove(selectedRoom);
-        enterStartRoomVBox.getChildren().remove(startRoomButton);
-        enterDestRoomVBox.getChildren().remove(destRoomButton);
-        clickedRoom = 0;
+        clearTemporaryButtons(selectedRoom, startRoomButton, destRoomButton, stack);
       }
     });
 
@@ -348,12 +340,20 @@ public class guiGrid extends Application {
     destRoomButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
         enterDestRoom.setText(""+clickedRoom);
-        stack.getChildren().remove(selectedRoom);
-        enterStartRoomVBox.getChildren().remove(startRoomButton);
-        enterDestRoomVBox.getChildren().remove(destRoomButton);
-        clickedRoom = 0;
+        clearTemporaryButtons(selectedRoom, startRoomButton, destRoomButton, stack);
       }
     });
+  }
+
+  /*
+  * Mehod clears the button on a clicked room, along with the buttons to input a clicked room into
+  * the start or destination room. These are temporary buttons only available when a room number
+  * on the board has been clicked.
+  */
+  public void clearTemporaryButtons(Button selectedRoom, Button startRoomButton, Button destRoomButton, StackPane stack){
+    stack.getChildren().remove(selectedRoom);
+    enterStartRoomVBox.getChildren().remove(startRoomButton);
+    enterDestRoomVBox.getChildren().remove(destRoomButton);
   }
 
 
