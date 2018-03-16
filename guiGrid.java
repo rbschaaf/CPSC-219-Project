@@ -23,8 +23,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.ScrollPane;
+import javafx.geometry.Insets;
 
-public class guiGrid extends Application {
+public class FinderApp extends Application {
 
   /*
   * Runs the GUI application, including scene creation, button handling
@@ -46,6 +47,9 @@ public class guiGrid extends Application {
   private int clickedRoom;
   private VBox enterStartRoomVBox = new VBox();
   private VBox enterDestRoomVBox = new VBox();
+  private Rectangle[][] rectangleGrid = new Rectangle[rowNum][colNum];
+  private Button startRoomButton = new Button("Store selection in start room");
+  private Button destRoomButton = new Button("Store selection in destination room");
 
 
 
@@ -89,6 +93,82 @@ public class guiGrid extends Application {
   private Image imgElevator = new Image("Elevator.png", rectLength, rectLength, true, false);
   //Image source: https://pixabay.com/en/elevator-people-silhouette-down-44013//
 
+  public class HandleStartRoomClick implements EventHandler<ActionEvent>{
+    int row1;
+    int col1;
+    int rNum;
+
+    public HandleStartRoomClick(int aRow, int aCol, int roomN){
+      rNum = roomN;
+      row1 = aRow;
+      col1 = aCol;
+    }
+    public void handle(ActionEvent event){
+      enterStartRoom.setText(""+rNum);
+      rectangleGrid[row1][col1].setFill(Color.LIGHTBLUE);
+      enterStartRoomVBox.getChildren().remove(startRoomButton);
+      enterDestRoomVBox.getChildren().remove(destRoomButton);
+    }
+  }
+  /*
+  * Method that handles the clicking of a room button/room number on the map.
+  * Allows user to select to store the room value in the start room or destination
+  * room. The user can also unselect the room by clicking the temporary button generated
+  * at it.
+  *http://code.makery.ch/blog/javafx-8-event-handling-examples/
+  */
+  public class HandleRoomClick implements EventHandler<ActionEvent>{
+    int roomNum;
+    int count =0;
+    StackPane aSP;
+    public HandleRoomClick(int roomNumber, StackPane aStackPane){
+      roomNum = roomNumber;
+      aSP = aStackPane;
+    }
+    public void handle(ActionEvent event){
+      int row;
+      int col;
+
+      enterStartRoomVBox.getChildren().remove(startRoomButton);
+      enterDestRoomVBox.getChildren().remove(destRoomButton);
+      System.out.println("Button Works");
+      System.out.println("Room number is: "+ roomNum);
+      for(row=0;row<rowNum;row++){
+        for(col=0;col<colNum;col++){
+          if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==0){
+
+            rectangleGrid[row][col].setFill(Color.RED);
+            count+=1;
+            enterStartRoomVBox.getChildren().add(startRoomButton);
+            enterDestRoomVBox.getChildren().add(destRoomButton);
+
+            /*
+            * Clicking the button below the Start room textfield stores the selected room
+            * number in the textfield.
+            */
+            startRoomButton.setOnAction(new HandleStartRoomClick(row,col,roomNum));
+
+            /*
+            * Clicking the button below the Destination room textfield stores the selected room
+            * number in the textfield.
+            */
+            destRoomButton.setOnAction(new EventHandler<ActionEvent>(){
+              public void handle(ActionEvent event){
+                enterDestRoom.setText(""+roomNum);
+                enterStartRoomVBox.getChildren().remove(startRoomButton);
+                enterDestRoomVBox.getChildren().remove(destRoomButton);
+              }
+            });
+          }else if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==1){
+            rectangleGrid[row][col].setFill(Color.LIGHTBLUE);
+            count=0;
+
+
+          }
+        }
+      }
+    }
+  }
 /*
 * Handle button click for Submit button. Takes text from Text Fields and
 * creates the grid.
@@ -97,39 +177,28 @@ public class guiGrid extends Application {
     private String buildingInput;
     public HandleButtonClick (){}
     public void handle(ActionEvent event){
-        // Get input from the textfields.
-        startNumberInput = Integer.parseInt(enterStartRoom.getText());
-        destNumberInput  = Integer.parseInt(enterDestRoom.getText());
-        buildingInput = buildingDropDown.getValue();
-        // Create a new FloorPlan.
-        FloorPlans updatedPlan = new FloorPlans();
-        // Check if the numbers entered are valid.
-        isValidStartRoom(startNumberInput);
-        isValidDestRoom(destNumberInput);
-        // Set the grid of the new FloorPlan to contain these numbers.
-        updatedPlan.setGrid(buildingInput, destNumberInput);
-        map1.setCurrentFloorPlan(updatedPlan);
-        // Create a new path and set its start and dest inputs.
-        Path path = new Path(updatedPlan.getGrid(),
-                              startNumberInput, destNumberInput);
+      // Get input from the textfields.
+     startNumberInput = Integer.parseInt(enterStartRoom.getText());
+     destNumberInput  = Integer.parseInt(enterDestRoom.getText());
+     buildingInput = buildingDropDown.getValue();
+     // Create a new FloorPlan.
+     FloorPlans updatedPlan = new FloorPlans();
+     // Check if the numbers entered are valid.
+     isValidStartRoom(startNumberInput);
+     isValidDestRoom(destNumberInput);
+     // Set the grid of the new FloorPlan to contain these numbers.
+     updatedPlan.setGrid(buildingInput, destNumberInput);
+     map1.setCurrentFloorPlan(updatedPlan);
+     // Create a new path and set its start and dest inputs.
+     Path path = new Path(updatedPlan.getGrid(),
+                           startNumberInput, destNumberInput);
 
-
-        // Place markers on the map for the start and end points of the path.
-        /*
-        * I got rid of start and end placers as the new path does not require
-        * them - Dayan J.
-        * --15 Mar 2018
-        */
-        //  map1.placeDest(path.getEndRow(), path.getEndCol());
-        //   map1.placeStart(path.getStartRow(),path.getStartCol());
-        // Create the path from the start location to the dest location.
-        // path.createPath();
-        // Create the updated GUI for the map
-        makeGrid(path.createPath(),gridPane, rectLength);
-        // Updates the label above the map providing building name and floor number
-        buildingAndFloorLabel.setText(setBuildingAndFloorLabel(updatedPlan.getFloorNum(startNumberInput), buildingInput));
-        buildingAndFloorLabel.setTextFill(Color.GREEN);
-        //http://www.java2s.com/Code/Java/JavaFX/SetLabelTextcolor.htm
+     // Create the updated GUI for the map
+     makeGrid(path.createPath(),gridPane, rectLength);
+     // Updates the label above the map providing building name and floor number
+     buildingAndFloorLabel.setText(setBuildingAndFloorLabel(updatedPlan.getFloorNum(startNumberInput), buildingInput));
+     buildingAndFloorLabel.setTextFill(Color.GREEN);
+     //http://www.java2s.com/Code/Java/JavaFX/SetLabelTextcolor.htm
       }
     }
 
@@ -200,7 +269,6 @@ public class guiGrid extends Application {
           roomButton.setMaxSize(rectLength, rectLength); //https://stackoverflow.com/questions/35344702/how-do-i-get-buttons-to-fill-a-javafx-gridpane
             stack.getChildren().addAll(roomButton, overlayStack);
         }
-
         GridPane.setRowIndex(stack, row);
         GridPane.setColumnIndex(stack, col);
         aGridPane.getChildren().add(stack);
@@ -242,6 +310,8 @@ public class guiGrid extends Application {
     rect.setWidth(rectLength);
     rect.setHeight(rectLength);
 
+    rectangleGrid[row][col] = rect;
+
     return rect;
   }
   /*
@@ -280,80 +350,11 @@ public class guiGrid extends Application {
     Integer roomNumberValue = Integer.parseInt(aRoomButton.getText());
 
     /*
-    * Clciking a room button calls the selectRoom method
+    * Clicking a room button is handled by HandlRoomClick
     */
-    aRoomButton.setOnAction(new EventHandler<ActionEvent>(){
-      public void handle(ActionEvent event){
-          selectRoom(roomNumberValue,stack);
-      }
-    });
+    aRoomButton.setOnAction(new HandleRoomClick(roomNumberValue, stack));
+
     return aRoomButton;
-  }
-
-
-  /**
-  * Method that handles the clicking of a room button/room number on the map.
-  * Allows user to select to store the room value in the start room or destination
-  * room. The user can also unselect the room by clicking the temporary button generated
-  * at it.
-  *http://code.makery.ch/blog/javafx-8-event-handling-examples/
-  */
-  public void selectRoom (int roomNumber, StackPane stack){
-    clickedRoom = roomNumber;
-    System.out.println("Button works");
-    System.out.println("Room number is: "+ roomNumber);
-
-    Button selectedRoom = new Button(""+ roomNumber);
-    selectedRoom.setTextFill(Color.RED);
-    stack.getChildren().add(selectedRoom);
-
-    Button startRoomButton = new Button("Store selection in start room");
-    enterStartRoomVBox.getChildren().add(startRoomButton);
-
-    Button destRoomButton = new Button("Store selection in destination room");
-    enterDestRoomVBox.getChildren().add(destRoomButton);
-
-    /*
-    * Hides all generated buttons if the room is clicked again
-    */
-    selectedRoom.setOnAction(new EventHandler<ActionEvent>(){
-      public void handle(ActionEvent event){
-        clearTemporaryButtons(selectedRoom, startRoomButton, destRoomButton, stack);
-      }
-    });
-
-    /*
-    * Clicking the button below the Start room textfield stores the selected room
-    * number in the textfield.
-    */
-    startRoomButton.setOnAction(new EventHandler<ActionEvent>(){
-      public void handle(ActionEvent event){
-        enterStartRoom.setText(""+clickedRoom);
-        clearTemporaryButtons(selectedRoom, startRoomButton, destRoomButton, stack);
-      }
-    });
-
-    /*
-    * Clicking the button below the Destination room textfield stores the selected room
-    * number in the textfield.
-    */
-    destRoomButton.setOnAction(new EventHandler<ActionEvent>(){
-      public void handle(ActionEvent event){
-        enterDestRoom.setText(""+clickedRoom);
-        clearTemporaryButtons(selectedRoom, startRoomButton, destRoomButton, stack);
-      }
-    });
-  }
-
-  /*
-  * Mehod clears the button on a clicked room, along with the buttons to input a clicked room into
-  * the start or destination room. These are temporary buttons only available when a room number
-  * on the board has been clicked.
-  */
-  public void clearTemporaryButtons(Button selectedRoom, Button startRoomButton, Button destRoomButton, StackPane stack){
-    stack.getChildren().remove(selectedRoom);
-    enterStartRoomVBox.getChildren().remove(startRoomButton);
-    enterDestRoomVBox.getChildren().remove(destRoomButton);
   }
 
 
@@ -411,7 +412,7 @@ public class guiGrid extends Application {
     //https://docs.oracle.com/javafx/2/api/javafx/scene/image/ImageView.html
 
     VBox startVBox = new VBox(10);
-    startVBox.getChildren().addAll(appTitle, startButton, uOfCImage);
+    startVBox.getChildren().addAll(appTitle, startButton,uOfCImage);
     borderPanes1.setCenter(startVBox);
     startVBox.setAlignment(Pos.CENTER);
 
@@ -473,6 +474,7 @@ public class guiGrid extends Application {
     // New button to submit textfield information.
     Button submitB = new Button("Submit");
     submitB.setOnAction(new HandleButtonClick());
+    submitB.setAlignment(Pos.BOTTOM_CENTER);
 
     Label buildingDropDownLabel = new Label("Building:");
     VBox buildingDropDownVBox = new VBox();
@@ -485,7 +487,7 @@ public class guiGrid extends Application {
     enterDestRoomVBox.getChildren().addAll(enterDestRoomLabel, enterDestRoom);
 
     // Create FlowPane to hold items in the top row of the border pane.
-    FlowPane topRow = new FlowPane();
+    HBox topRow = new HBox(5);
     topRow.setAlignment(Pos.CENTER);
     topRow.getChildren().addAll(buildingDropDownVBox, enterStartRoomVBox,
     enterDestRoomVBox, submitB);
