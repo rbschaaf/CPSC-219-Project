@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 // Last updated Feb. 29 by Nicki.
 public class Room{
-  private int roomNumber;
+  private int roomNumber=0;
   private Door aDoor = new Door();
-  private ArrayList<Tile> tileList = new ArrayList<Tile>();
+  //no door in tileList
+  private ArrayList<Node> tileList = new ArrayList<Node>();
 
   //Constructor for Room class that takes an int
   public Room(int num){
@@ -15,8 +16,8 @@ public class Room{
   }
 
   //Add a tile to the tile list
-  public void addTile(int row, int col){
-    tileList.add(new Tile(row,col));
+  public void addNode(int row, int col){
+    tileList.add(new Node(row,col));
   }
 
   //Set the door of the room
