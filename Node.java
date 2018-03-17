@@ -37,6 +37,11 @@ public class Node {
     setStartDistance(copyNode.getStartDistance());
     setConnectedNode(copyNode.getConnectedNode());
   }
+  
+  public Node(int anXCoord, int aYCoord){
+    xcoord = anXCoord;
+    ycoord = aYCoord;
+  }
 
   /*
   * Getter and Setters
