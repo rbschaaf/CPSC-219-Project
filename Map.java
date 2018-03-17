@@ -54,8 +54,8 @@ public class Map{
   * Printing method for the floorplan as a 2-dimensional grid.
   */
   public void printGrid() {
-    for (int row = 0; row < 14; row++) {
-      for (int column = 0; column <18; column++) {
+    for (int row = 0; row < Constants.ROWNUM; row++) {
+      for (int column = 0; column <Constants.COLNUM; column++) {
         System.out.printf("%4d", currentFloorPlan.getGrid()[row][column]);
       }
       System.out.println();
@@ -69,8 +69,8 @@ public class Map{
   public void setStartValues(FloorPlans aFP,int startRoom){
     int row;
     int col;
-    for(row=0;row<14;row++){
-      for(col=0;col<18;col++){
+    for(row=0;row<Constants.ROWNUM;row++){
+      for(col=0;col<Constants.COLNUM;col++){
         if(aFP.getGrid()[row][col]==startRoom){
           startX = row;
           startY = col;
@@ -86,8 +86,8 @@ public class Map{
   public void setEndValues(FloorPlans aFP, int endRoom){
     int row;
     int col;
-    for(row=0;row<14;row++){
-      for(col=0;col<18;col++){
+    for(row=0;row<Constants.ROWNUM;row++){
+      for(col=0;col<Constants.COLNUM;col++){
         if(aFP.getGrid()[row][col]==endRoom){
           endX = row;
           endY = col;
@@ -102,7 +102,7 @@ public class Map{
   *
   */
   public void placeStart(int[][] aGrid){
-    aGrid[startX][startY]=8;
+    aGrid[startX][startY]=Constants.START;
   }
 
   /**
@@ -110,7 +110,7 @@ public class Map{
   * @param: aGrid a chosen int[][] grid.
   */
   public void placeDest(int[][] aGrid){
-    aGrid[endX][endY] = 5;
+    aGrid[endX][endY] = Constants.DEST;
   }
 
   /**
