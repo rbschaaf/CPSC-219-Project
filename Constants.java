@@ -31,6 +31,7 @@ public class Constants{
 
   public static final int ROOMNUMBER_FONTSIZE = 10;
   public static final int APPTITLE_FONTSIZE = 40;
+  public static final int APP_LABEL_FONTSIZE = 15;
 
   public static final int DIAGONAL_VALUE = 14;
   public static final int OTHER_MOVE_VALUE = 10;
