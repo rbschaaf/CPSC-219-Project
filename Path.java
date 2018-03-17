@@ -161,8 +161,8 @@ public class Path {
   */
   public ArrayList<Node> createNodeArray(int[][] aGrid) {
     ArrayList<Node> nodes = new ArrayList<Node>();
-    for (int row = 0; row < 14;row++){
-      for (int column = 0; column < 18; column++){
+    for (int row = 0; row < Constants.ROWNUM;row++){
+      for (int column = 0; column < Constants.COLNUM; column++){
         //used for the Node constuctor
         boolean endNode = false;
 
@@ -187,8 +187,8 @@ public class Path {
   * value
   */
   public void setNeighborInstances(Node initialNode, Node newNode) {
-    double diagonalMoveWeight = 14;
-    double otherMoveWeight = 10;
+    double diagonalMoveWeight = Constants.DIAGONAL_VALUE;
+    double otherMoveWeight = Constants.OTHER_MOVE_VALUE;
     double initialNodeDistance = initialNode.getStartDistance();
     double newNodeDistance = newNode.getStartDistance();
     double finalDiagonalDistance = diagonalMoveWeight + initialNodeDistance;
@@ -280,7 +280,7 @@ public class Path {
       int nodeRow = aNode.getXCoord();
       int nodeCol = aNode.getYCoord();
       if (aNode.getEndNodeVal() == false) {
-        copyGrid[nodeRow][nodeCol] = 7;
+        copyGrid[nodeRow][nodeCol] = Constants.PATH;
       }
 
     }
