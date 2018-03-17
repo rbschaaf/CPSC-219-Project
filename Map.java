@@ -4,15 +4,13 @@
 
 public class Map{
 
-  public static final int DESTINATION_MARKER = 5;
-  public static final int STARTER_MARKER = 8;
-  // Instance variables
   private int roomNum;
   private String building;
-  private boolean avoidStairs; //Still in development.
-  private boolean avoidElevator; //Still in development.
   private FloorPlans currentFloorPlan = new FloorPlans();
-  private int avoidRoomNum; //Still in development.
+  private int startX;
+  private int startY;
+  private int endX;
+  private int endY;
 
   /**
   * Constructor with a provided FloorPlans.
@@ -29,8 +27,6 @@ public class Map{
   public Map (int newRoomNumber) {
     roomNum = newRoomNumber;
     FloorPlans floorPlan = new FloorPlans();
-    //floorPlan.setGrid(building, roomNum);
-    //floorGrid = floorPlan.getGrid();
   }
 
   /**
@@ -67,21 +63,54 @@ public class Map{
   }
 
   /**
-  * Method to place start marker at the starting room on the grid.
-  * @param: row of the starting room as an int and column of the starting
-  * room as an int.
+  * Method that sets the coordinate values startX and startY for the starting room.
+  * @param: a floorPlan; the current start Room.
   */
-  public void placeStart(int startRow, int startCol){
-    currentFloorPlan.getGrid()[startRow][startCol]=STARTER_MARKER;
+  public void setStartValues(FloorPlans aFP,int startRoom){
+    int row;
+    int col;
+    for(row=0;row<14;row++){
+      for(col=0;col<18;col++){
+        if(aFP.getGrid()[row][col]==startRoom){
+          startX = row;
+          startY = col;
+        }
+      }
+    }
+  }
+
+  /**
+  * Method that sets the coordinate values endX and endY for the end/destination room.
+  * @param: a floorPlan; the current end Room.
+  */
+  public void setEndValues(FloorPlans aFP, int endRoom){
+    int row;
+    int col;
+    for(row=0;row<14;row++){
+      for(col=0;col<18;col++){
+        if(aFP.getGrid()[row][col]==endRoom){
+          endX = row;
+          endY = col;
+        }
+      }
+    }
+  }
+
+  /**
+  * Method to place start marker at the starting room on the grid.
+  * @param: a chosen int[][] grid.
+  *
+  */
+  public void placeStart(int[][] aGrid){
+    aGrid[startX][startY]=8;
   }
 
   /**
   * Method to place the Destination marker on the destination room.
-  * @param: row of the destination room as an int and column of the destination
-  * as an int.
+  * @param: a chosen int[][] grid.
   */
-  public void placeDest(int endRow, int endCol){
-    currentFloorPlan.getGrid()[endRow][endCol] = DESTINATION_MARKER;
+  public void placeDest(int[][] aGrid){
+    aGrid[endX][endY] = 5;
   }
 
   /**
