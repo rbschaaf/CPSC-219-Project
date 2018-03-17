@@ -1,8 +1,6 @@
-/**Main portion of the pathfinding program. Finds a path between a destination room from a starting
-room from the user. Floor is modelled off of north portion of 2nd floor Taylor Family Digital Library.
-1s are hallway, 0s are walls, 200-series numbers are room names, 9s are rooms themselves, 8 marks starting room,
-5 marks destination room, 7s mark path found between rooms. Created by Nicki Lindstrom, Dayan Jayasuriya, and Riley Schaaf
-Last Edited by Nicki Feb 28*/
+/**
+ * This Class to run the room finder application on the console as a text-version.
+ */
 
 import java.util.Scanner;
 
@@ -11,12 +9,16 @@ public class MapMain {
   private int roomDest;
 
 
-  //constructor
+  /**
+   * Default constructor for MapMain
+   */
   public MapMain (){
-
   };
 
-  //get starting room from user
+  /**
+   * Method to get starting room from user keyboard input
+   * @return roomStart the starting room number as an int
+   */
   public int getStartRoom() {
     System.out.println("Enter the room number nearest to you: ");
     Scanner keyboard = new Scanner(System.in);
@@ -24,7 +26,10 @@ public class MapMain {
     return roomStart;
   }
 
-  //get destination room from user
+  /**
+   * Method to get destination room from user keyboard input
+   * @return roomDest the destination room number as an int
+   */
   public int getDestRoom() {
     System.out.println("Enter the room number of your destination: ");
     Scanner keyboard = new Scanner(System.in);
