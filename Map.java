@@ -14,7 +14,7 @@ public class Map{
 
   /**
   * Constructor with a provided FloorPlans.
-  * @param: a floorplan of type FloorPlans.
+  * @param: newFloorPlan a floorplan of type FloorPlans.
   */
   public Map (FloorPlans newFloorPlan){
     currentFloorPlan = newFloorPlan;
@@ -22,7 +22,7 @@ public class Map{
 
   /**
   * Constructor with a provided room number that generates a new floorplan.
-  * @param: a room number of interest as an int.
+  * @param: newRoomNumber a room number of interest as an int.
   */
   public Map (int newRoomNumber) {
     roomNum = newRoomNumber;
@@ -36,7 +36,7 @@ public class Map{
 
   /**
   * Method that sets the current floorplan.
-  * @param: the currently being used floorplan as type FloorPlans.
+  * @param: newFloorPlan the currently being used floorplan as type FloorPlans.
   */
   public void setCurrentFloorPlan(FloorPlans newFloorPlan){
     currentFloorPlan = newFloorPlan;
@@ -44,7 +44,7 @@ public class Map{
 
   /**
   * Method that gets the current floorplan.
-  * @return: the current floorplan as type FloorPlans.
+  * @return: currentFloorPlan the current floorplan as type FloorPlans.
   */
   public FloorPlans getCurrentFloorPlan(){
     return currentFloorPlan;
@@ -64,7 +64,7 @@ public class Map{
 
   /**
   * Method that sets the coordinate values startX and startY for the starting room.
-  * @param: a floorPlan; the current start Room.
+  * @param: aFP a floorPlan; startRoom the current start Room.
   */
   public void setStartValues(FloorPlans aFP,int startRoom){
     int row;
@@ -81,7 +81,7 @@ public class Map{
 
   /**
   * Method that sets the coordinate values endX and endY for the end/destination room.
-  * @param: a floorPlan; the current end Room.
+  * @param: aFP a floorPlan; endRoom the current end Room.
   */
   public void setEndValues(FloorPlans aFP, int endRoom){
     int row;
@@ -98,7 +98,7 @@ public class Map{
 
   /**
   * Method to place start marker at the starting room on the grid.
-  * @param: a chosen int[][] grid.
+  * @param: aGrid a chosen int[][] grid.
   *
   */
   public void placeStart(int[][] aGrid){
@@ -107,7 +107,7 @@ public class Map{
 
   /**
   * Method to place the Destination marker on the destination room.
-  * @param: a chosen int[][] grid.
+  * @param: aGrid a chosen int[][] grid.
   */
   public void placeDest(int[][] aGrid){
     aGrid[endX][endY] = 5;
@@ -115,8 +115,8 @@ public class Map{
 
   /**
   * Getter method to get the associated number for each point in the grid.
-  * @param: the row of the point as an int and the column of the point as an int.
-  * @return: the value off the grid for the point as an int.
+  * @param: row the row of the point as an int. column the column of the point as an int.
+  * @return: gridPointVal the value off the grid for the point as an int.
   */
   public int getGridPointNum(int row, int column) {
     int gridPointVal;
