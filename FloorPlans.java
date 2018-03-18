@@ -69,6 +69,8 @@ public class FloorPlans {
   private int destNum;
   private String building;
   private ArrayList<Room> roomList = new ArrayList<Room>();
+  private int tempDestNum;
+  private int tempStartNum;
 
 
   /**
@@ -122,6 +124,38 @@ public class FloorPlans {
   */
   public String getBuildingName() {
     return building;
+  }
+
+  /**
+  * Getter method for the temporary destination number.
+  * @return: get the temporary destination number as an integer.
+  */
+  public int getTemporaryDestNum(){
+    return tempDestNum;
+  }
+
+  /**
+  * Setter method for the temporary destination number.
+  * @param: newTempDestNum new temporary destination number.
+  */
+  public void setTemporaryDestNum(int newTempDestNum){
+    tempDestNum = newTempDestNum;
+  }
+
+  /**
+  * Getter method for the temporary start number.
+  * @return: get the temporary start number as an integer.
+  */
+  public int getTemporaryStartNum(){
+    return tempStartNum;
+  }
+
+  /**
+  * Setter method for the temporary start number.
+  * @param: newTempStartNum new temporary start number.
+  */
+  public void setTemporaryStartNum(int newTempStartNum){
+    tempStartNum = newTempStartNum;
   }
 
   /**
@@ -202,6 +236,18 @@ public class FloorPlans {
   public void addRoom(int gridNum) {
     // if number is not in roomlist... **
     roomList.add(new Room(gridNum));
+  }
+
+  /**
+  * Method to get the list of rooms for the current floor plan
+  *@ return a copy of roomList.
+  */
+  public ArrayList<Room> getRoomList(){
+    ArrayList<Room> copyList = new ArrayList<Room>();
+    for(int i=0;i<roomList.size();i++){
+      copyList.add(new Room(roomList.get(i)));
+    }
+    return copyList;
   }
 
   /**
