@@ -19,6 +19,15 @@ public class Room{
     roomNumber = num;
   }
 
+  /**
+  * Copy constructor for Room class.
+  *@param roomToCopy the room to be copied.
+  */
+  public Room(Room toBeCopied){
+    roomNumber = toBeCopied.getRoomsNumber();
+    aDoor = toBeCopied.getDoor();
+    tileList = toBeCopied.getTileList();
+  }
 
   /**
    * Method to get the room number for the room
@@ -28,7 +37,13 @@ public class Room{
     return roomNumber;
   }
 
-
+  public ArrayList<Node> getTileList(){
+    ArrayList<Node> newList = new ArrayList<Node>();
+    for(int i=0;i<tileList.size();i++){
+      newList.add(new Node(tileList.get(i)));
+    }
+    return newList;
+  }
 
   /**
    * Method to add a node to the tile list
@@ -58,7 +73,7 @@ public class Room{
    * @return aDoor the door of the room of type Door
    */
   public Door getDoor(){
-    return aDoor;
+    return new Door(aDoor);
   }
 
 }
