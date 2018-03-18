@@ -19,6 +19,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.ScrollPane;
 import java.util.ArrayList;
+import javafx.geometry.Insets;
 //import java.util.NumberFormatException;
 
 public class FinderApp extends Application {
@@ -39,12 +40,15 @@ public class FinderApp extends Application {
   private int roomNumberFontSize = 10;
   private int startNumberInput;
   private int destNumberInput ;
+  private String buildingInput;
   private int clickedRoom;
   private VBox enterStartRoomVBox = new VBox();
   private VBox enterDestRoomVBox = new VBox();
   private Rectangle[][] rectangleGrid = new Rectangle[Constants.ROWNUM][Constants.COLNUM];
   private Button startRoomButton = new Button("Store selection in start room");
   private Button destRoomButton = new Button("Store selection in destination room");
+  private boolean stairs;
+  private boolean elevator;
 
   private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,Constants.START,Constants.DEST,
     Constants.PATH,Constants.REST,Constants.EL,Constants.STAIR,Constants.COFF};
@@ -70,7 +74,92 @@ public class FinderApp extends Application {
     //Image source: https://pixabay.com/en/elevator-people-silhouette-down-44013//
     private FloorPlans currentFloorPlan;
 
+    private VBox eleStairBox = new VBox(10);
+    private VBox mapSize = new VBox();
 
+    public class HandleElevatorClick implements EventHandler<ActionEvent>{
+      public HandleElevatorClick(){}
+      public void handle(ActionEvent even){
+        stairs = false;
+        elevator = true;
+        FloorPlans tempFloorPlan = new FloorPlans(buildingInput, startNumberInput);
+        map1.setCurrentFloorPlan(tempFloorPlan);
+        tempFloorPlan.setTemporaryDestNum(700);
+        invalidEntry.setText("");
+
+        // Create a new path and set its start and dest inputs.
+        Path tempPath = new Path(tempFloorPlan.getGrid(),
+        startNumberInput, tempFloorPlan.getTemporaryDestNum());
+
+        map1.setStartValues(tempFloorPlan,startNumberInput);
+        map1.setEndValues(tempFloorPlan,tempFloorPlan.getTemporaryDestNum());
+
+        int[][] finalGrid2 = tempPath.createPath();
+
+        map1.placeStart(finalGrid2);
+        map1.placeDest(finalGrid2);
+
+        makeGrid(finalGrid2,gridPane,rectLength);
+      }
+    }
+    public class HandleStairClick implements EventHandler<ActionEvent>{
+      public HandleStairClick(){}
+      public void handle(ActionEvent event){
+        stairs = true;
+        elevator = false;
+        FloorPlans tempFloorPlan1 = new FloorPlans(buildingInput, startNumberInput);
+        map1.setCurrentFloorPlan(tempFloorPlan1);
+        tempFloorPlan1.setTemporaryDestNum(25);
+        invalidEntry.setText("");
+
+        // Create a new path and set its start and dest inputs.
+        Path tempPath1 = new Path(tempFloorPlan1.getGrid(),
+        startNumberInput, tempFloorPlan1.getTemporaryDestNum());
+
+        map1.setStartValues(tempFloorPlan1,startNumberInput);
+        map1.setEndValues(tempFloorPlan1,tempFloorPlan1.getTemporaryDestNum());
+
+        int[][] finalGrid3 = tempPath1.createPath();
+
+        map1.placeStart(finalGrid3);
+        map1.placeDest(finalGrid3);
+
+        makeGrid(finalGrid3,gridPane,rectLength);
+      }
+    }
+    public class HandleNextFloorClick implements EventHandler<ActionEvent>{
+      public HandleNextFloorClick(){}
+      public void handle(ActionEvent event){
+        mapSize.getChildren().remove(eleStairBox);
+        if(stairs == true){
+          startNumberInput = 25;
+        }else{
+          startNumberInput = 700;
+        }
+
+        FloorPlans tempFloorPlan2 = new FloorPlans(buildingInput, destNumberInput);
+        map1.setCurrentFloorPlan(tempFloorPlan2);
+        tempFloorPlan2.setTemporaryStartNum(25);
+        invalidEntry.setText("");
+
+        // Create a new path and set its start and dest inputs.
+        Path tempPath2 = new Path(tempFloorPlan2.getGrid(),
+        tempFloorPlan2.getTemporaryStartNum(), destNumberInput);
+
+        map1.setStartValues(tempFloorPlan2,tempFloorPlan2.getTemporaryStartNum());
+        map1.setEndValues(tempFloorPlan2,destNumberInput);
+
+        int[][] finalGridpt2 = tempPath2.createPath();
+
+        map1.placeStart(finalGridpt2);
+        map1.placeDest(finalGridpt2);
+
+        makeGrid(finalGridpt2,gridPane,rectLength);
+        //update label
+        buildingAndFloorLabel.setText(setBuildingAndFloorLabel(tempFloorPlan2.getFloorNum(destNumberInput), buildingInput));
+        buildingAndFloorLabel.setTextFill(Color.GREEN);
+      }
+    }
     /*
     * Method that handles the clicking of the start room on the grid.
     * Removes the sta
@@ -154,10 +243,11 @@ public class FinderApp extends Application {
     * creates the grid.
     */
     public class HandleButtonClick implements EventHandler<ActionEvent>{
-      private String buildingInput;
+
       public HandleButtonClick (){}
         public void handle(ActionEvent event){
           // Get input from the textfields.
+
           invalidEntry.setText("");
           try{
             startNumberInput = Integer.parseInt(enterStartRoom.getText());
@@ -167,32 +257,23 @@ public class FinderApp extends Application {
           }
           buildingInput = buildingDropDown.getValue();
           // Create a new FloorPlan.
-          FloorPlans updatedPlan = new FloorPlans(buildingInput, destNumberInput);
+          FloorPlans updatedPlan = new FloorPlans(buildingInput, startNumberInput);
+          FloorPlans dummyPlan = new FloorPlans(buildingInput, 250);
+          map1.setCurrentFloorPlan(updatedPlan);
           // Check if the numbers entered are valid.
-          isValidStartRoom(startNumberInput);
-          isValidDestRoom(destNumberInput);
-          // Set the grid of the new FloorPlan to contain these numbers.
-          //updatedPlan.setGrid(buildingInput, destNumberInput);
-          if(isValidStartRoom(startNumberInput) && isValidDestRoom(destNumberInput)){
-            map1.setCurrentFloorPlan(updatedPlan);
+          isValidStartRoom(startNumberInput,updatedPlan);
+          isValidDestRoom(destNumberInput,updatedPlan);
+
+          if(isValidStartRoom(startNumberInput,updatedPlan) && isValidDestRoom(destNumberInput,updatedPlan)){
+            invalidEntry.setText("");
+
             // Create a new path and set its start and dest inputs.
             Path path = new Path(updatedPlan.getGrid(),
             startNumberInput, destNumberInput);
 
-
-            // Place markers on the map for the start and end points of the path.
-            /*
-            * I got rid of start and end placers as the new path does not require
-            * them - Dayan J.
-            * --15 Mar 2018
-            */
             map1.setStartValues(updatedPlan,startNumberInput);
             map1.setEndValues(updatedPlan,destNumberInput);
-            //map1.placeDest();
-            //map1.placeStart();
-            // Create the path from the start location to the dest location.
-            // path.createPath();
-            // Create the updated GUI for the map
+
             int[][] finalGrid = path.createPath();
 
             map1.placeStart(finalGrid);
@@ -205,6 +286,41 @@ public class FinderApp extends Application {
             buildingAndFloorLabel.setText(setBuildingAndFloorLabel(updatedPlan.getFloorNum(startNumberInput), buildingInput));
             buildingAndFloorLabel.setTextFill(Color.GREEN);
             //http://www.java2s.com/Code/Java/JavaFX/SetLabelTextcolor.htm
+
+
+          }else if(isValidStartRoom(startNumberInput,updatedPlan)==true && isValidDestRoom(destNumberInput,updatedPlan)==false
+          && isValidDestRoom(destNumberInput,dummyPlan)==true){
+            invalidEntry.setText("Your destination is on a different floor. Use the elevator and stair buttons"+
+            "on the right to choose which path you want to take to the next floor.");
+            //Add buttons for the next floor.
+            if(mapSize.getChildren().contains(eleStairBox)!=true){
+              mapSize.getChildren().addAll(eleStairBox);
+            }
+
+
+            int destNum = updatedPlan.getFloorNum(destNumberInput);
+            System.out.println("Dest room is invalid.");
+            //if the destination is one floor higher.
+            if(destNum == updatedPlan.getFloorNum(startNumberInput)+1){
+              updatedPlan.setTemporaryDestNum(700);
+              invalidEntry.setText("");
+
+              // Create a new path and set its start and dest inputs.
+              Path path = new Path(updatedPlan.getGrid(),
+              startNumberInput, updatedPlan.getTemporaryDestNum());
+
+              map1.setStartValues(updatedPlan,startNumberInput);
+              map1.setEndValues(updatedPlan,updatedPlan.getTemporaryDestNum());
+
+              int[][] finalGrid = path.createPath();
+
+              map1.placeStart(finalGrid);
+              map1.placeDest(finalGrid);
+
+              makeGrid(finalGrid,gridPane,rectLength);
+            }
+          }else if(isValidStartRoom(startNumberInput,updatedPlan)==false && isValidStartRoom(startNumberInput,updatedPlan)==false){
+            System.out.println("No valid start/dest info. added");
           }
         }
       }
@@ -229,8 +345,11 @@ public class FinderApp extends Application {
       }
 
 
-      /*
+      /**
       * Method to confirm whether an array contains a value.
+      *@param anArray an array to search.
+      *@param aValue the value to find in the array.
+      *@return boolean value for if value is in the array.
       */
       public boolean contains(int[] anArray, int aValue){
         boolean result = false;
@@ -242,8 +361,10 @@ public class FinderApp extends Application {
         return result;
       }
 
-      /*
-      * Highlight a room in the Grid.
+      /**
+      * Method to highlight a room in the Grid (change colours of member tiles).
+      *@param aFloorPlan floorplan to add highlights to.
+      *@param roomNumber number of room to highlight.
       */
       public void highlight(FloorPlans aFloorPlan, int roomNumber){
         int roomNum = roomNumber;
@@ -258,172 +379,196 @@ public class FinderApp extends Application {
               }else if((aFloorPlan.getGrid()[row][col]) == roomNumber)
               rectangleGrid[row][col].setFill(Color.AQUAMARINE);
             }*/
+              }
+            }
           }
         }
       }
-    }
-  }
-  /*
-  * Generate a visual of the current grid.
-  */
-  public void makeGrid(int[][] aGrid, GridPane aGridPane, int rectLength){
-    // Clear the gridPane.
-    aGridPane.getChildren().clear();
 
-    // Set up the grid for the floor.
-    for (int row = 0; row < Constants.ROWNUM; row++){
-      for(int col = 0; col < Constants.COLNUM; col++){
-        Rectangle rect = setRectangles(row, col, aGrid, rectLength);
+      /**
+      * Generate a visual of the current grid.
+      *@param aGrid an integer grid to take data from.
+      *@param aGridPane a gridPane to add the grid's data to.
+      *@param rectLength the length of the rectangles to be created.
+      */
+      public void makeGrid(int[][] aGrid, GridPane aGridPane, int rectLength){
+        // Clear the gridPane.
+        aGridPane.getChildren().clear();
 
-        int roomNumbers = 0;
+        // Set up the grid for the floor.
+        for (int row = 0; row < Constants.ROWNUM; row++){
+          for(int col = 0; col < Constants.COLNUM; col++){
+            Rectangle rect = setRectangles(row, col, aGrid, rectLength);
 
-        roomNumbers = aGrid[row][col];
+            int roomNumbers = 0;
 
-        // An overlaying stackpane that is mouse transparent containing the rect and room labels.
-        StackPane overlayStack = new StackPane();
+            roomNumbers = aGrid[row][col];
 
-        //Add room numbers to the grid map.
-        Label rooms = setNumbers(roomNumbers);
+            // An overlaying stackpane that is mouse transparent containing the rect and room labels.
+            StackPane overlayStack = new StackPane();
 
-        overlayStack.getChildren().addAll(rect,rooms);
-        overlayStack.setMouseTransparent(true); //https://stackoverflow.com/questions/9899347/when-adding-a-second-item-to-my-stackpane-the-first-item-loses-its-event-mouseo
+            //Add room numbers to the grid map.
+            Label rooms = setNumbers(roomNumbers);
 
-        // Complete stackpane containing the overlay stackpane and the clickable buttons hidden underneath.
-        StackPane stack = new StackPane();
+            overlayStack.getChildren().addAll(rect,rooms);
+            overlayStack.setMouseTransparent(true); //https://stackoverflow.com/questions/9899347/when-adding-a-second-item-to-my-stackpane-the-first-item-loses-its-event-mouseo
 
-        //Add buttons at the room numbers on the map, if there is a room number there.
-        if (rooms.getText().isEmpty()){ //https://stackoverflow.com/questions/25189027/how-to-check-if-lable-is-not-empty
-          stack.getChildren().add(overlayStack);
-        } else{
-          Button roomButton = createRoomButtons(roomNumbers, startNumberInput, destNumberInput, stack);
-          roomButton.setMaxSize(rectLength, rectLength); //https://stackoverflow.com/questions/35344702/how-do-i-get-buttons-to-fill-a-javafx-gridpane
-          stack.getChildren().addAll(roomButton, overlayStack);
+            // Complete stackpane containing the overlay stackpane and the clickable buttons hidden underneath.
+            StackPane stack = new StackPane();
+
+            //Add buttons at the room numbers on the map, if there is a room number there.
+            if (rooms.getText().isEmpty()){ //https://stackoverflow.com/questions/25189027/how-to-check-if-lable-is-not-empty
+              stack.getChildren().add(overlayStack);
+            } else{
+              Button roomButton = createRoomButtons(roomNumbers, startNumberInput, destNumberInput, stack);
+              roomButton.setMaxSize(rectLength, rectLength); //https://stackoverflow.com/questions/35344702/how-do-i-get-buttons-to-fill-a-javafx-gridpane
+              stack.getChildren().addAll(roomButton, overlayStack);
+            }
+
+            GridPane.setRowIndex(stack, row);
+            GridPane.setColumnIndex(stack, col);
+            aGridPane.getChildren().add(stack);
+            //https://stackoverflow.com/questions/35367060/gridpane-of-squares-in-javafx
+          }
+        }
+      }
+
+      /**
+      * Method that sets the rectangles for the grid.
+      *@param row the row to place the rectangle
+      *@param col the column to place the rectangle
+      *@param aGrid an integer grid to take data from.
+      *@param rectLength the length of the rectangles to be created.
+      *@return a rectangle.
+      */
+      public Rectangle setRectangles(int row, int col, int[][] aGrid, int rectLength){
+
+        Rectangle rect = new Rectangle();
+        if (aGrid[row][col] == 0){
+          rect.setFill(Color.BLACK);
+        } else if (aGrid[row][col] == Constants.HALL){
+          rect.setFill(Color.TRANSPARENT);
+        } else if (aGrid[row][col] == Constants.ROOM){
+          rect.setFill(Color.GREY);
+        } else if (aGrid[row][col] == Constants.DEST){
+          rect.setFill(Color.YELLOW);
+        } else if (aGrid[row][col] == Constants.START){
+          rect.setFill(Color.ORANGE);
+        } else if (aGrid[row][col] == Constants.PATH){
+          rect.setFill(Color.GREEN);
+        } else if(aGrid[row][col] == Constants.REST){
+          rect.setFill(new ImagePattern(imgRestroom));
+          //https://stackoverflow.com/questions/22848829/how-do-i-add-an-image-inside-a-rectangle-or-a-circle-in-javafx
+        } else if(aGrid[row][col] == Constants.STAIR){
+          rect.setFill(new ImagePattern(imgStairs));
+        } else if(aGrid[row][col] == Constants.EL){
+          rect.setFill(new ImagePattern(imgElevator));
+        } else if(aGrid[row][col] == Constants.COFF){
+          rect.setFill(new ImagePattern(imgCoffee));
+        }else{
+          rect.setFill(Color.LIGHTBLUE);
+        }
+        rect.setStroke(Color.BLACK);
+        rect.setWidth(rectLength);
+        rect.setHeight(rectLength);
+
+        rectangleGrid[row][col] = rect;
+
+        return rect;
+      }
+
+      /**
+      * Method that sets number labels for tiles in the grid.
+      *@param roomNumbers the integer number to set.
+      *@return a label with the room number.
+      */
+      public Label setNumbers(int roomNumbers){
+        Label rooms = new Label("");
+        if(roomNumbers<1000){
+          if (contains(notMap,roomNumbers) == false){
+            rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, roomNumberFontSize));
+            rooms.setText("" + roomNumbers);
+          } else if (roomNumbers == Constants.START){
+            rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, roomNumberFontSize));
+            rooms.setText("" + "S");
+          } else if (roomNumbers == Constants.DEST){
+            rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, roomNumberFontSize));
+            rooms.setText("" + "D");
+          }
         }
 
-        GridPane.setRowIndex(stack, row);
-        GridPane.setColumnIndex(stack, col);
-        aGridPane.getChildren().add(stack);
-        //https://stackoverflow.com/questions/35367060/gridpane-of-squares-in-javafx
+        return rooms;
       }
-    }
-  }
-  /*
-  * Method that sets the rectangles for the grid.
-  */
-  public Rectangle setRectangles(int row, int col, int[][] aGrid, int rectLength){
 
-    Rectangle rect = new Rectangle();
-    if (aGrid[row][col] == 0){
-      rect.setFill(Color.BLACK);
-    } else if (aGrid[row][col] == Constants.HALL){
-      rect.setFill(Color.TRANSPARENT);
-    } else if (aGrid[row][col] == Constants.ROOM){
-      rect.setFill(Color.GREY);
-    } else if (aGrid[row][col] == Constants.DEST){
-      rect.setFill(Color.YELLOW);
-    } else if (aGrid[row][col] == Constants.START){
-      rect.setFill(Color.ORANGE);
-    } else if (aGrid[row][col] == Constants.PATH){
-      rect.setFill(Color.GREEN);
-    } else if(aGrid[row][col] == Constants.REST){
-      rect.setFill(new ImagePattern(imgRestroom));
-      //https://stackoverflow.com/questions/22848829/how-do-i-add-an-image-inside-a-rectangle-or-a-circle-in-javafx
-    } else if(aGrid[row][col] == Constants.STAIR){
-      rect.setFill(new ImagePattern(imgStairs));
-    } else if(aGrid[row][col] == Constants.EL){
-      rect.setFill(new ImagePattern(imgElevator));
-    } else if(aGrid[row][col] == Constants.COFF){
-      rect.setFill(new ImagePattern(imgCoffee));
-    }else{
-      rect.setFill(Color.LIGHTBLUE);
-    }
-    rect.setStroke(Color.BLACK);
-    rect.setWidth(rectLength);
-    rect.setHeight(rectLength);
+      /**
+      * Method that creates buttons for the room numbers on the map.
+      *@param roomNumbers a room number on the grid.
+      *@param startNumberInput an integer representing the start room number.
+      *@param destNumberInput an integer representing the destination room number.
+      *@param stack a stackPane to add the buttons to.
+      */
+      public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput, StackPane stack){
+        Button aRoomButton = new Button();
+        if (contains(notMap,roomNumbers) == false){
+          aRoomButton = new Button (""+roomNumbers);
 
-    rectangleGrid[row][col] = rect;
+        } else if(roomNumbers == Constants.START){
+          aRoomButton = new Button (""+startNumberInput);
 
-    return rect;
-  }
-  /*
-  * Method that sets number labels for tiles in the grid.
-  */
-  public Label setNumbers(int roomNumbers){
-    Label rooms = new Label("");
-    if(roomNumbers<1000){
-      if (contains(notMap,roomNumbers) == false){
-        rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, roomNumberFontSize));
-        rooms.setText("" + roomNumbers);
-      } else if (roomNumbers == Constants.START){
-        rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, roomNumberFontSize));
-        rooms.setText("" + "S");
-      } else if (roomNumbers == Constants.DEST){
-        rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, roomNumberFontSize));
-        rooms.setText("" + "D");
+        } else if(roomNumbers == Constants.DEST){
+          aRoomButton = new Button (""+destNumberInput);
+
+        }
+        Integer roomNumberValue = Integer.parseInt(aRoomButton.getText());
+
+        /*
+        * Clicking a room button is handled by HandleRoomClick.
+        */
+        aRoomButton.setOnAction(new HandleRoomClick(roomNumberValue, stack));
+        return aRoomButton;
       }
-    }
-
-    return rooms;
-  }
-
-  /*
-  * Method that creates buttons for the room numbers on the map.
-  */
-  public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput, StackPane stack){
-    Button aRoomButton = new Button();
-    if (contains(notMap,roomNumbers) == false){
-      aRoomButton = new Button (""+roomNumbers);
-      //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
-    } else if(roomNumbers == Constants.START){
-      aRoomButton = new Button (""+startNumberInput);
-      //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
-    } else if(roomNumbers == Constants.DEST){
-      aRoomButton = new Button (""+destNumberInput);
-      //roomButtons.setOnAction(new NumberButtonHandler(aRoomButton));
-    }
-    Integer roomNumberValue = Integer.parseInt(aRoomButton.getText());
-
-    /*
-    * Clciking a room button calls the selectRoom method
-    */
-    aRoomButton.setOnAction(new HandleRoomClick(roomNumberValue, stack));
-    return aRoomButton;
-  }
 
 
-  /*
-  * Check if entered valid start is entered.
-  */
-  public boolean isValidStartRoom (int aStartRoom){
-    boolean isValidStart = true;
-    if(aStartRoom != 25 && aStartRoom != 150&&  aStartRoom != 151&&
-    aStartRoom != 152&&  aStartRoom != 153&& aStartRoom != 154&&
-    aStartRoom != 155&&  aStartRoom != 250&&  aStartRoom != 251&&
-    aStartRoom != 252&&  aStartRoom != 259&& aStartRoom != 260&&
-    aStartRoom != 261&&  aStartRoom != 262&& aStartRoom != 263&&
-    aStartRoom != 264){
-      System.out.println("Please enter a valid start room. Example: 262 or 264");
-      invalidEntry.setText("Please enter a valid start room. Example: 262 or 264");
-      isValidStart = false;
-    }return isValidStart;
-  }
+      /**
+      * Method to check if a valid start value is entered.
+      *@param aStartRoom the room number entered by the user
+      *@return isValidStart a boolean
+      */
+      public boolean isValidStartRoom (int aStartRoom, FloorPlans aFP){
 
-  /*
-  * Check if a valid destination is entered.
-  */
-  public boolean isValidDestRoom (int aDestRoom){
-    boolean isValidDest = true;
-    if(aDestRoom != 25 && aDestRoom != 150&&  aDestRoom != 151&&
-    aDestRoom != 152&&  aDestRoom != 153&& aDestRoom != 154&&
-    aDestRoom != 155&&  aDestRoom != 250&&  aDestRoom != 251&&
-    aDestRoom != 252&&  aDestRoom != 259&& aDestRoom != 260&&
-    aDestRoom != 261&&  aDestRoom != 262&& aDestRoom != 263&&
-    aDestRoom != 264){
-      System.out.println("Please enter a valid end room. Example: 251 or 261");
-      invalidEntry.setText("Please enter a valid end room. Example: 251 or 261");
-      isValidDest = false;
-    }return isValidDest;
-  }
+        boolean isValidStart = false;
+        ArrayList<Room> listOfRooms = aFP.getRoomList();
+        for(int i=0; i<listOfRooms.size();i++){
+          int number = (listOfRooms.get(i).getRoomsNumber())-1000;
+          if(aStartRoom==number){
+            isValidStart = true;
+            System.out.println("Start room is valid");
+          }else{
+            invalidEntry.setText("Please enter a valid start room. Example: 262 or 264");
+          }
+        }
+        return isValidStart;
+      }
+
+      /**
+      * Method to check if a valid destination value is entered.
+      *@param aDestRoom the room number entered by the user
+      *@return isValidDest a boolean
+      */
+      public boolean isValidDestRoom (int aDestRoom, FloorPlans aFP){
+        boolean isValidDest = false;
+        ArrayList<Room> listOfRooms = aFP.getRoomList();
+        for(int i=0; i<listOfRooms.size();i++){
+          int number = (listOfRooms.get(i).getRoomsNumber())-1000;
+          if(aDestRoom==number){
+            isValidDest = true;
+            System.out.println("Dest room is valid");
+          }else{
+            invalidEntry.setText("Please enter a valid destination room. Example: 262 or 264");
+          }
+        }
+        return isValidDest;
+      }
 
   @Override
   public void start(Stage primaryStage){
@@ -470,6 +615,24 @@ public class FinderApp extends Application {
 
     buildingDropDown.getItems().addAll("Taylor Family Digital Library");
 
+    /*
+    * Elevator and stair button box
+    */
+
+    eleStairBox.setPadding(new Insets(10));
+
+    Button elevatorB = new Button("Elevator");
+    elevatorB.setOnAction(new HandleElevatorClick());
+
+    Button stairB = new Button("Stairs");
+    stairB.setOnAction(new HandleStairClick());
+
+    Button nextFloorB = new Button("Next Floor.");
+    nextFloorB.setOnAction(new HandleNextFloorClick());
+
+    eleStairBox.getChildren().addAll(elevatorB,stairB,nextFloorB);
+
+
     // Set the radio buttons that control the size of the map into one group and in a VBox.
     smallButton.setToggleGroup(sizeGroup);
     smallButton.setUserData(Constants.SMALL_RECT);
@@ -480,7 +643,7 @@ public class FinderApp extends Application {
     mediumButton.setUserData(Constants.MEDIUM_RECT);
     largeButton.setToggleGroup(sizeGroup);
     largeButton.setUserData(Constants.LARGE_RECT);
-    VBox mapSize = new VBox();
+
     mapSize.setAlignment(Pos.TOP_LEFT);
     mapSize.getChildren().addAll(smallButton, mediumButton, largeButton);
 
