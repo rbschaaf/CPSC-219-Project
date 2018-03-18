@@ -1,10 +1,16 @@
-// Last updated Feb 29 by Nicki.
+// Last updated March 18th by Nicki.
 public class Door{
   private int doorX;
   private int doorY;
 
   // basic constructor
   public Door(){}
+
+  // copy constructor
+  public Door(Door toBeCopied){
+    doorX = toBeCopied.getDoorX();
+    doorY = toBeCopied.getDoorY();
+  }
 
   // getter & setter methods for doorX
   public int getDoorX(){
