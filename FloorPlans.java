@@ -259,7 +259,7 @@ public class FloorPlans {
     for (int row = 0; row < Constants.ROWNUM; row++) {
       for (int col = 0; col < Constants.COLNUM; col++) {
         gridNum = grid[row][col];
-        if (gridNum > 1000) {
+        if (gridNum > 9) {
           if (getRoom(gridNum) == null) {
             addRoom(gridNum);
           }
