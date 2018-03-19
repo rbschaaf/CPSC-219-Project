@@ -47,8 +47,8 @@ public class FinderApp extends Application {
   private Rectangle[][] rectangleGrid = new Rectangle[Constants.ROWNUM][Constants.COLNUM];
   private Button startRoomButton = new Button("Store selection in start room");
   private Button destRoomButton = new Button("Store selection in destination room");
-  private boolean stairs;
-  private boolean elevator;
+  private boolean stairs = false;
+
 
   private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,Constants.START,Constants.DEST,
     Constants.PATH,Constants.REST,Constants.EL,Constants.STAIR,Constants.COFF};
@@ -81,7 +81,7 @@ public class FinderApp extends Application {
       public HandleElevatorClick(){}
       public void handle(ActionEvent even){
         stairs = false;
-        elevator = true;
+        System.out.println("Stairs false");
         FloorPlans tempFloorPlan = new FloorPlans(buildingInput, startNumberInput);
         map1.setCurrentFloorPlan(tempFloorPlan);
         tempFloorPlan.setTemporaryDestNum(700);
@@ -106,7 +106,7 @@ public class FinderApp extends Application {
       public HandleStairClick(){}
       public void handle(ActionEvent event){
         stairs = true;
-        elevator = false;
+        System.out.println("Stairs true");
         FloorPlans tempFloorPlan1 = new FloorPlans(buildingInput, startNumberInput);
         map1.setCurrentFloorPlan(tempFloorPlan1);
         tempFloorPlan1.setTemporaryDestNum(25);
@@ -146,7 +146,7 @@ public class FinderApp extends Application {
         Path tempPath2 = new Path(tempFloorPlan2.getGrid(),
         tempFloorPlan2.getTemporaryStartNum(), destNumberInput);
 
-        map1.setStartValues(tempFloorPlan2,tempFloorPlan2.getTemporaryStartNum());
+        map1.setStartValues(tempFloorPlan2,startNumberInput);
         map1.setEndValues(tempFloorPlan2,destNumberInput);
 
         int[][] finalGridpt2 = tempPath2.createPath();
@@ -158,6 +158,7 @@ public class FinderApp extends Application {
         //update label
         buildingAndFloorLabel.setText(setBuildingAndFloorLabel(tempFloorPlan2.getFloorNum(destNumberInput), buildingInput));
         buildingAndFloorLabel.setTextFill(Color.GREEN);
+        stairs=false;
       }
     }
     /*
@@ -259,6 +260,7 @@ public class FinderApp extends Application {
           // Create a new FloorPlan.
           FloorPlans updatedPlan = new FloorPlans(buildingInput, startNumberInput);
           FloorPlans dummyPlan = new FloorPlans(buildingInput, 250);
+          FloorPlans dummyPlan1 = new FloorPlans(buildingInput,150);
           map1.setCurrentFloorPlan(updatedPlan);
           // Check if the numbers entered are valid.
           isValidStartRoom(startNumberInput,updatedPlan);
@@ -319,7 +321,38 @@ public class FinderApp extends Application {
 
               makeGrid(finalGrid,gridPane,rectLength);
             }
-          }else if(isValidStartRoom(startNumberInput,updatedPlan)==false && isValidStartRoom(startNumberInput,updatedPlan)==false){
+          }else if(isValidStartRoom(startNumberInput,updatedPlan)==true && isValidDestRoom(destNumberInput,updatedPlan)==false
+          && isValidDestRoom(destNumberInput,dummyPlan1)==true){
+            invalidEntry.setText("Your destination is on a different floor. Use the elevator and stair buttons"+
+            "on the right to choose which path you want to take to the next floor.");
+            //Add buttons for the next floor.
+            if(mapSize.getChildren().contains(eleStairBox)!=true){
+              mapSize.getChildren().addAll(eleStairBox);
+            }
+
+
+            int destNum = updatedPlan.getFloorNum(destNumberInput);
+            System.out.println("Dest room is invalid.");
+            //if the destination is one floor higher.
+            if(destNum == updatedPlan.getFloorNum(startNumberInput)-1){
+              updatedPlan.setTemporaryDestNum(700);
+              invalidEntry.setText("");
+
+              // Create a new path and set its start and dest inputs.
+              Path path = new Path(updatedPlan.getGrid(),
+              startNumberInput, updatedPlan.getTemporaryDestNum());
+
+              map1.setStartValues(updatedPlan,startNumberInput);
+              map1.setEndValues(updatedPlan,updatedPlan.getTemporaryDestNum());
+
+              int[][] finalGrid = path.createPath();
+
+              map1.placeStart(finalGrid);
+              map1.placeDest(finalGrid);
+
+              makeGrid(finalGrid,gridPane,rectLength);
+            }
+            }else if(isValidStartRoom(startNumberInput,updatedPlan)==false && isValidStartRoom(startNumberInput,updatedPlan)==false){
             System.out.println("No valid start/dest info. added");
           }
         }
@@ -539,7 +572,7 @@ public class FinderApp extends Application {
         boolean isValidStart = false;
         ArrayList<Room> listOfRooms = aFP.getRoomList();
         for(int i=0; i<listOfRooms.size();i++){
-          int number = (listOfRooms.get(i).getRoomsNumber());//-1000;
+          int number = (listOfRooms.get(i).getRoomsNumber())-1000;
           if(aStartRoom==number){
             isValidStart = true;
             System.out.println("Start room is valid");
@@ -559,7 +592,7 @@ public class FinderApp extends Application {
         boolean isValidDest = false;
         ArrayList<Room> listOfRooms = aFP.getRoomList();
         for(int i=0; i<listOfRooms.size();i++){
-          int number = (listOfRooms.get(i).getRoomsNumber());//-1000;
+          int number = (listOfRooms.get(i).getRoomsNumber())-1000;
           if(aDestRoom==number){
             isValidDest = true;
             System.out.println("Dest room is valid");
@@ -847,3 +880,4 @@ public class FinderApp extends Application {
     primaryStage.show();
   }
 }
+
