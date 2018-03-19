@@ -539,7 +539,7 @@ public class FinderApp extends Application {
         boolean isValidStart = false;
         ArrayList<Room> listOfRooms = aFP.getRoomList();
         for(int i=0; i<listOfRooms.size();i++){
-          int number = (listOfRooms.get(i).getRoomsNumber())-1000;
+          int number = (listOfRooms.get(i).getRoomsNumber());//-1000;
           if(aStartRoom==number){
             isValidStart = true;
             System.out.println("Start room is valid");
@@ -559,7 +559,7 @@ public class FinderApp extends Application {
         boolean isValidDest = false;
         ArrayList<Room> listOfRooms = aFP.getRoomList();
         for(int i=0; i<listOfRooms.size();i++){
-          int number = (listOfRooms.get(i).getRoomsNumber())-1000;
+          int number = (listOfRooms.get(i).getRoomsNumber());//-1000;
           if(aDestRoom==number){
             isValidDest = true;
             System.out.println("Dest room is valid");
