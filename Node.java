@@ -39,6 +39,17 @@ public class Node {
   }
 
   /**
+   * Constructor used for setting the node with an x and y coordinate as well as the endnode value
+   *
+   * @param initX xcoordinate integer
+   * @param initY ycoordinate integer
+   */
+  public Node(int initX, int initY, boolean val) {
+    setXCoord(initX);
+    setYCoord(initY);
+  }
+  
+  /**
    * Copy Constuctor for the node
    *
    * @param copyNode
