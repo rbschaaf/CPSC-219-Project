@@ -44,11 +44,11 @@ public class Node {
    * @param initX xcoordinate integer
    * @param initY ycoordinate integer
    */
-  public Node(int initX, int initY, boolean val) {
+  public Node(int initX, int initY) {
     setXCoord(initX);
     setYCoord(initY);
   }
-  
+
   /**
    * Copy Constuctor for the node
    *
