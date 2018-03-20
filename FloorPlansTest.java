@@ -63,13 +63,13 @@ public class FloorPlansTest{
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", 150);
     a.makeRooms();
     assertEquals("The number of rooms on the 1st floor of Taylor Digital Library is",
-    10, a.getRoomList().size());
-    assertNotNull("Room 151 exists", a.getRoom(151));
+    8, a.getRoomList().size());
+    assertNotNull("Room 151 exists", a.getRoom(151+1000));
     FloorPlans b = new FloorPlans("Taylor Family Digital Library", 259);
     b.makeRooms();
     assertEquals("The number of rooms on the 2nd floor of Taylor Digital Library is",
-    10, b.getRoomList().size());
-    assertNotNull("Room 259 exists", b.getRoom(259));
+    11, b.getRoomList().size());
+    assertNotNull("Room 259 exists", b.getRoom(259+1000));
     FloorPlans c = new FloorPlans();
     c.makeRooms();
     assertEquals("There is this many rooms on an empty floorplan:",
