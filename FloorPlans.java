@@ -7,10 +7,8 @@
 *    1          Hallway - only thing path can move through
 *    9          Portions of rooms
 *    25         Constants.STAIRs
-*   >= 100        Room Numbers, represent doors
+*   >= 100      Room Numbers, represent doors
 *  888 Bathrooms
-*  Constants.STAIR Constants.STAIRs
-*  Constants.EL Constants.ELevators
 */
 
 
@@ -25,12 +23,12 @@ public class FloorPlans {
   {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1153, 1153, 0, 0, 1, 1, 1, 0},
   {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 152, 1152, 0, 0, 1, 155, 1155, Constants.REST},
   {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1150, 1150, 0, 0, 1, 154, 1154, Constants.REST},
-  {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 150, 1150, 0, 0, 1, 1, 25, Constants.STAIR},
+  {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 150, 1150, 0, 0, 1, 1, 125, 1125},
   {0, 1, 1, 1151, 1151, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0},
   {0, 1, 1, 151, 1151, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-  {0, 1, 1, Constants.COFF, 1151, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 700, Constants.EL},
-  {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 701, Constants.EL},
-  {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 702, Constants.EL},
+  {0, 1, 1, Constants.COFF, 1151, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+  {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 170, 1170},
+  {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
   private int[][] tfdlTwo =
@@ -45,11 +43,27 @@ public class FloorPlans {
   {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1251, 1251, 1251, 0},
   {0, 0, 1, 1, 1259, 259, 1259, 1259, 1259, 1259, 1, 1, 1, 1, 250, Constants.REST, 1250, 0},
   {0, 0, 1, 1, 1259, 1259, 1259, 1259, 1259, 1259, 1, 1, 1, 1, 9, 9, 9, 0},
-  {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 25, Constants.STAIR, 0, 0},
-  {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 9, 0, 0},
+  {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 225, 1225, 0, 0},
+  {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 270, 1270, 0, 0},
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
   private int[][] grid =
+  {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+  private int[][] aCopyGrid =
   {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -74,7 +88,7 @@ public class FloorPlans {
 
 
   /**
-  * default constructor for FloorPlans
+  * Default constructor for FloorPlans
   */
   public FloorPlans() {
   }
@@ -97,8 +111,8 @@ public class FloorPlans {
 
   /**
   * Constructor with a building and room number.
-  *
-  * @param: aBuilding a building name of type String. theDestNum a destination room of type int.
+  * @param: aBuilding a building name of type String.
+  * @theDestNum a destination room of type int.
   */
   public FloorPlans(String aBuilding, int theDestNum) {
     building = aBuilding;
@@ -173,7 +187,7 @@ public class FloorPlans {
     if (numDigits < 3) {
       floorNum = 0;
     }
-    // get floor number from first digit of room number if it is not the basement
+    /*get floor number from first digit of room number if it is not the basement*/
     else {
       floorNum = newRoomNumber;
       while (floorNum > 9) {
@@ -189,7 +203,12 @@ public class FloorPlans {
   * @return: grid the current grid from the floorplan as an 2-dimensional int array.
   */
   public int[][] getGrid() {
-    return grid;
+    for(int row=0; row<14;row++){
+      for(int col=0;col<18;col++){
+        aCopyGrid[row][col]=grid[row][col];
+      }
+    }
+    return aCopyGrid;
   }
 
   /**
@@ -221,9 +240,9 @@ public class FloorPlans {
     Room room = null;
     for (int i = 0; i < roomList.size(); i++) {
       if (roomList.get(i).getRoomsNumber() == gridNum) {
-        room = roomList.get(i);
+        room = new Room(roomList.get(i));
       } else if (roomList.get(i).getRoomsNumber() == Constants.DEST){
-        room = roomList.get(i);
+        room = new Room(roomList.get(i));
       }
     }
     return room;
@@ -259,7 +278,7 @@ public class FloorPlans {
     for (int row = 0; row < Constants.ROWNUM; row++) {
       for (int col = 0; col < Constants.COLNUM; col++) {
         gridNum = grid[row][col];
-        if (gridNum > 9) {
+        if (gridNum > 1000) {
           if (getRoom(gridNum) == null) {
             addRoom(gridNum);
           }
