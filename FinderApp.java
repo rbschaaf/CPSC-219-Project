@@ -203,7 +203,7 @@ public class FinderApp extends Application {
       }
     }
 
-    /*
+    /**
     * Method that allows the user to click a start room on the grid.
     * Removes the start and dest room buttons on click.
     */
@@ -224,7 +224,7 @@ public class FinderApp extends Application {
         enterDestRoomVBox.getChildren().remove(destRoomButton);
       }
     }
-    /*
+    /**
     * Method that handles the clicking of a room button/room number on the map.
     * Allows user to select to store the room value in the start room or destination
     room. The user can also unselect the room by clicking the temporary button generated
@@ -279,7 +279,7 @@ public class FinderApp extends Application {
         }
       }
     }
-    /*
+    /**
     * Handle button click for Submit button. Takes text from Text Fields and
     * creates the grid.
     */
@@ -422,7 +422,7 @@ public class FinderApp extends Application {
         }
       }
 
-    /*
+    /**
     * Method to set the building and floor label above the map. Returns a string for the label
     * and requires a floor number and building name.
     *@param floorNumber floor number to use on the floor label.
@@ -801,7 +801,7 @@ public class FinderApp extends Application {
     Button backButton = new Button("Back");
     bottomHBox.getChildren().addAll(backButton);
 
-    /*
+    /**
     * Handles a button click to change scene.
     */
     backButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -898,7 +898,7 @@ public class FinderApp extends Application {
 
     helpPopup.getContent().add(helpStackPane);
 
-    // Handles a click of the Help button to open the Help popup.
+    /** Handles a click of the Help button to open the Help popup.*/
     helpButton.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent event){
         helpPopup.show(primaryStage);
@@ -932,7 +932,7 @@ public class FinderApp extends Application {
 
     Scene scene2 = new Scene(scrollPane,Constants.SCENESIZE,Constants.SCENESIZE);
 
-    /*
+    /**
     * Handles a button click to change the scene to scene 2.
     */
     startButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -946,3 +946,4 @@ public class FinderApp extends Application {
     primaryStage.show();
   }
 }
+
