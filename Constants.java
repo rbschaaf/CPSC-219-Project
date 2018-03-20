@@ -12,8 +12,6 @@ public class Constants{
   public static final int DEST = 5;
   public static final int PATH = 7;
   public static final int REST = 888;
-  public static final int EL = 555;
-  public static final int STAIR = 777;
   public static final int COFF = 999;
 
   public static final int POPUP_WINDOW_HEIGHT = 600;
