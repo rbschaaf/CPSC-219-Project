@@ -38,7 +38,7 @@ public class FinderApp extends Application {
     private int clickedRoom;
     private VBox enterStartRoomVBox = new VBox();
     private VBox enterDestRoomVBox = new VBox();
-    private Rectangle[][] rectangleGrid = new Rectangle[Constants.ROWNUM][Constants.COLNUM];
+    private Rectangle[][] rectangleGrid = new Rectangle[Constants.MAX_GRIDSIZE][Constants.MAX_GRIDSIZE];
     private Button startRoomButton = new Button("Store selection in start room");
     private Button destRoomButton = new Button("Store selection in destination room");
     private boolean stairs = false;
@@ -235,9 +235,13 @@ public class FinderApp extends Application {
       int roomNum;
       int count =0;
       StackPane aSP;
-      public HandleRoomClick(int roomNumber, StackPane aStackPane){
+      int rowLength;
+      int colLength;
+      public HandleRoomClick(int aRowLength, int aColLength, int roomNumber, StackPane aStackPane){
         roomNum = roomNumber;
         aSP = aStackPane;
+        rowLength = aRowLength;
+        colLength = aColLength;
       }
       public void handle(ActionEvent event){
         int row;
@@ -245,8 +249,8 @@ public class FinderApp extends Application {
 
         enterStartRoomVBox.getChildren().remove(startRoomButton);
         enterDestRoomVBox.getChildren().remove(destRoomButton);
-        for(row=0;row<Constants.ROWNUM;row++){
-          for(col=0;col<Constants.COLNUM;col++){
+        for(row=0;row< rowLength;row++){
+          for(col=0;col< colLength;col++){
             if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==0){
 
               rectangleGrid[row][col].setFill(Color.RED);
@@ -430,6 +434,7 @@ public class FinderApp extends Application {
     */
     public String setBuildingAndFloorLabel(int floorNumber, String buildingName){
       String currentBuildingAndFloor = "";
+      if (floorNumber > 0){
       if (floorNumber%10 == 1){
         currentBuildingAndFloor = buildingName + " " + floorNumber + "st Floor";
       } else if (floorNumber%10 == 2){
@@ -438,6 +443,9 @@ public class FinderApp extends Application {
         currentBuildingAndFloor = buildingName + " " + floorNumber +  "rd Floor";
       } else{
         currentBuildingAndFloor = buildingName + " " + floorNumber +  "th Floor";
+      }}
+      else{
+        currentBuildingAndFloor = buildingName + " Ground Floor";
       }
       return currentBuildingAndFloor;
     }
@@ -466,8 +474,8 @@ public class FinderApp extends Application {
     */
     public void highlight(FloorPlans aFloorPlan, int roomNumber){
       int roomNum = roomNumber;
-      for(int row=0;row<Constants.ROWNUM;row++){
-        for(int col=0;col<Constants.COLNUM;col++){
+      for(int row=0;row<aFloorPlan.getRowLength();row++){
+        for(int col=0;col<aFloorPlan.getColLength(row);col++){
           //Room colours
           if(aFloorPlan.getRoom(roomNum+1000) != null ){
             if(aFloorPlan.getGrid()[row][col] == aFloorPlan.getRoom(roomNum+1000).getRoomsNumber()){
@@ -497,8 +505,10 @@ public class FinderApp extends Application {
         aGridPane.getChildren().clear();
 
         // Set up the grid for the floor.
-        for (int row = 0; row < Constants.ROWNUM; row++){
-          for(int col = 0; col < Constants.COLNUM; col++){
+        for (int row = 0; row < aGrid.length; row++){
+          for(int col = 0; col < aGrid[row].length; col++){
+            int rowLength = aGrid.length;
+            int colLength = aGrid[row].length;
             Rectangle rect = setRectangles(row, col, aGrid, rectLength);
 
             int roomNumbers = 0;
@@ -521,7 +531,7 @@ public class FinderApp extends Application {
             if (rooms.getText().isEmpty()){ //https://stackoverflow.com/questions/25189027/how-to-check-if-lable-is-not-empty
               stack.getChildren().add(overlayStack);
             } else{
-              Button roomButton = createRoomButtons(roomNumbers, startNumberInput, destNumberInput, stack);
+              Button roomButton = createRoomButtons(roomNumbers, startNumberInput, destNumberInput, stack, rowLength, colLength);
               roomButton.setMaxSize(rectLength, rectLength); //https://stackoverflow.com/questions/35344702/how-do-i-get-buttons-to-fill-a-javafx-gridpane
               stack.getChildren().addAll(roomButton, overlayStack);
             }
@@ -608,7 +618,7 @@ public class FinderApp extends Application {
     *@param destNumberInput an integer representing the destination room number.
     *@param stack a stackPane to add the buttons to.
     */
-    public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput, StackPane stack){
+    public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput, StackPane stack, int rowLength, int colLength){
         Button aRoomButton = new Button();
         if (contains(notMap,roomNumbers) == false){
           aRoomButton = new Button (""+roomNumbers);
@@ -625,7 +635,7 @@ public class FinderApp extends Application {
         /*
         * Clicking a room button is handled by HandleRoomClick.
         */
-        aRoomButton.setOnAction(new HandleRoomClick(roomNumberValue, stack));
+        aRoomButton.setOnAction(new HandleRoomClick(rowLength, colLength, roomNumberValue, stack));
         return aRoomButton;
       }
 
@@ -946,4 +956,3 @@ public class FinderApp extends Application {
     primaryStage.show();
   }
 }
-
