@@ -225,8 +225,8 @@ public class Path {
    */
   public ArrayList<Node> createNodeArray(int[][] aGrid) {
     ArrayList<Node> nodes = new ArrayList<Node>();
-    for (int row = 0; row < 14; row++) {
-      for (int column = 0; column < 18; column++) {
+    for (int row = 0; row < aGrid.length; row++) {
+      for (int column = 0; column < aGrid[row].length; column++) {
         //used for the Node constuctor
         boolean endNode = false;
 
