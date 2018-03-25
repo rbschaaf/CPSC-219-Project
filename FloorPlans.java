@@ -15,6 +15,44 @@
 import java.util.ArrayList;
 
 public class FloorPlans {
+
+  private int[][] tfdlGround =
+  {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 1011, 1011, 1011, 1011, 1011, 1011, 1011, 0, 1015, 1015, 1015, 1015, 1015, 1015, 0},
+  {0, 1011, 1011, 1011, 1011, 1011, 1011, 1011, 0,1015, 1015, 1015, 1015, 1015, 1015, 0},
+  {0, 1011, 1011, 1011, 1011, 1011, 1011, 1011, 0, 1015, 1015, 1015, 1015, 1015, 1015, 0},
+  {0, 1011, 1011, 1011, 1011, 1011, 0, 0, 0, 0, 0, 0, 0, 1015, 1015, 0},
+  {0, 1011, 1011, 1011, 1011, 1011, 0, 1012, 1012, 1012, 1012, 1012, 0, 1015, 1015,  0},
+  {0, 1011, 1011, 11, 1011, 1011, 0, 1012, 1012, 1012, 1012, 1012, 0, 1015, 1015,  0},
+  {0, 1011, 1011, 1, 1, 1, 1, 12, 1012, 1012, 1012, 1, 1, 15, 1015, 0},
+  {0, 1011, 1011, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+  {0, 1011, 1011, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1019, 1019, 0},
+  {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1019, 1019, 0},
+  {0, 1039, 39, 1, 1, 1038, 1038, 0, 10, 1010, 1, 1, 1, 19, 1019, 0},
+  {0, 1039, 1039, 1, 1, 1038, 1038, 0, 1010, 1010, 1, 1, 1, 1019, 1019, 0},
+  {0, 1039, 1039, 1, 1, 38, 1038, 0, 1010, 1010, 1, 1, 1, 1019, 1019, 0},
+  {0, 1039, 1039, 1, 1, 0, 0, 1010, 1010, 1010, 1, 1, 1, 1019, 1019, 0},
+  {0, 1039, 1039, 1, 1, 17, 1017, 1010, 1010, 1010, 1, 1, 1, 1019, 1019, 0},
+  {0, 1039, 1039, 1, 1, 23, 1023, 0, 0, 0, 1, 1, 1, 1019, 1019, 0},
+  {0, 1039, 1039, 1, 1, 31, 1031, 0, 1022, 22, 1, 1, 1, 0, 0, 0},
+  {0, 1039, 1039, 1, 1, 1031, 1031, 0, 1022, 1022, 1, 1, 1, 21, 1021, 0},
+  {0, 0, 0, 1, 1, 1031, 1031, 0, 1022, 1022, 1, 1, 1, 0, 0, 0},
+  {0, 1035, 1035, 1, 1, 1031, 1031, 0, 1022, 1022, 1, 1, 1, 37, 1037, 0},
+  {0, 1035, 1035, 1, 1, 0, 0, 0, 1022, 1022, 1, 1, 1, 1037, 1037, 0},
+  {0, 1035, 35, 1, 1, 14, 1014, 0, 1022, 1022, 1, 1, 1, 1037, 1037, 0},
+  {0, 1035, 1035, 1, 1, 1014, 1014, 0, 1022, 1022, 1, 1, 1, 1037, 1037, 0},
+  {0, 1035, 1035, 1, 1, 1014, 1014, 0, 1022, 1022, 1, 1, 1, 0, 0, 0},
+  {0, 1035, 1035, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1002, 1002, 0},
+  {0, 1035, 1035, 1, 1, 18, 1018, 0, 1020, 20, 1, 1, 1, 1002, 1002, 0},
+  {0, 1035, 1035, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1002, 1002, 0},
+  {0, 1035, 1035, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1002, 0},
+  {0, 1035, 1035, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+  {0, 1035, 1035, 1, 1, 1, 1, 1010, 1010, 1, 1, 1, 1, 1013, 1013, 0},
+  {0, 1035, 1035, 0, 10, 1010, 1010, 1010, 1010, 0, 13, 1013, 1013, 1013,1013,  0},
+  {0, 1035, 1035, 0, 1010, 1010, 1010, 1010, 1010, 0, 1013, 1013, 1013, 1013, 1013, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+//17 is Bathroom, 18/20 is elevator, 21/23 is stairs
+
   private int[][] tfdlOne =
   {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
@@ -131,6 +169,25 @@ public class FloorPlans {
     return destNum;
   }
 
+/**
+* Getter method for the row length of the grid.
+*
+* @return: rowLength the row length of the grid
+*/
+public int getRowLength(){
+  return grid.length;
+}
+
+/**
+* Getter method for the column length of the grid.
+*
+* @param: rowNumber the number of the current row in the grid
+* @return: colLength the column length of the grid
+*/
+public int getColLength(int rowNumber){
+  return grid[rowNumber].length;
+}
+
   /**
   * Getter method for building name of current flooplan.
   *
@@ -203,13 +260,14 @@ public class FloorPlans {
   * @return: grid the current grid from the floorplan as an 2-dimensional int array.
   */
   public int[][] getGrid() {
-    for(int row=0; row<14;row++){
-      for(int col=0;col<18;col++){
+    return grid;}
+    /*for(int row=0; row<grid.length;row++){
+      for(int col=0;col<grid[row].length;col++){
         aCopyGrid[row][col]=grid[row][col];
       }
     }
     return aCopyGrid;
-  }
+  }*/
 
   /**
   * Method to set the appropriate grid for the floorplan based on the building
@@ -223,7 +281,10 @@ public class FloorPlans {
     if (building.equals("Taylor Family Digital Library")) {
       /* Enters the inner loops based on the floor number, which is based on
       * desired room number. */
-      if (floor == 1) {
+      if (floor == 0){
+        grid = tfdlGround;
+      }
+      else if (floor == 1) {
         grid = tfdlOne;
       } else if (floor == 2) {
         grid = tfdlTwo;
@@ -275,8 +336,8 @@ public class FloorPlans {
   */
   public void makeRooms() {
     int gridNum;
-    for (int row = 0; row < Constants.ROWNUM; row++) {
-      for (int col = 0; col < Constants.COLNUM; col++) {
+    for (int row = 0; row < grid.length; row++) {
+      for (int col = 0; col < grid[row].length; col++) {
         gridNum = grid[row][col];
         if (gridNum > 1000) {
           if (getRoom(gridNum) == null) {
@@ -294,8 +355,8 @@ public class FloorPlans {
   */
   public void populateRooms() {
     int gridNum;
-    for (int row = 0; row < Constants.ROWNUM; row++) {
-      for (int col = 0; col < Constants.COLNUM; col++) {
+    for (int row = 0; row < grid.length; row++) {
+      for (int col = 0; col < grid[row].length; col++) {
         gridNum = grid[row][col];
         if (getRoom(gridNum) != null) {
           getRoom(gridNum).addNode(row, col);
@@ -310,6 +371,18 @@ public class FloorPlans {
         }
 
       }
+    }
+  }
+
+  /**
+  * Printing method for the a saved 2-dimensional grid from a file
+  */
+  public void printSavedGrid(int[][] aGrid) {
+    for (int row = 0; row < aGrid.length; row++) {
+      for (int column = 0; column < aGrid[row].length; column++) {
+        System.out.printf("%4d", aGrid[row][column]);
+      }
+      System.out.println();
     }
   }
 
