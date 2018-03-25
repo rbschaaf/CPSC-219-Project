@@ -14,6 +14,17 @@ import javafx.scene.image.*;
 import javafx.beans.value.*;
 import javafx.scene.control.ScrollPane.*;
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.NumberFormatException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.EOFException;
 
 
 public class FinderApp extends Application {
@@ -38,13 +49,15 @@ public class FinderApp extends Application {
     private int clickedRoom;
     private VBox enterStartRoomVBox = new VBox();
     private VBox enterDestRoomVBox = new VBox();
-    private Rectangle[][] rectangleGrid = new Rectangle[Constants.ROWNUM][Constants.COLNUM];
+    private Rectangle[][] rectangleGrid = new Rectangle[Constants.MAX_GRIDSIZE][Constants.MAX_GRIDSIZE];
     private Button startRoomButton = new Button("Store selection in start room");
     private Button destRoomButton = new Button("Store selection in destination room");
     private boolean stairs = false;
     private FloorPlans currentFloorPlan;
     private VBox eleStairBox = new VBox(10);
     private VBox mapSize = new VBox();
+    private String fileName;
+    private FloorPlans updatedPlan;
 
     private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,Constants.START,Constants.DEST,
       Constants.PATH,Constants.REST,1270,1170,1171,1172,1225,1125,Constants.COFF};
@@ -52,6 +65,7 @@ public class FinderApp extends Application {
     private TextField enterStartRoom = new TextField("Enter the start room");
     private TextField enterDestRoom= new TextField("Enter destination room");
     private ComboBox<String> buildingDropDown = new ComboBox<String>();
+    private ComboBox<String> savedPathDropDown = new ComboBox<String>();
     //https://docs.oracle.com/javafx/2/ui_controls/combo-box.htm
 
     private ToggleGroup sizeGroup = new ToggleGroup();
@@ -235,9 +249,13 @@ public class FinderApp extends Application {
       int roomNum;
       int count =0;
       StackPane aSP;
-      public HandleRoomClick(int roomNumber, StackPane aStackPane){
+      int rowLength;
+      int colLength;
+      public HandleRoomClick(int aRowLength, int aColLength, int roomNumber, StackPane aStackPane){
         roomNum = roomNumber;
         aSP = aStackPane;
+        rowLength = aRowLength;
+        colLength = aColLength;
       }
       public void handle(ActionEvent event){
         int row;
@@ -245,8 +263,8 @@ public class FinderApp extends Application {
 
         enterStartRoomVBox.getChildren().remove(startRoomButton);
         enterDestRoomVBox.getChildren().remove(destRoomButton);
-        for(row=0;row<Constants.ROWNUM;row++){
-          for(col=0;col<Constants.COLNUM;col++){
+        for(row=0;row< rowLength;row++){
+          for(col=0;col< colLength;col++){
             if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==0){
 
               rectangleGrid[row][col].setFill(Color.RED);
@@ -297,7 +315,7 @@ public class FinderApp extends Application {
             invalidEntry.setText ("Please enter the room number as an integer.");
           }
           buildingInput = buildingDropDown.getValue();
-          FloorPlans updatedPlan = new FloorPlans(buildingInput, startNumberInput);
+          updatedPlan = new FloorPlans(buildingInput, startNumberInput);
 
           // Create a new FloorPlan and set it as the current floorplan of the map.
           FloorPlans dummyPlan = new FloorPlans(buildingInput, 250);
@@ -430,6 +448,7 @@ public class FinderApp extends Application {
     */
     public String setBuildingAndFloorLabel(int floorNumber, String buildingName){
       String currentBuildingAndFloor = "";
+      if (floorNumber > 0){
       if (floorNumber%10 == 1){
         currentBuildingAndFloor = buildingName + " " + floorNumber + "st Floor";
       } else if (floorNumber%10 == 2){
@@ -438,6 +457,9 @@ public class FinderApp extends Application {
         currentBuildingAndFloor = buildingName + " " + floorNumber +  "rd Floor";
       } else{
         currentBuildingAndFloor = buildingName + " " + floorNumber +  "th Floor";
+      }}
+      else{
+        currentBuildingAndFloor = buildingName + " Ground Floor";
       }
       return currentBuildingAndFloor;
     }
@@ -466,8 +488,8 @@ public class FinderApp extends Application {
     */
     public void highlight(FloorPlans aFloorPlan, int roomNumber){
       int roomNum = roomNumber;
-      for(int row=0;row<Constants.ROWNUM;row++){
-        for(int col=0;col<Constants.COLNUM;col++){
+      for(int row=0;row<aFloorPlan.getRowLength();row++){
+        for(int col=0;col<aFloorPlan.getColLength(row);col++){
           //Room colours
           if(aFloorPlan.getRoom(roomNum+1000) != null ){
             if(aFloorPlan.getGrid()[row][col] == aFloorPlan.getRoom(roomNum+1000).getRoomsNumber()){
@@ -497,8 +519,10 @@ public class FinderApp extends Application {
         aGridPane.getChildren().clear();
 
         // Set up the grid for the floor.
-        for (int row = 0; row < Constants.ROWNUM; row++){
-          for(int col = 0; col < Constants.COLNUM; col++){
+        for (int row = 0; row < aGrid.length; row++){
+          for(int col = 0; col < aGrid[row].length; col++){
+            int rowLength = aGrid.length;
+            int colLength = aGrid[row].length;
             Rectangle rect = setRectangles(row, col, aGrid, rectLength);
 
             int roomNumbers = 0;
@@ -521,7 +545,7 @@ public class FinderApp extends Application {
             if (rooms.getText().isEmpty()){ //https://stackoverflow.com/questions/25189027/how-to-check-if-lable-is-not-empty
               stack.getChildren().add(overlayStack);
             } else{
-              Button roomButton = createRoomButtons(roomNumbers, startNumberInput, destNumberInput, stack);
+              Button roomButton = createRoomButtons(roomNumbers, startNumberInput, destNumberInput, stack, rowLength, colLength);
               roomButton.setMaxSize(rectLength, rectLength); //https://stackoverflow.com/questions/35344702/how-do-i-get-buttons-to-fill-a-javafx-gridpane
               stack.getChildren().addAll(roomButton, overlayStack);
             }
@@ -608,7 +632,7 @@ public class FinderApp extends Application {
     *@param destNumberInput an integer representing the destination room number.
     *@param stack a stackPane to add the buttons to.
     */
-    public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput, StackPane stack){
+    public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput, StackPane stack, int rowLength, int colLength){
         Button aRoomButton = new Button();
         if (contains(notMap,roomNumbers) == false){
           aRoomButton = new Button (""+roomNumbers);
@@ -625,7 +649,7 @@ public class FinderApp extends Application {
         /*
         * Clicking a room button is handled by HandleRoomClick.
         */
-        aRoomButton.setOnAction(new HandleRoomClick(roomNumberValue, stack));
+        aRoomButton.setOnAction(new HandleRoomClick(rowLength, colLength, roomNumberValue, stack));
         return aRoomButton;
       }
 
@@ -667,6 +691,86 @@ public class FinderApp extends Application {
         }
       }
       return isValidDest;
+    }
+
+    /**
+    * Method to write the current path to a file of a name the user chooses.
+    * Adapted from https://stackoverflow.com/questions/34958829/how-to-save-a-2d-array-into-a-text-file-with-bufferedwriter
+    */
+    public void writeToFile(){
+      //BufferedWriter outputStream = null;
+      //  try{
+      try{  BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+        //}catch(IOException e){
+        //  System.out.println("Error opening output file" + fileName);
+        //}
+
+        StringBuilder builder = new StringBuilder();
+        int[][] aGrid = updatedPlan.getGrid();
+        for(int i = 0; i < aGrid.length; i++)//for each row
+        {
+          for(int j = 0; j < aGrid[i].length; j++)//for each column
+          {
+            //int currentRow = updatedPlan.getCurrentRow(i);
+            //int currentCol = updatedPlan.getCurrentCol(j);
+            builder.append(aGrid[i][j] +"");//append to the output string
+            if(j < aGrid[i].length - 1)//if this is not the last row element
+            builder.append(",");//then add comma (if you don't like commas you can use spaces)
+          }
+          builder.append("\n");//append new line at the end of the row
+        }
+        //BufferedWriter writer = new BufferedWriter(new FileWriter("/c:/sudoku" + date + ".txt"));
+        writer.write(builder.toString());//save the string representation of the board
+        writer.close();
+        System.out.println("Map saved");
+        savedPathDropDown.getItems().add(fileName);
+      }catch(FileNotFoundException e){
+        System.out.println("Problem opening the file" + fileName);
+      }catch(IOException e){
+        System.out.println("Problem with output to file"+ fileName);
+      }
+    }
+
+    /**
+    * Method to read a saved path from a file of a name saved in the savedPathDropDown combobox.
+    * Adapted from https://stackoverflow.com/questions/34958829/how-to-save-a-2d-array-into-a-text-file-with-bufferedwriter
+    */
+    public void readFromFile(){
+
+      try{
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+      }catch(IOException e){
+        System.out.println("Error opening output file"+fileName);
+      }
+      try{
+        int[][] aGrid = new int[Constants.MAX_GRIDSIZE][Constants.MAX_GRIDSIZE];
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        String line = "";
+        int row = 0;
+        FloorPlans savedFloorPlan = new FloorPlans();
+        while((line = reader.readLine()) != null)
+        {
+           String[] cols = line.split(","); //note that if you have used space as separator you have to split on " "
+           int col = 0;
+           for(String  c : cols)
+           {
+              aGrid[row][col] = Integer.parseInt(c);
+              col++;
+           }
+           row++;
+        }
+        reader.close();
+        System.out.println("End of reading from file.");
+        savedFloorPlan.printSavedGrid(aGrid);
+
+
+      }catch(FileNotFoundException e){
+        System.out.println("Problem opening file"+ fileName);
+      }catch(EOFException e){
+        System.out.println("Problem reading1 the file" + fileName);
+      }catch(IOException e){
+        System.out.println("Problem reading2 the file" + fileName);
+      }
     }
 
   @Override
@@ -743,8 +847,16 @@ public class FinderApp extends Application {
     largeButton.setToggleGroup(sizeGroup);
     largeButton.setUserData(Constants.LARGE_RECT);
 
+    //Button to save the path to a file.
+    Button savePath = new Button("Save Path");
+    //TextField to enter the file name to save to.
+    TextField fileTextField = new TextField("Save path as:");
+
+    savedPathDropDown.setPromptText("Saved Paths");
+
     mapSize.setAlignment(Pos.TOP_LEFT);
-    mapSize.getChildren().addAll(smallButton, mediumButton, largeButton);
+    // group containing radio buttons to control mapsize, the button to save a path, and combobox with saved paths.
+    mapSize.getChildren().addAll(smallButton, mediumButton, largeButton, fileTextField, savePath, savedPathDropDown);
 
     /*Sets the size of the map based on the users selection of the map size radiobutton group.
     * https://stackoverflow.com/questions/32424915/how-to-get-selected-radio-button-from-togglegroup */
@@ -758,6 +870,26 @@ public class FinderApp extends Application {
         }
       }
     });
+
+    /**
+    * Handles the button click of the savePath button to save the path to a file.
+    */
+    savePath.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        fileName = (fileTextField.getText() + ".txt");
+        writeToFile();
+      }
+    });
+
+    /**
+    * Handles user selecting a saved path from the combobox.
+    */
+    savedPathDropDown.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent event){
+              fileName = savedPathDropDown.getValue();
+              readFromFile();
+            }
+          });
 
     HBox topRow2 = new HBox();
     topRow2.setAlignment(Pos.CENTER);
@@ -946,4 +1078,3 @@ public class FinderApp extends Application {
     primaryStage.show();
   }
 }
-
