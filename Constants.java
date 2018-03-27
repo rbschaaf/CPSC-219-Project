@@ -24,8 +24,8 @@ public class Constants{
   public static final int BUILDING_AND_FLOOR_LABEL_FONTSIZE = 18;
   public static final int PREFERRED_HBOX_VBOX_SIZE = 10;
 
-  public static final int ROWNUM = 14;
-  public static final int COLNUM = 18;
+  public static final int MAX_GRIDSIZE = 40;
+
 
   public static final int ROOMNUMBER_FONTSIZE = 10;
   public static final int APPTITLE_FONTSIZE = 40;
