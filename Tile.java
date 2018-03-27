@@ -1,5 +1,10 @@
-// Last updated Feb 29 by Nicki.
-public class Tile{
+// Last updated 29 by Nicki.
+
+/**
+ * Class that represents a single point in the grid
+ * Last edited by Dayan - 27 Mar 2018
+ */
+public class Tile {
   private int xCoord;
   private int yCoord;
 

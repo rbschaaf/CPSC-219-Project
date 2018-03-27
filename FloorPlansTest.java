@@ -1,17 +1,16 @@
 /**
-* Class to test the FloorPlans class
-*/
-
+ * Class to test the FloorPlans class
+ */
 
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class FloorPlansTest{
+public class FloorPlansTest {
 
   @Test
-  public void testConstructors(){
+  public void testConstructors() {
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", 150);
     assertEquals("Destination number is", 150, a.getDestNumber());
     assertEquals("Building is", "Taylor Family Digital Library", a.getBuildingName());
@@ -22,7 +21,7 @@ public class FloorPlansTest{
   }
 
   @Test
-  public void testTemporaryNums(){
+  public void testTemporaryNums() {
     FloorPlans a = new FloorPlans();
     a.setTemporaryDestNum(260);
     a.setTemporaryStartNum(261);
@@ -31,7 +30,7 @@ public class FloorPlansTest{
   }
 
   @Test
-  public void testRoomLists(){
+  public void testRoomLists() {
     FloorPlans a = new FloorPlans();
     a.addRoom(1);
     a.addRoom(2);
@@ -40,17 +39,17 @@ public class FloorPlansTest{
   }
 
   @Test
-  public void testGrid(){
+  public void testGrid() {
     FloorPlans a = new FloorPlans();
-    a.setGrid("Taylor Family Digital Library",150);
+    a.setGrid("Taylor Family Digital Library", 150);
     assertNotNull("The grid exists", a.getGrid());//http://www.javacodex.com/JUnit/Test-Object-Is-Not-Null
     FloorPlans b = new FloorPlans();
-    b.setGrid("Taylor Family Digital Library",261);
+    b.setGrid("Taylor Family Digital Library", 261);
     assertNotNull("The grid exists", b.getGrid());
   }
 
   @Test
-  public void testFloorNum(){
+  public void testFloorNum() {
     FloorPlans a = new FloorPlans();
     assertEquals("Floor is", 2, a.getFloorNum(299));
     assertEquals("Floor is", 0, a.getFloorNum(51));
@@ -59,21 +58,21 @@ public class FloorPlansTest{
   }
 
   @Test
-  public void testRooms(){
+  public void testRooms() {
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", 150);
     a.makeRooms();
     assertEquals("The number of rooms on the 1st floor of Taylor Digital Library is",
-    8, a.getRoomList().size());
-    assertNotNull("Room 151 exists", a.getRoom(151+1000));
+      8, a.getRoomList().size());
+    assertNotNull("Room 151 exists", a.getRoom(151 + 1000));
     FloorPlans b = new FloorPlans("Taylor Family Digital Library", 259);
     b.makeRooms();
     assertEquals("The number of rooms on the 2nd floor of Taylor Digital Library is",
-    11, b.getRoomList().size());
-    assertNotNull("Room 259 exists", b.getRoom(259+1000));
+      11, b.getRoomList().size());
+    assertNotNull("Room 259 exists", b.getRoom(259 + 1000));
     FloorPlans c = new FloorPlans();
     c.makeRooms();
     assertEquals("There is this many rooms on an empty floorplan:",
-    0, c.getRoomList().size());
+      0, c.getRoomList().size());
     assertNull("Rooms do not exist on empty floorplan grid", c.getRoom(0));
   }
 }

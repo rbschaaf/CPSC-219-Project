@@ -12,11 +12,14 @@ public class MapMain {
   /**
    * Default constructor for MapMain
    */
-  public MapMain (){
-  };
+  public MapMain() {
+  }
+
+  ;
 
   /**
    * Method to get starting room from user keyboard input
+   *
    * @return roomStart the starting room number as an int
    */
   public int getStartRoom() {
@@ -28,6 +31,7 @@ public class MapMain {
 
   /**
    * Method to get destination room from user keyboard input
+   *
    * @return roomDest the destination room number as an int
    */
   public int getDestRoom() {
@@ -38,7 +42,7 @@ public class MapMain {
   }
 
 
-  public void main(){
+  public void main() {
     Map newMap = new Map();
     //call method to print the map
     newMap.printGrid();
@@ -50,12 +54,12 @@ public class MapMain {
 
 
     // Make a new floorplan
-    FloorPlans floorPlan = new FloorPlans("Taylor Family Digital Library",roomDest);
+    FloorPlans floorPlan = new FloorPlans("Taylor Family Digital Library", roomDest);
     newMap.setCurrentFloorPlan(floorPlan);
     // make a new path
-    Path path = new Path(floorPlan.getGrid(),roomStart,roomDest);
-    newMap.setStartValues(floorPlan,roomStart);
-    newMap.setEndValues(floorPlan,roomDest);
+    Path path = new Path(floorPlan.getGrid(), roomStart, roomDest);
+    newMap.setStartValues(floorPlan, roomStart);
+    newMap.setEndValues(floorPlan, roomDest);
 
 
     //call method to create the path from starting room to destination room.
@@ -74,7 +78,7 @@ public class MapMain {
   }
 
 
-  public static void main(String[] args){
+  public static void main(String[] args) {
     MapMain mapMain = new MapMain();
     mapMain.main();
 

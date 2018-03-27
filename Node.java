@@ -58,7 +58,6 @@ public class Node extends Tile {
   }
 
 
-
   /**
    * Setter method for whether the node is a start node
    *
