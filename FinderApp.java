@@ -58,6 +58,7 @@ public class FinderApp extends Application {
     private VBox mapSize = new VBox();
     private String fileName;
     private FloorPlans updatedPlan;
+    private     File savedPathDir;
 
     private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,Constants.START,Constants.DEST,
       Constants.PATH,Constants.REST,1270,1170,1171,1172,1225,1125,Constants.COFF};
@@ -699,8 +700,8 @@ public class FinderApp extends Application {
     */
     public void writeToFile(){
       //BufferedWriter outputStream = null;
-      //  try{
-      try{  BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+      //Saves file to a specific package created for SavedPaths.
+      try{  BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir")+"/SavedPaths/"+fileName));
         //}catch(IOException e){
         //  System.out.println("Error opening output file" + fileName);
         //}
@@ -812,6 +813,10 @@ public class FinderApp extends Application {
     gridPaneVBox.getChildren().addAll(buildingAndFloorLabel,gridPane);
     gridPaneVBox.setAlignment(Pos.CENTER);
 
+    /*Creates a subdirectory within current directory of the program was opened in
+    called SavedPaths to store any saved paths.
+    https://stackoverflow.com/questions/3634853/how-to-create-a-directory-in-java*/
+    new File(System.getProperty("user.dir")+"/SavedPaths").mkdirs();
 
     Label appName = new Label ("Taylor Family Digital Library Pathfinder");
     appName.setFont(Font.font("Verdana", FontWeight.BOLD,Constants.APP_LABEL_FONTSIZE));
@@ -852,6 +857,33 @@ public class FinderApp extends Application {
     //TextField to enter the file name to save to.
     TextField fileTextField = new TextField("Save path as:");
 
+    //get a list of saved paths currently saved within the SavedPaths package.
+    File curDir = new File((System.getProperty("user.dir"))); //https://stackoverflow.com/questions/4871051/getting-the-current-working-directory-in-java
+    File[] filesList = curDir.listFiles(); //https://stackoverflow.com/questions/15482423/how-to-list-the-files-in-current-directory
+    //Loop through the current directory to find the full name of the SavedPaths directory.
+    for (File file : filesList){
+      if(file.getName().endsWith("SavedPaths")){ //http://javaconceptoftheday.com/list-all-files-in-directory-in-java/
+        savedPathDir = (file);
+      }
+    }
+    /*Loop through the SavedPaths directory and get all files from within it.
+    Abridges the name of the file directory, so it is more manageable on the screen.*/
+    ArrayList<File> savedPathFiles = new ArrayList<File>();
+    File[] savedPathsArray = savedPathDir.listFiles();
+    for (File file : savedPathsArray){
+      String shortenedNameFile = file+"";
+      shortenedNameFile = shortenedNameFile.split("SavedPaths/")[1]; //https://stackoverflow.com/questions/18220022/how-to-trim-a-string-after-a-specific-character-in-java
+      savedPathDropDown.getItems().add(shortenedNameFile);
+    }
+
+
+
+
+
+
+
+  //  savedPathDropDown.getItems().add();
+
     savedPathDropDown.setPromptText("Saved Paths");
 
     mapSize.setAlignment(Pos.TOP_LEFT);
@@ -886,7 +918,8 @@ public class FinderApp extends Application {
     */
     savedPathDropDown.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
-              fileName = savedPathDropDown.getValue();
+              //Completing the abridged file name to the full file name
+              fileName = (System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
               readFromFile();
             }
           });
@@ -894,7 +927,7 @@ public class FinderApp extends Application {
     HBox topRow2 = new HBox();
     topRow2.setAlignment(Pos.CENTER);
     topRow2.getChildren().add(appName);
-    
+
 
 
     HBox invalidHBox = new HBox(Constants.PREFERRED_HBOX_VBOX_SIZE);
