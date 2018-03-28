@@ -58,7 +58,7 @@ public class FinderApp extends Application {
     private VBox mapSize = new VBox();
     private String fileName;
     private FloorPlans updatedPlan;
-    private     File savedPathDir;
+    private File savedPathDir;
 
     private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,Constants.START,Constants.DEST,
       Constants.PATH,Constants.REST,1270,1170,1171,1172,1225,1125,Constants.COFF};
@@ -875,15 +875,7 @@ public class FinderApp extends Application {
       shortenedNameFile = shortenedNameFile.split("SavedPaths/")[1]; //https://stackoverflow.com/questions/18220022/how-to-trim-a-string-after-a-specific-character-in-java
       savedPathDropDown.getItems().add(shortenedNameFile);
     }
-
-
-
-
-
-
-
-  //  savedPathDropDown.getItems().add();
-
+    
     savedPathDropDown.setPromptText("Saved Paths");
 
     mapSize.setAlignment(Pos.TOP_LEFT);
