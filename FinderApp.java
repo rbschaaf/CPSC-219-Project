@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.scene.text.*;
 import javafx.scene.image.*;
 import javafx.beans.value.*;
+import javafx.scene.effect.*;
 import javafx.scene.control.ScrollPane.*;
 import java.util.ArrayList;
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.EOFException;
+import resources.Constants;
 
 
 public class FinderApp extends Application {
@@ -788,6 +790,10 @@ public class FinderApp extends Application {
     Label appTitle = new Label("Room-Finder App!");
     appTitle.setFont(Font.font("Verdana", FontWeight.BOLD,Constants.APPTITLE_FONTSIZE));
 
+    DropShadow titleShadow = new DropShadow();
+    appTitle.setEffect(titleShadow);
+    appTitle.setTextFill(Color.WHITE);
+
     Button startButton = new Button("Find a Room");
     Image uOfCCoat = new Image("UofCcoat.png");
     ImageView uOfCImage = new ImageView(uOfCCoat);
@@ -808,9 +814,18 @@ public class FinderApp extends Application {
     /* Put gridpane in VBox with a title above it infoming the user of the building
     and floor number. Both are set to the center. */
     VBox gridPaneVBox = new VBox();
+    VBox scrollPaneVBox = new VBox();
+    ScrollPane borderScroll = new ScrollPane();
+    borderScroll.setPannable(true);
+    borderScroll.setFitToWidth(true);
+    //https://stackoverflow.com/questions/30687994/how-to-center-the-content-of-a-javafx-8-scrollpane
+    borderScroll.setStyle("-fx-background-color:transparent;");
+    borderScroll.setContent(gridPane);
+    scrollPaneVBox.getChildren().addAll(borderScroll);
     gridPane.setAlignment(Pos.CENTER);
     buildingAndFloorLabel.setFont(Font.font("Verdana", Constants.BUILDING_AND_FLOOR_LABEL_FONTSIZE));
-    gridPaneVBox.getChildren().addAll(buildingAndFloorLabel,gridPane);
+    gridPaneVBox.getChildren().addAll(buildingAndFloorLabel,scrollPaneVBox);
+    scrollPaneVBox.setAlignment(Pos.CENTER);
     gridPaneVBox.setAlignment(Pos.CENTER);
 
     /*Creates a subdirectory within current directory of the program was opened in
@@ -820,6 +835,7 @@ public class FinderApp extends Application {
 
     Label appName = new Label ("Taylor Family Digital Library Pathfinder");
     appName.setFont(Font.font("Verdana", FontWeight.BOLD,Constants.APP_LABEL_FONTSIZE));
+    appName.setPadding(new Insets(10));
 
     buildingDropDown.getItems().addAll("Taylor Family Digital Library");
 
@@ -856,6 +872,7 @@ public class FinderApp extends Application {
     Button savePath = new Button("Save Path");
     //TextField to enter the file name to save to.
     TextField fileTextField = new TextField("Save path as:");
+    fileTextField.setMaxWidth(100);
 
     //get a list of saved paths currently saved within the SavedPaths package.
     File curDir = new File((System.getProperty("user.dir"))); //https://stackoverflow.com/questions/4871051/getting-the-current-working-directory-in-java
@@ -875,7 +892,7 @@ public class FinderApp extends Application {
       shortenedNameFile = shortenedNameFile.split("SavedPaths/")[1]; //https://stackoverflow.com/questions/18220022/how-to-trim-a-string-after-a-specific-character-in-java
       savedPathDropDown.getItems().add(shortenedNameFile);
     }
-    
+
     savedPathDropDown.setPromptText("Saved Paths");
 
     mapSize.setAlignment(Pos.TOP_LEFT);
@@ -940,11 +957,14 @@ public class FinderApp extends Application {
     Label enterDestRoomLabel = new Label("Destination Room:");
     enterDestRoomVBox.getChildren().addAll(enterDestRoomLabel, enterDestRoom);
 
+    VBox submitBBox = new VBox();
+    Label submitBlankLabel = new Label(" ");
+    submitBBox.getChildren().addAll(submitBlankLabel,submitB);
     // Create FlowPane to hold items in the top row of the border pane.
     FlowPane topRow = new FlowPane();
     topRow.setAlignment(Pos.CENTER);
     topRow.getChildren().addAll(buildingDropDownVBox, enterStartRoomVBox,
-    enterDestRoomVBox, submitB);
+    enterDestRoomVBox, submitBBox);
 
     VBox topVBox = new VBox(15);
     topVBox.getChildren().addAll(topRow2,topRow,invalidHBox);
@@ -1086,6 +1106,7 @@ public class FinderApp extends Application {
     scrollPane.setFitToWidth(true);
     scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
     scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    scrollPane.setPannable(true);
 
 
     Scene scene2 = new Scene(scrollPane,Constants.SCENESIZE,Constants.SCENESIZE);
