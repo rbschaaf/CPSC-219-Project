@@ -4,6 +4,8 @@
 *
 */
 
+package resources;
+
 public class Constants{
   public static final int HALL = 1;
   public static final int WALL = 0;
