@@ -1,3 +1,5 @@
+import resources.Constants;
+
 /**
 * Class for the creations of the maps, sizing of the maps, and contains the path restriction for the pathfinding.
 */
