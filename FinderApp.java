@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.EOFException;
+import resources.Constants;
 
 
 public class FinderApp extends Application {
