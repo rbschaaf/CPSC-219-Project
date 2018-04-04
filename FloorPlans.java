@@ -221,6 +221,8 @@ public int getColLength(int rowNumber){
         grid = builtFloorPlans.TFDLONE;
       } else if (floor == 2) {
         grid = builtFloorPlans.TFDLTWO;
+      } else if (floor ==3){
+        grid = builtFloorPlans.TFDLTHREE;
       } else if (floor ==4){
         grid = builtFloorPlans.TFDLFOUR;
       } else if (floor == 5){
