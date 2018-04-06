@@ -12,7 +12,7 @@
 */
 
 import resources.Constants;
-import resources.builtFloorPlans;
+import resources.BuiltFloorPlans;
 
 import java.util.ArrayList;
 
@@ -216,19 +216,19 @@ public int getColLength(int rowNumber){
       /* Enters the inner loops based on the floor number, which is based on
       * desired room number. */
       if (floor == 0){
-        grid = builtFloorPlans.TFDLGROUND;
+        grid = BuiltFloorPlans.TFDLGROUND;
       } else if (floor == 1) {
-        grid = builtFloorPlans.TFDLONE;
+        grid = BuiltFloorPlans.TFDLONE;
       } else if (floor == 2) {
-        grid = builtFloorPlans.TFDLTWO;
+        grid = BuiltFloorPlans.TFDLTWO;
       } else if (floor ==3){
-        grid = builtFloorPlans.TFDLTHREE;
+        grid = BuiltFloorPlans.TFDLTHREE;
       } else if (floor ==4){
-        grid = builtFloorPlans.TFDLFOUR;
+        grid = BuiltFloorPlans.TFDLFOUR;
       } else if (floor == 5){
-        grid = builtFloorPlans.TFDLFIVE;
+        grid = BuiltFloorPlans.TFDLFIVE;
       } else if (floor == 6) {
-        grid = builtFloorPlans.TFDLSIX;
+        grid = BuiltFloorPlans.TFDLSIX;
       }
     }
   }
