@@ -1,10 +1,10 @@
-package resources;
-
 /**
 * This class consists of all the constants used in the room finding program
 * and application.
 *
 */
+
+package resources;
 
 public class Constants{
   public static final int HALL = 1;
@@ -15,6 +15,7 @@ public class Constants{
   public static final int PATH = 7;
   public static final int REST = 888;
   public static final int COFF = 999;
+  public static final int TRANSPARENT = 998; //Transparent spots used fot allowing staggered grid rows and columns (formatting)
 
   public static final int POPUP_WINDOW_HEIGHT = 600;
   public static final int HELP_POPUP_WIDTH = 130;
