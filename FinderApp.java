@@ -64,7 +64,7 @@ public class FinderApp extends Application {
     private File savedPathDir;
 
     private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,Constants.START,Constants.DEST,
-      Constants.PATH,Constants.REST,1270,1170,1171,1172,1225,1125,Constants.COFF};
+      Constants.PATH,Constants.REST,1270,1170,1171,1172,1225,1125,Constants.COFF, Constants.TRANSPARENT};
 
     private TextField enterStartRoom = new TextField("Enter the start room");
     private TextField enterDestRoom= new TextField("Enter destination room");
@@ -593,10 +593,17 @@ public class FinderApp extends Application {
           rect.setFill(new ImagePattern(imgElevator));
         } else if(aGrid[row][col] == Constants.COFF){
           rect.setFill(new ImagePattern(imgCoffee));
-        }else{
+        } else if(aGrid[row][col] == Constants.TRANSPARENT){ //Transparent spots used fot allowing staggered grid rows and columns (formatting)
+          rect.setFill(Color.TRANSPARENT);
+        } else{
           rect.setFill(Color.LIGHTBLUE);
         }
-        rect.setStroke(Color.BLACK);
+      
+        if (aGrid[row][col] == Constants.TRANSPARENT){
+          rect.setStroke(Color.TRANSPARENT);
+        } else{
+          rect.setStroke(Color.BLACK);
+        }
         rect.setWidth(rectLength);
         rect.setHeight(rectLength);
 
