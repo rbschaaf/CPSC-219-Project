@@ -15,6 +15,7 @@ public class Constants{
   public static final int PATH = 7;
   public static final int REST = 888;
   public static final int COFF = 999;
+  public static final int TRANSPARENT = 998; //Transparent spots used fot allowing staggered grid rows and columns (formatting TFDLTWO)
 
   public static final int POPUP_WINDOW_HEIGHT = 600;
   public static final int HELP_POPUP_WIDTH = 130;
