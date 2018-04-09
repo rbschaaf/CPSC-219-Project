@@ -102,7 +102,7 @@ public class FinderApp extends Application {
         FloorPlans tempFloorPlan = new FloorPlans(buildingInput, startNumberInput);
         map1.setCurrentFloorPlan(tempFloorPlan);
 
-        if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==1){
+      /*  if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==1){
           // If we are on the first floor we want our temporary destination to
           // be the elevator that is on the first floor.
           tempFloorPlan.setTemporaryDestNum(170);
@@ -110,7 +110,7 @@ public class FinderApp extends Application {
           // If we are on the second floor we want our temporary destination to
           // be the elevator that is on the second floor.
           tempFloorPlan.setTemporaryDestNum(270);
-        }
+        }*/
 
         invalidEntry.setText("");
 
@@ -143,10 +143,10 @@ public class FinderApp extends Application {
 
         FloorPlans tempFloorPlan1 = new FloorPlans(buildingInput, startNumberInput);
         map1.setCurrentFloorPlan(tempFloorPlan1);
-        if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==1){
-          tempFloorPlan1.setTemporaryDestNum(125);
-        }else if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==2){
-          tempFloorPlan1.setTemporaryDestNum(225);
+        if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==5){
+          tempFloorPlan1.setTemporaryDestNum(508);
+        }else if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==5){
+          tempFloorPlan1.setTemporaryDestNum(506);
         }
 
         invalidEntry.setText("");
@@ -321,21 +321,23 @@ public class FinderApp extends Application {
           buildingInput = buildingDropDown.getValue();
           updatedPlan = new FloorPlans(buildingInput, startNumberInput);
 
-          // Create a new FloorPlan and set it as the current floorplan of the map.
-          FloorPlans dummyPlan = new FloorPlans(buildingInput, 250);
-          FloorPlans dummyPlan1 = new FloorPlans(buildingInput,150);
+        /*  // Create a new FloorPlan and set it as the current floorplan of the map.
+          FloorPlans dummyPlan = new FloorPlans(buildingInput, 508);
+          FloorPlans dummyPlan1 = new FloorPlans(buildingInput,506);*/
+          //Map newMap = new Map();
+          //map1 = newMap.setCurrentFloorPlan(updatedPlan);
           map1.setCurrentFloorPlan(updatedPlan);
-
           // Check if the numbers entered by the user are valid.
-          isValidStartRoom(startNumberInput,updatedPlan);
-          isValidDestRoom(destNumberInput,updatedPlan);
-
-          /*
+          boolean testStart = isValidStartRoom(startNumberInput,updatedPlan);
+          boolean testDest = isValidDestRoom(destNumberInput,updatedPlan);
+          if(testStart == false || testDest ==false ){
+              invalidEntry.setText("Error Test");
+            }
+            /*
           * If the start room and destination rooms are valid for the current
           * floor, create a 1-part path.
           */
-          if(isValidStartRoom(startNumberInput,updatedPlan)
-            && isValidDestRoom(destNumberInput,updatedPlan)){
+          if(testStart == true || testDest ==true ){
             invalidEntry.setText("");
 
             // Create a new path and set its start and dest inputs.
@@ -346,11 +348,21 @@ public class FinderApp extends Application {
             map1.setEndValues(updatedPlan,destNumberInput);
 
             int[][] finalGrid = path.createPath();
+            for (int row = 0; row < finalGrid.length; row++) {
+              for (int column = 0; column < finalGrid[row].length; column++) {
+                System.out.printf("%4d", finalGrid[row][column]);
+              }
+              System.out.println();
+            }
+
+
 
             map1.placeStart(finalGrid);
             map1.placeDest(finalGrid);
+            System.out.println("final grid "+ finalGrid + " gridPane" + gridPane + " rectLength" + rectLength);
 
             makeGrid(finalGrid,gridPane,rectLength);
+            updatedPlan.printSavedGrid(updatedPlan.getGrid());
 
             // Highlight the room chosen as the destination in blue.
             highlight(updatedPlan, destNumberInput);
@@ -359,13 +371,13 @@ public class FinderApp extends Application {
             buildingAndFloorLabel.setText(setBuildingAndFloorLabel(updatedPlan.getFloorNum(startNumberInput), buildingInput));
             buildingAndFloorLabel.setTextFill(Color.GREEN);
             //http://www.java2s.com/Code/Java/JavaFX/SetLabelTextcolor.htm
-
+}
           /*
           * If the start room is valid for the currents floor and the destination
           * is invalid for the current floor, check if the destination is valid
           * on floor 2. If it is, create part 1 of a temporary path.
           */
-          }else if(isValidStartRoom(startNumberInput,updatedPlan)==true
+        /*else if(isValidStartRoom(startNumberInput,updatedPlan)==true
             && isValidDestRoom(destNumberInput,updatedPlan)==false
             && isValidDestRoom(destNumberInput,dummyPlan)==true){
 
@@ -405,7 +417,7 @@ public class FinderApp extends Application {
             * If the start room is valid for the currents floor and the destination
             * is invalid for the current floor, check if the destination is valid
             * on floor 1. If it is, create part 1 of a temporary path.
-            */
+
           }else if(isValidStartRoom(startNumberInput,updatedPlan)==true && isValidDestRoom(destNumberInput,updatedPlan)==false
           && isValidDestRoom(destNumberInput,dummyPlan1)==true){
             invalidEntry.setText(GUIText.INVALID_ENTRY_DIFFERENT_FLOOR);
@@ -436,9 +448,9 @@ public class FinderApp extends Application {
 
               makeGrid(finalGrid,gridPane,rectLength);
             }
-            }else if(isValidStartRoom(startNumberInput,updatedPlan)==false && isValidStartRoom(startNumberInput,updatedPlan)==false){
+          }else if(isValidStartRoom(startNumberInput,updatedPlan)==false && isValidStartRoom(startNumberInput,updatedPlan)==false){
             System.out.println("No valid start/dest info. added");
-          }
+          }*/
         }
       }
 
@@ -598,7 +610,7 @@ public class FinderApp extends Application {
         } else{
           rect.setFill(Color.LIGHTBLUE);
         }
-      
+
         if (aGrid[row][col] == Constants.TRANSPARENT){
           rect.setStroke(Color.TRANSPARENT);
         } else{
