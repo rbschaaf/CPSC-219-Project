@@ -330,14 +330,11 @@ public class FinderApp extends Application {
           // Check if the numbers entered by the user are valid.
           boolean testStart = isValidStartRoom(startNumberInput,updatedPlan);
           boolean testDest = isValidDestRoom(destNumberInput,updatedPlan);
-          if(testStart == false || testDest ==false ){
-              invalidEntry.setText("Error Test");
-            }
             /*
           * If the start room and destination rooms are valid for the current
           * floor, create a 1-part path.
           */
-          if(testStart == true || testDest ==true ){
+          if(testStart == true && testDest ==true ){
             invalidEntry.setText("");
 
             // Create a new path and set its start and dest inputs.
