@@ -15,6 +15,7 @@ import resources.Constants;
 import resources.BuiltFloorPlans;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FloorPlans {
 
@@ -204,6 +205,23 @@ public int getColLength(int rowNumber){
   }*/
 
   /**
+  * Method that copies a floorplan.
+  * @param: aFloorPlan a floorplan to be copied as type int[][]..
+  * @return: aCopyGrid a copy of the floorplan passed as a paramter at type int[][].
+  * https://stackoverflow.com/questions/5563157/how-to-deep-copy-2-dimensional-array-different-row-sizes
+  */
+  public int[][] copyGrid(int[][] aFloorPlan){
+    int[][] aDuplicateGrid = new int[aFloorPlan.length][];
+    for(int row=0; row<aFloorPlan.length;row++){
+      //for(int col=0;col<aFloorPlan[row].length;col++){
+        aDuplicateGrid[row]=Arrays.copyOf(aFloorPlan[row], aFloorPlan[row].length);
+      }
+    //}
+    printSavedGrid(aDuplicateGrid);
+    return aDuplicateGrid;
+  }
+
+  /**
   * Method to set the appropriate grid for the floorplan based on the building
   * and room of choice.
   *
@@ -216,20 +234,21 @@ public int getColLength(int rowNumber){
       /* Enters the inner loops based on the floor number, which is based on
       * desired room number. */
       if (floor == 0){
-        grid = BuiltFloorPlans.TFDLGROUND;
+        grid = copyGrid(BuiltFloorPlans.TFDLGROUND);
       } else if (floor == 1) {
-        grid = BuiltFloorPlans.TFDLONE;
+        grid = copyGrid(BuiltFloorPlans.TFDLONE);
       } else if (floor == 2) {
-        grid = BuiltFloorPlans.TFDLTWO;
-      } else if (floor ==3){
-        grid = BuiltFloorPlans.TFDLTHREE;
-      } else if (floor ==4){
-        grid = BuiltFloorPlans.TFDLFOUR;
+        grid = copyGrid(BuiltFloorPlans.TFDLTWO);
+      } else if (floor == 3){
+        grid = copyGrid(BuiltFloorPlans.TFDLTHREE);
+      } else if (floor == 4){
+        grid = copyGrid(BuiltFloorPlans.TFDLFOUR);
       } else if (floor == 5){
-        grid = BuiltFloorPlans.TFDLFIVE;
+        grid = copyGrid(BuiltFloorPlans.TFDLFIVE);
       } else if (floor == 6) {
-        grid = BuiltFloorPlans.TFDLSIX;
+        grid = copyGrid(BuiltFloorPlans.TFDLSIX);
       }
+      System.out.println(floor);
     }
   }
 
