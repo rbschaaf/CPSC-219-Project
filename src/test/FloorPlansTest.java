@@ -4,11 +4,12 @@
 
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 public class FloorPlansTest {
-
+  /**
+   * Test the constructors and ensure instances are properly set
+   */
   @Test
   public void testConstructors() {
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", 150);
@@ -20,6 +21,9 @@ public class FloorPlansTest {
 
   }
 
+  /**
+   * Test temporary setters
+   */
   @Test
   public void testTemporaryNums() {
     FloorPlans a = new FloorPlans();
@@ -29,6 +33,9 @@ public class FloorPlansTest {
     assertEquals("Temporary start number is", 261, a.getTemporaryStartNum());
   }
 
+  /**
+   *
+   */
   @Test
   public void testRoomLists() {
     FloorPlans a = new FloorPlans();
