@@ -1,3 +1,5 @@
+import org.junit.Test;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +9,7 @@ import java.util.ArrayList;
 */
 
 public class PathTest {
-  public static void main(String[] args) {
+  /*  public static void main(String[] args) {
     String building = "Taylor Family Digital Library";
     int roomNum = 250;
     TestGrid testGrid = new TestGrid();
@@ -23,9 +25,11 @@ public class PathTest {
     /*
     * WORKING
     */
+  /*
     Node startNode = path.getStartNode(nodeList);
     Node endNode = path.getEndNode(nodeList);
     System.out.println(nodeList);
+    */
     /*
     *Working
     */
@@ -47,8 +51,79 @@ public class PathTest {
     //System.out.println(shortestDistanceList);
 
 //    int[][] finalGrid = path.addPathToGrid(shortestDistanceList);
+   /*
     int[][] finalGrid = path.createPath();
     testGrid.print(finalGrid);
+    */
+  @Test
+  public void getFloorGrid() {
+  }
 
+  @Test
+  public void setFloorGrid() {
+  }
+
+  @Test
+  public void getStartRoomNum() {
+  }
+
+  @Test
+  public void setStartRoomNum() {
+  }
+
+  @Test
+  public void getEndRoomNum() {
+  }
+
+  @Test
+  public void setEndRoomNum() {
+  }
+
+  @Test
+  public void getStartNode() {
+  }
+
+  @Test
+  public void getEndNode() {
+  }
+
+  @Test
+  public void addNodeToList() {
+  }
+
+  @Test
+  public void removeNodeFromList() {
+  }
+
+  @Test
+  public void getCopyNodes() {
+  }
+
+  @Test
+  public void getLowestDistanceNode() {
+  }
+
+  @Test
+  public void createNodeArray() {
+  }
+
+  @Test
+  public void setNeighborInstances() {
+  }
+
+  @Test
+  public void setNodeDistances() {
+  }
+
+  @Test
+  public void getConnectedNodes() {
+  }
+
+  @Test
+  public void addPathToGrid() {
+  }
+
+  @Test
+  public void createPath() {
   }
 }

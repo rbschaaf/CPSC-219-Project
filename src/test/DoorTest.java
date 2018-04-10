@@ -26,4 +26,20 @@ public class DoorTest{
     assertEquals("Door's X is at", 9, c.getDoorX());
     assertEquals("Door's Y is at", 0, c.getDoorY());
   }
+
+  @Test
+  public void getDoorX() {
+  }
+
+  @Test
+  public void setDoorX() {
+  }
+
+  @Test
+  public void getDoorY() {
+  }
+
+  @Test
+  public void setDoorY() {
+  }
 }
