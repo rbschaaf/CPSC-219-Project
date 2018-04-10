@@ -319,7 +319,7 @@ public int getColLength(int rowNumber){
       for (int col = 0; col < grid[row].length; col++) {
         gridNum = grid[row][col];
         if (getRoom(gridNum) != null) {
-          getRoom(gridNum).addNode(row, col);
+          getRoom(gridNum).addTile(row, col);
         } else if (gridNum < 1000) {
           // get the room for a door (1000+ item) and subtract 1000 to find
           // which room it is for. Set the door as the current tile in the loop.
