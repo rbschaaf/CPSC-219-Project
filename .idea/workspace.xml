@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0a410245-a8a3-4bfa-93e5-a207e373ceac" name="Default" comment="" />
+    <list default="true" id="0a410245-a8a3-4bfa-93e5-a207e373ceac" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/Coffee.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/Elevator.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/FinderApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/FinderApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/RestroomImage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/Stairs.png" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -10,7 +16,26 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450" />
+    <leaf>
+      <file leaf-file-name="FinderApp.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/FinderApp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="83" column="12" selection-start-line="83" selection-start-column="12" selection-end-line="83" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BuiltFloorPlans.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/BuiltFloorPlans.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -27,13 +52,13 @@
       <list>
         <option value="$PROJECT_DIR$/src/test/FloorPlansTest.java" />
         <option value="$PROJECT_DIR$/src/main/FloorPlans.java" />
-        <option value="$PROJECT_DIR$/src/main/FinderApp.java" />
         <option value="$PROJECT_DIR$/src/test/NodeTest.java" />
         <option value="$PROJECT_DIR$/src/test/PathTest.java" />
         <option value="$PROJECT_DIR$/src/test/DoorTest.java" />
         <option value="$PROJECT_DIR$/src/test/TileTest.java" />
         <option value="$PROJECT_DIR$/src/test/MapTest.java" />
         <option value="$PROJECT_DIR$/src/test/RoomTest.java" />
+        <option value="$PROJECT_DIR$/src/main/FinderApp.java" />
       </list>
     </option>
   </component>
@@ -57,22 +82,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="CPSC-219-Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CPSC-219-Project" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CPSC-219-Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CPSC-219-Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="AndroidView" />
       <pane id="Scope">
         <subPane subId="Local Unit Tests">
           <expand>
@@ -89,8 +99,36 @@
           <select />
         </subPane>
       </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="CPSC-219-Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CPSC-219-Project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CPSC-219-Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CPSC-219-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CPSC-219-Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CPSC-219-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CPSC-219-Project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CPSC-219-Project" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -250,6 +288,7 @@
       <workItem from="1523375584184" duration="774000" />
       <workItem from="1523376637132" duration="138000" />
       <workItem from="1523377039895" duration="5320000" />
+      <workItem from="1523399791220" duration="2228000" />
     </task>
     <servers />
   </component>
@@ -259,10 +298,11 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9520000" />
+    <option name="totallyTimeSpent" value="11748000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -272,28 +312,28 @@
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.30584192" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30584192" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1787666" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1787666" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3281787" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Inspection Results" order="7" weight="0.32962963" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info id="Learn" order="2" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3281787" />
+      <window_info anchor="bottom" id="Inspection Results" order="7" weight="0.32962963" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -434,13 +474,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/FinderApp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-459">
-          <caret line="108" column="24" selection-start-line="108" selection-start-column="24" selection-end-line="108" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/NodeTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2992">
@@ -524,6 +557,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/BuiltFloorPlans.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_151/javafx-src.zip!/javafx/scene/image/Image.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="1117" selection-start-line="1117" selection-end-line="1117" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/FinderApp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="83" column="12" selection-start-line="83" selection-start-column="12" selection-end-line="83" selection-end-column="12" />
         </state>
       </provider>
     </entry>
