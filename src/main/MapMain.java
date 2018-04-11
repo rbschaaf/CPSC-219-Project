@@ -6,8 +6,6 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 
 public class MapMain {
-  //private int roomStart=0;
-  //private int roomDest=0;
 
 
   /**
@@ -52,11 +50,12 @@ public class MapMain {
   */
   public String getBuilding(){
     String bName = "";
-    System.out.println("Choose the building to search: ");
-    System.out.println("Enter (1) for Taylor Family Digital Library"+
-    "\nEnter (2) for Bioscience");
+    int bNum =0;
     Scanner keyboard = new Scanner(System.in);
-    int bNum = keyboard.nextInt();
+    try{
+      bNum = keyboard.nextInt();
+    }catch(InputMismatchException e){}
+
     if(bNum == 1){
       bName = "Taylor Family Digital Library";
     }else if(bNum == 2){
@@ -89,7 +88,15 @@ public class MapMain {
     Map newMap = new Map();
 
     // Get the user's inputted for the building name.
+    System.out.println("Choose the building to search: ");
+    System.out.println("Enter (1) for Taylor Family Digital Library"+
+    "\nEnter (2) for Bioscience");
     String bName = getBuilding();
+    while(bName!="Bioscience" && bName!="Taylor Family Digital Library"){
+      System.out.println("That is not a valid choice. Please choose again.");
+      bName = getBuilding();
+    }
+
     Building currentBuilding = new Building(bName);
 
     // Call method to get starting room from user and ensure it is a valid number.
@@ -146,5 +153,6 @@ public class MapMain {
 
   }
 }
+
 
 
