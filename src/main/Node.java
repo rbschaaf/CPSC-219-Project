@@ -2,6 +2,7 @@
  * A class that contains the data for the points on a grid and makes them usable within arraylists for
  * various tasks
  */
+ 
 public class Node extends Tile {
   private boolean startNodeVal = false;
   private boolean endNodeVal = false;
@@ -191,3 +192,4 @@ public class Node extends Tile {
     return currentDirection;
   }
 }
+
