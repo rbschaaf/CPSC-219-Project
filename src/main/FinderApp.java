@@ -302,23 +302,7 @@ public class FinderApp extends Application {
         }
       }
     }
-    /**
-    * Handle button click for Submit button. Takes text from Text Fields and
-    * creates the grid.
-    */
-    public boolean onAFloor(int roomNumber, Building building){
-      boolean truthValue = false;
-      for(FloorPlans floor : building.getFloorList()){
-        for(Room room : floor.getRoomList()){
-          if((roomNumber + 1000) == room.getRoomsNumber()){
-            whichFloor = floor.getFlNum();
-            nextFloor = floor;
-            truthValue = true;
-          }
-        }
-      }
-      return truthValue;
-    }
+   
     /**
     * Recursive method that takes a number and finds the ordinal ending for it.
     */
@@ -413,11 +397,12 @@ public class FinderApp extends Application {
             */
           }else if(isValidStartRoom(startNumberInput,currentFloorPlan)==true
               && isValidDestRoom(destNumberInput,currentFloorPlan)==false
-              && onAFloor(destNumberInput, map1.getCurrentBuilding())==true){
+              && map1.getCurrentBuilding().onAFloor(destNumberInput)!=null){
 
-              if(onAFloor(destNumberInput, map1.getCurrentBuilding())){
-                System.out.println("cat");
-              }
+              // Determine which floor is the next floor
+              nextFloor = map1.getCurrentBuilding().onAFloor(destNumberInput);
+              whichFloor = nextFloor.getFlNum();
+              
               // Communicate with the user that their destination is on a separate floor.
 
               invalidEntry.setText("Your destination is on the " + getOrdinalNumber(whichFloor)+" floor. Use the elevator and stair buttons"+
