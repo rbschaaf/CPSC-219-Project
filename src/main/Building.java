@@ -70,6 +70,18 @@ public class Building implements Serializable{
     return floorList;
   }
 
+  public FloorPlans onAFloor(int roomNumber){
+    FloorPlans nextFloor = null;
+    for(FloorPlans floor : getFloorList()){
+      for(Room room : floor.getRoomList()){
+        if((roomNumber + 1000) == room.getRoomsNumber()){
+          nextFloor = floor;
+        }
+      }
+    }
+    return nextFloor;
+  }
+
 
 }
 
