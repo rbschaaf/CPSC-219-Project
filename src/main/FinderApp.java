@@ -963,7 +963,7 @@ public class FinderApp extends Application {
                 buildingNameRead = planRead.getBuildingName();
                 System.out.println(buildingNameRead);
               }
-              buildingAndFloorLabel.setText(setBuildingAndFloorLabel(planRead.getFloorNum(startRead), buildingNameRead));
+              buildingAndFloorLabel.setText(setBuildingAndFloorLabel(planRead.getFlNum(), buildingNameRead));
               invalidEntry.setText("You have loaded a path from "+ startRead+ " to " + destRead+".");
               enterStartRoom.setText(startRead+"");
               enterDestRoom.setText(destRead+"");
