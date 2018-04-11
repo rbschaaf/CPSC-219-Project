@@ -1,5 +1,6 @@
-// Last updated March 18th by Nicki.
-public class Door{
+import java.io.Serializable;
+
+public class Door implements Serializable{
   private int doorX;
   private int doorY;
 
@@ -28,3 +29,4 @@ public class Door{
     doorY = newDoorY;
   }
 }
+
