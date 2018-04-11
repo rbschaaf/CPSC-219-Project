@@ -66,7 +66,7 @@ public class Map implements Serializable{
   public void printGrid() {
     for (int row = 0; row < currentFloorPlan.getRowLength(); row++) {
       for (int column = 0; column <currentFloorPlan.getColLength(row); column++) {
-        System.out.printf("%4d", currentFloorPlan.getGrid()[row][column]);
+        System.out.printf("%5d", currentFloorPlan.getGrid()[row][column]);
       }
       System.out.println();
     }
