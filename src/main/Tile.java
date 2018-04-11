@@ -4,7 +4,8 @@
  * Class that represents a single point in the grid
  * Last edited by Dayan - 27 Mar 2018
  */
-public class Tile {
+import java.io.Serializable;
+public class Tile implements Serializable{
   private int xCoord;
   private int yCoord;
 
@@ -101,3 +102,5 @@ public class Tile {
     return equality;
   }
 }
+
+
