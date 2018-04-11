@@ -14,22 +14,12 @@ import javafx.scene.image.*;
 import javafx.beans.value.*;
 import javafx.scene.effect.*;
 import javafx.scene.control.ScrollPane.*;
-
-import java.net.URL;
 import java.util.ArrayList;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.NumberFormatException;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.EOFException;
+import java.io.*;
+import java.net.URL;
 import resources.Constants;
-import resources.GUIText;
+
 
 
 public class FinderApp extends Application {
@@ -55,20 +45,33 @@ public class FinderApp extends Application {
     private VBox enterStartRoomVBox = new VBox();
     private VBox enterDestRoomVBox = new VBox();
     private Rectangle[][] rectangleGrid = new Rectangle[Constants.MAX_GRIDSIZE][Constants.MAX_GRIDSIZE];
-    private Button startRoomButton = new Button("Store selection in start room");
-    private Button destRoomButton = new Button("Store selection in destination room");
+    private Button startRoomButton = new Button("Store in start");
+    private Button destRoomButton = new Button("Store in destination");
     private boolean stairs = false;
     private FloorPlans currentFloorPlan;
     private VBox eleStairBox = new VBox(10);
     private VBox mapSize = new VBox();
-    private String fileName;
+    private File curDir = new File((System.getProperty("user.dir"))); //The current directory. https://stackoverflow.com/questions/4871051/getting-the-current-working-directory-in-java
+    private String operatingSystem = System.getProperty("os.name"); //The opearting system of the computer running the program. https://stackoverflow.com/questions/14288185/detecting-windows-or-linux
+
     private FloorPlans updatedPlan;
+
+    // File variables
     private File savedPathDir;
+    private FloorPlans planToSave;
+    private int startToSave;
+    private int destToSave;
+    private boolean gridVisible = false;
+    private FloorPlans planRead;
+    private int startRead;
+    private int destRead;
+
 
     private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,Constants.START,Constants.DEST,
-            Constants.NPATH,Constants.NEPATH,Constants.NWPATH,Constants.SPATH,Constants.SEPATH,Constants.SWPATH,
-            Constants.EPATH,Constants.WPATH,Constants.REST,1270,1170,1171,1172,1225,1125,
-            Constants.COFF, Constants.TRANSPARENT};
+      Constants.REST,1270,1170,1171,1172,1225,1125,Constants.COFF};
+
+    private int whichFloor = 0;
+    private FloorPlans nextFloor = new FloorPlans();
 
     private TextField enterStartRoom = new TextField("Enter the start room");
     private TextField enterDestRoom= new TextField("Enter destination room");
@@ -81,6 +84,7 @@ public class FinderApp extends Application {
     private RadioButton mediumButton = new RadioButton("Medium Map");
     private RadioButton largeButton = new RadioButton("Large Map");
     //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/RadioButton.html
+
     private URL resource = FinderApp.class.getResource("/resources/");
     private Image imgRestroom = new Image(resource+ "RestroomImage.png",rectLength,rectLength, true, false);
     //Image source: http://maxpixel.freegreatpicture.com/Rest-Room-Restroom-Ladies-Restroom-Public-Restroom-99226
@@ -117,28 +121,17 @@ public class FinderApp extends Application {
         // at the elevator tile.
         stairs = false;
 
-        // Create a temporary floor plan for part one of the path.
-        FloorPlans tempFloorPlan = new FloorPlans(buildingInput, startNumberInput);
-        map1.setCurrentFloorPlan(tempFloorPlan);
 
-      /*  if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==1){
-          // If we are on the first floor we want our temporary destination to
-          // be the elevator that is on the first floor.
-          tempFloorPlan.setTemporaryDestNum(170);
-        }else if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==2){
-          // If we are on the second floor we want our temporary destination to
-          // be the elevator that is on the second floor.
-          tempFloorPlan.setTemporaryDestNum(270);
-        }*/
+        FloorPlans tempFloorPlan = map1.getCurrentBuilding().getFloorPlan(startNumberInput);
+        int tempDest = tempFloorPlan.getElevatorNum();
 
         invalidEntry.setText("");
 
-        // Create a new path between the start number and the temporary dest.
-        Path tempPath = new Path(tempFloorPlan.getGrid(),
-        startNumberInput, tempFloorPlan.getTemporaryDestNum());
+        // Create a new path and set its start and dest inputs.
+        Path tempPath = new Path(tempFloorPlan.getGrid(),startNumberInput, tempDest);
 
         map1.setStartValues(tempFloorPlan,startNumberInput);
-        map1.setEndValues(tempFloorPlan,tempFloorPlan.getTemporaryDestNum());
+        map1.setEndValues(tempFloorPlan,tempDest);
 
         int[][] finalGrid2 = tempPath.createPath();
 
@@ -160,22 +153,15 @@ public class FinderApp extends Application {
         // at the stairs tile.
         stairs = true;
 
-        FloorPlans tempFloorPlan1 = new FloorPlans(buildingInput, startNumberInput);
-        map1.setCurrentFloorPlan(tempFloorPlan1);
-        if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==5){
-          tempFloorPlan1.setTemporaryDestNum(508);
-        }else if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==5){
-          tempFloorPlan1.setTemporaryDestNum(506);
-        }
-
+        FloorPlans tempFloorPlan1 = map1.getCurrentBuilding().getFloorPlan(startNumberInput);
+        int tempDest = tempFloorPlan1.getStairsNum();
         invalidEntry.setText("");
 
         // Create a new path and set its start and dest inputs.
-        Path tempPath1 = new Path(tempFloorPlan1.getGrid(),
-        startNumberInput, tempFloorPlan1.getTemporaryDestNum());
+        Path tempPath1 = new Path(tempFloorPlan1.getGrid(),startNumberInput, tempDest);
 
         map1.setStartValues(tempFloorPlan1,startNumberInput);
-        map1.setEndValues(tempFloorPlan1,tempFloorPlan1.getTemporaryDestNum());
+        map1.setEndValues(tempFloorPlan1,tempDest);
 
         int[][] finalGrid3 = tempPath1.createPath();
 
@@ -194,35 +180,26 @@ public class FinderApp extends Application {
     public class HandleNextFloorClick implements EventHandler<ActionEvent>{
       public HandleNextFloorClick(){}
       public void handle(ActionEvent event){
+        int tempStart; // temporary starting room number.
         mapSize.getChildren().remove(eleStairBox);
         // Determine the start location on the new floor based on which
         // route was taken (elevator/stairs) and which floor the user was on.
         if(stairs == true){
-          if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==1){
-            startNumberInput = 225;
-          }else if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==2){
-            startNumberInput = 125;
-          }
+          tempStart = nextFloor.getStairsNum();
         }else{
-          if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==1){
-            startNumberInput = 270;
-          }else if(map1.getCurrentFloorPlan().getFloorNum(startNumberInput)==2){
-            startNumberInput = 170;
-          }
-
+          tempStart = nextFloor.getElevatorNum();
         }
 
-        FloorPlans tempFloorPlan2 = new FloorPlans(buildingInput, destNumberInput);
-        map1.setCurrentFloorPlan(tempFloorPlan2);
+        map1.setCurrentFloorPlan(nextFloor);
 
         invalidEntry.setText("");
 
         // Create a new path and set its start and dest inputs.
-        Path tempPath2 = new Path(tempFloorPlan2.getGrid(),
-        startNumberInput, destNumberInput);
+        Path tempPath2 = new Path(nextFloor.getGrid(),
+        tempStart, destNumberInput);
 
-        map1.setStartValues(tempFloorPlan2,startNumberInput);
-        map1.setEndValues(tempFloorPlan2,destNumberInput);
+        map1.setStartValues(nextFloor, tempStart);
+        map1.setEndValues(nextFloor,destNumberInput);
 
         int[][] finalGridpt2 = tempPath2.createPath();
 
@@ -232,8 +209,8 @@ public class FinderApp extends Application {
         makeGrid(finalGridpt2,gridPane,rectLength);
 
         //Update the floor label
-        buildingAndFloorLabel.setText(setBuildingAndFloorLabel(tempFloorPlan2.getFloorNum(destNumberInput), buildingInput));
-        buildingAndFloorLabel.setTextFill(Color.GREEN);
+        buildingAndFloorLabel.setText(setBuildingAndFloorLabel(nextFloor.getFloorNum(destNumberInput), buildingInput));
+
 
         // Reset the stairs boolean variable.
         stairs=false;
@@ -292,8 +269,13 @@ public class FinderApp extends Application {
 
               rectangleGrid[row][col].setFill(Color.RED);
               count+=1;
-              enterStartRoomVBox.getChildren().add(startRoomButton);
-              enterDestRoomVBox.getChildren().add(destRoomButton);
+              if(enterStartRoomVBox.getChildren().contains(startRoomButton)==false){
+                enterStartRoomVBox.getChildren().add(startRoomButton);
+              }
+              if(enterDestRoomVBox.getChildren().contains(destRoomButton) ==false){
+                enterDestRoomVBox.getChildren().add(destRoomButton);
+              }
+
 
               /*
               * Clicking the button below the Start room textfield stores the selected room
@@ -324,138 +306,134 @@ public class FinderApp extends Application {
     * Handle button click for Submit button. Takes text from Text Fields and
     * creates the grid.
     */
+    public boolean onAFloor(int roomNumber, Building building){
+      boolean truthValue = false;
+      for(FloorPlans floor : building.getFloorList()){
+        for(Room room : floor.getRoomList()){
+          if((roomNumber + 1000) == room.getRoomsNumber()){
+            whichFloor = floor.getFlNum();
+            nextFloor = floor;
+            truthValue = true;
+          }
+        }
+      }
+      return truthValue;
+    }
+    /**
+    * Recursive method that takes a number and finds the ordinal ending for it.
+    */
+    public static String getOrdinalNumber(int num){
+     int n=0;
+     if(num<=20){
+       if(num == 1) return num+"st";
+       if(num == 2) return num+"nd";
+       if(num == 3) return num+"rd";
+       if(num >=4 || num ==0) return num+"th";
+     }
+     if(num>20){
+       n = num%10;
+     }
+     return (num/10)+getOrdinalNumber(n);
+
+   }
     public class HandleButtonClick implements EventHandler<ActionEvent>{
       public HandleButtonClick (){}
         public void handle(ActionEvent event){
+          // Remove box if user doesn't follow through with next level button.
+          if(mapSize.getChildren().contains(eleStairBox)){
+            mapSize.getChildren().remove(eleStairBox);
+          }
           // Reset the error label.
           invalidEntry.setText("");
+          //Set the size of the label above the map according to map size.
+          buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
 
           // Get input from the textfields.
           try{
             startNumberInput = Integer.parseInt(enterStartRoom.getText());
             destNumberInput  = Integer.parseInt(enterDestRoom.getText());
           } catch(NumberFormatException e){
-            invalidEntry.setText (GUIText.INVALID_ENTRY_WRONG_FORMAT);
+            invalidEntry.setText ("Please enter the room number as an integer.");
           }
-          buildingInput = buildingDropDown.getValue();
-          updatedPlan = new FloorPlans(buildingInput, startNumberInput);
+          if(buildingDropDown.getValue()!=null){
+            buildingInput = buildingDropDown.getValue();
 
-        /*  // Create a new FloorPlan and set it as the current floorplan of the map.
-          FloorPlans dummyPlan = new FloorPlans(buildingInput, 508);
-          FloorPlans dummyPlan1 = new FloorPlans(buildingInput,506);*/
-          //Map newMap = new Map();
-          //map1 = newMap.setCurrentFloorPlan(updatedPlan);
-          map1.setCurrentFloorPlan(updatedPlan);
-          // Check if the numbers entered by the user are valid.
-          boolean testStart = isValidStartRoom(startNumberInput,updatedPlan);
-          boolean testDest = isValidDestRoom(destNumberInput,updatedPlan);
-            /*
-          * If the start room and destination rooms are valid for the current
-          * floor, create a 1-part path.
-          */
-          if(testStart == true && testDest ==true ){
-            invalidEntry.setText("");
-
-            // Create a new path and set its start and dest inputs.
-            Path path = new Path(updatedPlan.getGrid(),
-            startNumberInput, destNumberInput);
-
-            map1.setStartValues(updatedPlan,startNumberInput);
-            map1.setEndValues(updatedPlan,destNumberInput);
-
-            int[][] finalGrid = path.createPath();
-            for (int row = 0; row < finalGrid.length; row++) {
-              for (int column = 0; column < finalGrid[row].length; column++) {
-                System.out.printf("%4d", finalGrid[row][column]);
-              }
-              System.out.println();
-            }
-
-
-
-            map1.placeStart(finalGrid);
-            map1.placeDest(finalGrid);
-            System.out.println("final grid "+ finalGrid + " gridPane" + gridPane + " rectLength" + rectLength);
-
-            makeGrid(finalGrid,gridPane,rectLength);
+            map1.setCurrentBuilding(new Building(buildingInput));
+            System.out.println("building input is: "+buildingInput);
+            System.out.println(map1.getCurrentBuilding().getName());
+            updatedPlan = map1.getCurrentBuilding().getFloorPlan(startNumberInput);
             updatedPlan.printSavedGrid(updatedPlan.getGrid());
+            //updatedPlan = new FloorPlans(buildingInput, startNumberInput);
 
-            // Highlight the room chosen as the destination in blue.
-            highlight(updatedPlan, destNumberInput);
+            // Create a new FloorPlan and set it as the current floorplan of the map.
+            map1.setCurrentFloorPlan(updatedPlan);
+            currentFloorPlan = updatedPlan;
+            // Check if the numbers entered by the user are valid.
+            isValidStartRoom(startNumberInput,currentFloorPlan);
+            isValidDestRoom(destNumberInput,currentFloorPlan);
 
-            // Updates the label above the map providing building name and floor number
-            buildingAndFloorLabel.setText(setBuildingAndFloorLabel(updatedPlan.getFloorNum(startNumberInput), buildingInput));
-            buildingAndFloorLabel.setTextFill(Color.GREEN);
-            //http://www.java2s.com/Code/Java/JavaFX/SetLabelTextcolor.htm
-}
-          /*
-          * If the start room is valid for the currents floor and the destination
-          * is invalid for the current floor, check if the destination is valid
-          * on floor 2. If it is, create part 1 of a temporary path.
-          */
-        /*else if(isValidStartRoom(startNumberInput,updatedPlan)==true
-            && isValidDestRoom(destNumberInput,updatedPlan)==false
-            && isValidDestRoom(destNumberInput,dummyPlan)==true){
-
-            // Communicate with the user that their destination is on a separate floor.
-            invalidEntry.setText(GUIText.INVALID_ENTRY_DIFFERENT_FLOOR);
-
-            //Add buttons for the next floor.
-            if(mapSize.getChildren().contains(eleStairBox)!=true){
-              mapSize.getChildren().addAll(eleStairBox);
-            }
-
-
-            int destNum = updatedPlan.getFloorNum(destNumberInput);
-            System.out.println("Dest room is invalid.");
-
-            //Make a grid when the destination is one floor higher than the user.
-            if(destNum == updatedPlan.getFloorNum(startNumberInput)+1){
-              updatedPlan.setTemporaryDestNum(170);
+            /*
+            * If the start room and destination rooms are valid for the current
+            * floor, create a 1-part path.
+            */
+            if(isValidStartRoom(startNumberInput,currentFloorPlan)
+              && isValidDestRoom(destNumberInput,currentFloorPlan)){
               invalidEntry.setText("");
 
               // Create a new path and set its start and dest inputs.
               Path path = new Path(updatedPlan.getGrid(),
-              startNumberInput, updatedPlan.getTemporaryDestNum());
+              startNumberInput, destNumberInput);
 
-              map1.setStartValues(updatedPlan,startNumberInput);
-              map1.setEndValues(updatedPlan,updatedPlan.getTemporaryDestNum());
+              map1.setStartValues(currentFloorPlan,startNumberInput);
+              map1.setEndValues(currentFloorPlan,destNumberInput);
 
               int[][] finalGrid = path.createPath();
+              planToSave = updatedPlan;
+              startToSave = startNumberInput;
+              destToSave = destNumberInput;
 
               map1.placeStart(finalGrid);
               map1.placeDest(finalGrid);
 
               makeGrid(finalGrid,gridPane,rectLength);
-            }
+              gridVisible = true;
+
+              // Highlight the room chosen as the destination in blue.
+            //  highlight(currentFloorPlan, destNumberInput);
+
+              // Updates the label above the map providing building name and floor number
+              buildingAndFloorLabel.setText(setBuildingAndFloorLabel(currentFloorPlan.getFloorNum(startNumberInput), buildingInput));
+
+              //http://www.java2s.com/Code/Java/JavaFX/SetLabelTextcolor.htm
 
             /*
             * If the start room is valid for the currents floor and the destination
             * is invalid for the current floor, check if the destination is valid
-            * on floor 1. If it is, create part 1 of a temporary path.
+            * on floor 2. If it is, create part 1 of a temporary path.
+            */
+          }else if(isValidStartRoom(startNumberInput,currentFloorPlan)==true
+              && isValidDestRoom(destNumberInput,currentFloorPlan)==false
+              && onAFloor(destNumberInput, map1.getCurrentBuilding())==true){
 
-          }else if(isValidStartRoom(startNumberInput,updatedPlan)==true && isValidDestRoom(destNumberInput,updatedPlan)==false
-          && isValidDestRoom(destNumberInput,dummyPlan1)==true){
-            invalidEntry.setText(GUIText.INVALID_ENTRY_DIFFERENT_FLOOR);
-            //Add buttons for the next floor.
-            if(mapSize.getChildren().contains(eleStairBox)!=true){
-              mapSize.getChildren().addAll(eleStairBox);
-            }
+              if(onAFloor(destNumberInput, map1.getCurrentBuilding())){
+                System.out.println("cat");
+              }
+              // Communicate with the user that their destination is on a separate floor.
 
-            int destNum = updatedPlan.getFloorNum(destNumberInput);
-            System.out.println("Dest room is invalid.");
+              invalidEntry.setText("Your destination is on the " + getOrdinalNumber(whichFloor)+" floor. Use the elevator and stair buttons"+
+              "\non the right to choose which path you want to take to the next floor.");
 
-            //Make a grid if the destination is a floor below the user.
-            if(destNum == updatedPlan.getFloorNum(startNumberInput)-1){
-              updatedPlan.setTemporaryDestNum(270);
-              invalidEntry.setText("");
+              //Add buttons for the next floor.
+              if(mapSize.getChildren().contains(eleStairBox)!=true){
+                mapSize.getChildren().addAll(eleStairBox);
+              }
 
-              // Create a new path and set its start and dest inputs.
-              Path path = new Path(updatedPlan.getGrid(),
-              startNumberInput, updatedPlan.getTemporaryDestNum());
+              //Automatically assume the user wants to use the elevator.
+              int tempDest = currentFloorPlan.getElevatorNum();
 
-              map1.setStartValues(updatedPlan,startNumberInput);
-              map1.setEndValues(updatedPlan,updatedPlan.getTemporaryDestNum());
+              Path path = new Path(currentFloorPlan.getGrid(), startNumberInput, tempDest);
+              map1.setStartValues(currentFloorPlan,startNumberInput);
+              map1.setEndValues(currentFloorPlan,tempDest);
 
               int[][] finalGrid = path.createPath();
 
@@ -463,10 +441,16 @@ public class FinderApp extends Application {
               map1.placeDest(finalGrid);
 
               makeGrid(finalGrid,gridPane,rectLength);
-            }
-          }else if(isValidStartRoom(startNumberInput,updatedPlan)==false && isValidStartRoom(startNumberInput,updatedPlan)==false){
-            System.out.println("No valid start/dest info. added");
-          }*/
+              buildingAndFloorLabel.setText(setBuildingAndFloorLabel(currentFloorPlan.getFloorNum(startNumberInput), buildingInput));
+
+          }else if(isValidStartRoom(startNumberInput,currentFloorPlan)==false
+              && isValidStartRoom(startNumberInput,currentFloorPlan)==false){
+                System.out.println("No valid start/dest info. added");
+          }
+          }else{
+            invalidEntry.setText("Please select a building.");
+          }
+
         }
       }
 
@@ -555,6 +539,7 @@ public class FinderApp extends Application {
             int colLength = aGrid[row].length;
             Rectangle rect = setRectangles(row, col, aGrid, rectLength);
 
+
             int roomNumbers = 0;
 
             roomNumbers = aGrid[row][col];
@@ -599,10 +584,12 @@ public class FinderApp extends Application {
     public Rectangle setRectangles(int row, int col, int[][] aGrid, int rectLength){
 
         Rectangle rect = new Rectangle();
+        rect.setStroke(Color.BLACK);
         if (aGrid[row][col] == 0){
           rect.setFill(Color.BLACK);
         } else if (aGrid[row][col] == Constants.HALL){
           rect.setFill(Color.TRANSPARENT);
+          rect.setStroke(Color.TRANSPARENT);
         } else if (aGrid[row][col] == Constants.ROOM){
           rect.setFill(Color.GREY);
         } else if (aGrid[row][col] == Constants.DEST){
@@ -610,45 +597,44 @@ public class FinderApp extends Application {
         } else if (aGrid[row][col] == Constants.START){
           rect.setFill(Color.ORANGE);
         } else if (aGrid[row][col] == Constants.NPATH){
-            rect.setFill(new ImagePattern(imgFootPrintsN));
+          rect.setFill(new ImagePattern(imgFootPrintsN));
+          rect.setStroke(Color.TRANSPARENT);
         } else if (aGrid[row][col] == Constants.NEPATH){
-            rect.setFill(new ImagePattern(imgFootPrintsNE));
+          rect.setFill(new ImagePattern(imgFootPrintsNE));
+          rect.setStroke(Color.TRANSPARENT);
         } else if (aGrid[row][col] == Constants.NWPATH){
             rect.setFill(new ImagePattern(imgFootPrintsNW));
+          rect.setStroke(Color.TRANSPARENT);
         } else if (aGrid[row][col] == Constants.SPATH){
             rect.setFill(new ImagePattern(imgFootPrintsS));
+          rect.setStroke(Color.TRANSPARENT);
         } else if (aGrid[row][col] == Constants.SWPATH){
             rect.setFill(new ImagePattern(imgFootPrintsSW));
+          rect.setStroke(Color.TRANSPARENT);
         } else if (aGrid[row][col] == Constants.SEPATH){
             rect.setFill(new ImagePattern(imgFootPrintsSE));
+          rect.setStroke(Color.TRANSPARENT);
         } else if (aGrid[row][col] == Constants.EPATH){
             rect.setFill(new ImagePattern(imgFootPrintsE));
+          rect.setStroke(Color.TRANSPARENT);
         } else if (aGrid[row][col] == Constants.WPATH){
             rect.setFill(new ImagePattern(imgFootPrintsW));
+          rect.setStroke(Color.TRANSPARENT);
         } else if(aGrid[row][col] == Constants.REST){
           rect.setFill(new ImagePattern(imgRestroom));
           //https://stackoverflow.com/questions/22848829/how-do-i-add-an-image-inside-a-rectangle-or-a-circle-in-javafx
-        } else if(aGrid[row][col] == 1125 || aGrid[row][col] == 1225){
+        } else if(aGrid[row][col] == (map1.getCurrentFloorPlan().getStairsNum()+1000)){
           rect.setFill(new ImagePattern(imgStairs));
-        } else if(aGrid[row][col] == 1170 || aGrid[row][col] == 1171
-        || aGrid[row][col] == 1172 || aGrid[row][col] ==1270){
+        } else if(aGrid[row][col] == (map1.getCurrentFloorPlan().getElevatorNum()+1000)){
           rect.setFill(new ImagePattern(imgElevator));
         } else if(aGrid[row][col] == Constants.COFF){
           rect.setFill(new ImagePattern(imgCoffee));
-        } else if(aGrid[row][col] == Constants.TRANSPARENT){ //Transparent spots used fot allowing staggered grid rows and columns (formatting)
-          rect.setFill(Color.TRANSPARENT);
-        } else{
+        }else{
           rect.setFill(Color.LIGHTBLUE);
         }
-
-        if (aGrid[row][col] == Constants.TRANSPARENT){
-          rect.setStroke(Color.TRANSPARENT);
-        } else{
-          rect.setStroke(Color.BLACK);
-        }
+        
         rect.setWidth(rectLength);
         rect.setHeight(rectLength);
-
         rectangleGrid[row][col] = rect;
 
         return rect;
@@ -705,7 +691,7 @@ public class FinderApp extends Application {
       }
 
     /**
-    * Method to check if a valid start value is entered.
+    * Method to check if a valid start value for the floorplan inputted has been entered.
     *@param aStartRoom the room number entered by the user
     *@return isValidStart a boolean
     */
@@ -718,14 +704,14 @@ public class FinderApp extends Application {
             isValidStart = true;
             System.out.println("Start room is valid");
           }else{
-            invalidEntry.setText(GUIText.INVALID_ENTRY_INVALID_START);
+            invalidEntry.setText("Please enter a valid start room. Example: 262 or 264");
           }
         }
         return isValidStart;
       }
 
     /**
-    * Method to check if a valid destination value is entered.
+    * Method to check if a valid destination value for the floorplan inputted has been entered.
     *@param aDestRoom the room number entered by the user
     *@return isValidDest a boolean
     */
@@ -738,7 +724,7 @@ public class FinderApp extends Application {
           isValidDest = true;
           System.out.println("Dest room is valid");
         }else{
-          invalidEntry.setText(GUIText.INVALID_ENTRY_INVALID_DEST);
+          invalidEntry.setText("Please enter a valid destination room. Example: 262 or 264");
         }
       }
       return isValidDest;
@@ -748,71 +734,48 @@ public class FinderApp extends Application {
     * Method to write the current path to a file of a name the user chooses.
     * Adapted from https://stackoverflow.com/questions/34958829/how-to-save-a-2d-array-into-a-text-file-with-bufferedwriter
     */
-    public void writeToFile(){
-      //BufferedWriter outputStream = null;
-      //Saves file to a specific package created for SavedPaths.
-      try{  BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir")+"/SavedPaths/"+fileName));
-        //}catch(IOException e){
-        //  System.out.println("Error opening output file" + fileName);
-        //}
 
-        StringBuilder builder = new StringBuilder();
-        int[][] aGrid = updatedPlan.getGrid();
-        for(int i = 0; i < aGrid.length; i++)//for each row
-        {
-          for(int j = 0; j < aGrid[i].length; j++)//for each column
-          {
-            //int currentRow = updatedPlan.getCurrentRow(i);
-            //int currentCol = updatedPlan.getCurrentCol(j);
-            builder.append(aGrid[i][j] +"");//append to the output string
-            if(j < aGrid[i].length - 1)//if this is not the last row element
-            builder.append(",");//then add comma (if you don't like commas you can use spaces)
-          }
-          builder.append("\n");//append new line at the end of the row
-        }
-        //BufferedWriter writer = new BufferedWriter(new FileWriter("/c:/sudoku" + date + ".txt"));
-        writer.write(builder.toString());//save the string representation of the board
-        writer.close();
-        System.out.println("Map saved");
-        savedPathDropDown.getItems().add(fileName);
+    public void writeToFile(String fileName){
+      ObjectOutputStream outputStream = null;
+      try{
+        outputStream =
+        new ObjectOutputStream(new FileOutputStream(System.getProperty("user.dir")+"/SavedPaths/"+fileName));
+      }catch(IOException e){
+        System.out.println("Problem with output to file" + fileName);
+      }
+      try{
+          outputStream.writeObject(planToSave);
+          outputStream.writeInt(startToSave);
+          outputStream.writeInt(destToSave);
+          System.out.println("plan & start/dest Saved");
+          outputStream.close();
+
       }catch(FileNotFoundException e){
         System.out.println("Problem opening the file" + fileName);
       }catch(IOException e){
         System.out.println("Problem with output to file"+ fileName);
       }
+      savedPathDropDown.getItems().add(fileName);
     }
 
     /**
     * Method to read a saved path from a file of a name saved in the savedPathDropDown combobox.
     * Adapted from https://stackoverflow.com/questions/34958829/how-to-save-a-2d-array-into-a-text-file-with-bufferedwriter
     */
-    public void readFromFile(){
-
+    public void readFromFile(String fileName){
+      ObjectInputStream inputStream = null;
       try{
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        inputStream = new ObjectInputStream(new FileInputStream(fileName));
       }catch(IOException e){
         System.out.println("Error opening output file"+fileName);
       }
+
       try{
-        int[][] aGrid = new int[Constants.MAX_GRIDSIZE][Constants.MAX_GRIDSIZE];
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        String line = "";
-        int row = 0;
-        FloorPlans savedFloorPlan = new FloorPlans();
-        while((line = reader.readLine()) != null)
-        {
-           String[] cols = line.split(","); //note that if you have used space as separator you have to split on " "
-           int col = 0;
-           for(String  c : cols)
-           {
-              aGrid[row][col] = Integer.parseInt(c);
-              col++;
-           }
-           row++;
-        }
-        reader.close();
+        planRead = (FloorPlans)inputStream.readObject();
+        startRead = inputStream.readInt();
+        destRead = inputStream.readInt();
         System.out.println("End of reading from file.");
-        savedFloorPlan.printSavedGrid(aGrid);
+        inputStream.close();
 
 
       }catch(FileNotFoundException e){
@@ -821,7 +784,25 @@ public class FinderApp extends Application {
         System.out.println("Problem reading1 the file" + fileName);
       }catch(IOException e){
         System.out.println("Problem reading2 the file" + fileName);
+      }catch (ClassNotFoundException e){
+        System.out.println("Class was not found.");
       }
+    }
+
+    /**
+    * Method to get all the saved files from a directory.
+    * @param: curDir is a directory of type File.
+    * @return: savedFiles is a list of the saved files in the parametar direcotry. Returned as a an array of type File.
+    */
+    public File[] getSavedFileList(File curDir){
+      File[] savedFiles = curDir.listFiles(); //https://stackoverflow.com/questions/15482423/how-to-list-the-files-in-current-directory
+      //Loop through the current directory to find the full name of the SavedPaths directory.
+      for (File file : savedFiles){
+        if(file.getName().endsWith("SavedPaths")){ //http://javaconceptoftheday.com/list-all-files-in-directory-in-java/
+          savedPathDir = (file);
+        }
+      }
+      return savedFiles;
     }
 
   @Override
@@ -830,7 +811,6 @@ public class FinderApp extends Application {
     //**
     // Welcome screen (first scene)
     //**
-
     BorderPane borderPanes1 = new BorderPane();
     borderPanes1.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #dc143c, #661a33)");
     //https://stackoverflow.com/questions/22007595/borderpane-with-color-gradient
@@ -868,24 +848,22 @@ public class FinderApp extends Application {
     borderScroll.setFitToWidth(true);
     //https://stackoverflow.com/questions/30687994/how-to-center-the-content-of-a-javafx-8-scrollpane
     borderScroll.setStyle("-fx-background-color:transparent;");
+    // https://stackoverflow.com/questions/12899788/javafx-hide-scrollpane-gray-border
     borderScroll.setContent(gridPane);
     scrollPaneVBox.getChildren().addAll(borderScroll);
     gridPane.setAlignment(Pos.CENTER);
     buildingAndFloorLabel.setFont(Font.font("Verdana", Constants.BUILDING_AND_FLOOR_LABEL_FONTSIZE));
+    buildingAndFloorLabel.setTextFill(Color.GREEN);
     gridPaneVBox.getChildren().addAll(buildingAndFloorLabel,scrollPaneVBox);
     scrollPaneVBox.setAlignment(Pos.CENTER);
     gridPaneVBox.setAlignment(Pos.CENTER);
 
-    /*Creates a subdirectory within current directory of the program was opened in
-    called SavedPaths to store any saved paths.
-    https://stackoverflow.com/questions/3634853/how-to-create-a-directory-in-java*/
-    new File(System.getProperty("user.dir")+"/SavedPaths").mkdirs();
 
-    Label appName = new Label ("Taylor Family Digital Library Pathfinder");
-    appName.setFont(Font.font("Verdana", FontWeight.BOLD,Constants.APP_LABEL_FONTSIZE));
+    Label appName = new Label ("University of Calgary Pathfinder");
+    appName.setFont(Font.font("Verdana", FontWeight.BOLD,Constants.APP_LABEL_FONTSIZE+6));
     appName.setPadding(new Insets(10));
 
-    buildingDropDown.getItems().addAll("Taylor Family Digital Library");
+    buildingDropDown.getItems().addAll("Taylor Family Digital Library","Bioscience");
 
     /*
     * Elevator and stair button box
@@ -895,12 +873,15 @@ public class FinderApp extends Application {
 
     Button elevatorB = new Button("Elevator");
     elevatorB.setOnAction(new HandleElevatorClick());
+    elevatorB.setStyle("-fx-background-color: aquamarine;");
 
     Button stairB = new Button("Stairs");
     stairB.setOnAction(new HandleStairClick());
+    stairB.setStyle("-fx-background-color: #f1b10e;");
 
     Button nextFloorB = new Button("Next Floor.");
     nextFloorB.setOnAction(new HandleNextFloorClick());
+    nextFloorB.setStyle("-fx-background-color: #ff4d4d");
 
     eleStairBox.getChildren().addAll(elevatorB,stairB,nextFloorB);
 
@@ -916,32 +897,102 @@ public class FinderApp extends Application {
     largeButton.setToggleGroup(sizeGroup);
     largeButton.setUserData(Constants.LARGE_RECT);
 
+
+
+
+    /*
+    * File Saving and Management **
+    */
+
+    /*Creates a subdirectory within current directory of the program was opened in
+    called SavedPaths to store any saved paths.
+    https://stackoverflow.com/questions/3634853/how-to-create-a-directory-in-java*/
+    new File(System.getProperty("user.dir")+"/SavedPaths").mkdirs();
+
     //Button to save the path to a file.
     Button savePath = new Button("Save Path");
     //TextField to enter the file name to save to.
     TextField fileTextField = new TextField("Save path as:");
-    fileTextField.setMaxWidth(100);
+    fileTextField.setMaxWidth(130);
 
     //get a list of saved paths currently saved within the SavedPaths package.
-    File curDir = new File((System.getProperty("user.dir"))); //https://stackoverflow.com/questions/4871051/getting-the-current-working-directory-in-java
-    File[] filesList = curDir.listFiles(); //https://stackoverflow.com/questions/15482423/how-to-list-the-files-in-current-directory
-    //Loop through the current directory to find the full name of the SavedPaths directory.
-    for (File file : filesList){
-      if(file.getName().endsWith("SavedPaths")){ //http://javaconceptoftheday.com/list-all-files-in-directory-in-java/
-        savedPathDir = (file);
-      }
-    }
+    File[] filesList = getSavedFileList(curDir);
+
+
     /*Loop through the SavedPaths directory and get all files from within it.
     Abridges the name of the file directory, so it is more manageable on the screen.*/
     ArrayList<File> savedPathFiles = new ArrayList<File>();
     File[] savedPathsArray = savedPathDir.listFiles();
     for (File file : savedPathsArray){
       String shortenedNameFile = file+"";
-      shortenedNameFile = shortenedNameFile.split("SavedPaths/")[1]; //https://stackoverflow.com/questions/18220022/how-to-trim-a-string-after-a-specific-character-in-java
+      // If the operating system is Linux it will only take the String of the file name after "SavedPaths/" in the file path.
+      if (operatingSystem.equals("Linux")){
+        shortenedNameFile = shortenedNameFile.split("SavedPaths/")[1];
+      // Else if the operating system is Windows it will only take the String of the file name after the last "\\" in the file path.
+      } else{
+        shortenedNameFile = shortenedNameFile.substring(shortenedNameFile.lastIndexOf("\\") + 1);
+      }
+      //https://stackoverflow.com/questions/3243721/how-to-get-the-last-characters-in-a-string-in-java-regardless-of-string-size
+      //https://stackoverflow.com/questions/18220022/how-to-trim-a-string-after-a-specific-character-in-java
       savedPathDropDown.getItems().add(shortenedNameFile);
     }
 
     savedPathDropDown.setPromptText("Saved Paths");
+    savedPathDropDown.setMaxWidth(130);
+
+    /**
+    * Handles the button click of the savePath button to save the path to a file.
+    */
+    savePath.setOnAction(new EventHandler<ActionEvent>(){
+      public void handle(ActionEvent event){
+        if(gridVisible== false){
+          invalidEntry.setText("There is no path to save.");
+        }else if(fileTextField.getText().equals("")){
+          invalidEntry.setText("Enter a name for the saved path.");
+        }else if(new File(curDir + "/SavedPaths/"  + fileTextField.getText() + ".dat" ).exists()){
+          int counter = 1;
+          //If file name already exists, loop adding a number in brackets to the end of the file name until it does not previously exist.
+          while(new File(curDir + "/SavedPaths/"  + fileTextField.getText() + "(" + counter + ")" + ".dat" ).exists()){
+            counter += 1;
+          }
+          invalidEntry.setText("This file name already exists. Path saved as: "+ fileTextField.getText() + "(" + counter + ")" + ".dat instead.");
+          writeToFile(fileTextField.getText() + "(" + counter + ")" + ".dat");
+        }else{
+          writeToFile(fileTextField.getText() + ".dat");
+        }
+        // Reset text
+        fileTextField.setText("");
+      }
+    });
+
+    /**
+    * Handles user selecting a saved path from the combobox.
+    */
+    savedPathDropDown.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent event){
+              //Completing the abridged file name to the full file name
+              //fileName = (System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
+              readFromFile(System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
+              String buildingNameRead = "";
+              if(planRead.getBuildingName()!=null){
+                buildingNameRead = planRead.getBuildingName();
+                System.out.println(buildingNameRead);
+              }
+              buildingAndFloorLabel.setText(setBuildingAndFloorLabel(planRead.getFloorNum(startRead), buildingNameRead));
+              invalidEntry.setText("You have loaded a path from "+ startRead+ " to " + destRead+".");
+              enterStartRoom.setText(startRead+"");
+              enterDestRoom.setText(destRead+"");
+              buildingDropDown.setValue(buildingNameRead);
+              map1.setCurrentFloorPlan(planRead);
+              makeGrid(planRead.getGrid(),gridPane,rectLength);
+              gridVisible = true;
+
+
+            }
+          });
+
+
+
 
     mapSize.setAlignment(Pos.TOP_LEFT);
     // group containing radio buttons to control mapsize, the button to save a path, and combobox with saved paths.
@@ -960,26 +1011,6 @@ public class FinderApp extends Application {
       }
     });
 
-    /**
-    * Handles the button click of the savePath button to save the path to a file.
-    */
-    savePath.setOnAction(new EventHandler<ActionEvent>(){
-      public void handle(ActionEvent event){
-        fileName = (fileTextField.getText() + ".txt");
-        writeToFile();
-      }
-    });
-
-    /**
-    * Handles user selecting a saved path from the combobox.
-    */
-    savedPathDropDown.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent event){
-              //Completing the abridged file name to the full file name
-              fileName = (System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
-              readFromFile();
-            }
-          });
 
     HBox topRow2 = new HBox();
     topRow2.setAlignment(Pos.CENTER);
@@ -995,6 +1026,7 @@ public class FinderApp extends Application {
     Button submitB = new Button("Submit");
     submitB.setOnAction(new HandleButtonClick());
 
+    buildingDropDown.setPromptText("Select a Building:");
     Label buildingDropDownLabel = new Label("Building:");
     VBox buildingDropDownVBox = new VBox();
     buildingDropDownVBox.getChildren().addAll(buildingDropDownLabel, buildingDropDown);
@@ -1043,7 +1075,14 @@ public class FinderApp extends Application {
     //Add a popup window when user clicks the About button.
     //Source: https://gist.github.com/jewelsea/1926196 jewelsea
     Popup aboutPopup = new Popup();
-    Label aboutLabel = new Label(GUIText.ABOUT_MESSAGE);
+    Label aboutLabel = new Label("This app allows the user to select a building and \n" +
+    "enter a starting room location and a desired destination location. The user also\n"+
+    "has the option to click the labelled room numbers instead of entering a room number.\n"+
+    "The app will then highlight the path between these two destinations.\n" +
+    "To use this app: Select a building from the dropdown box, enter a starting room\n" +
+    "number in the first textbox and a destination room in the second textbox. Then press\n" +
+    "the submit button. Or, click a starting room label and a destination room label on the map.\n" +
+    "Creators: Nicki, Dayan, and Riley. Created Winter 2018 for CPSC 219.");
 
 
     //Add a Hide button to hide the About app popup window.
@@ -1089,7 +1128,12 @@ public class FinderApp extends Application {
     //Add a popup window when user clicks the Help button.
     //Source: https://gist.github.com/jewelsea/1926196 jewelsea
     Popup helpPopup = new Popup();
-    Label helpLabel = new Label(GUIText.HELP_MESSAGE);
+    Label helpLabel = new Label(
+    "To use this app: Select a building from the dropdown box, enter a starting room\n" +
+    "number in the first textbox and a destination room in the second textbox. Then press\n" +
+    "the submit button. If you enter an invalid room, example room numbers will be provided\n" +
+    "in a message. Or, click a starting room label and a destination room label on the map and \n"+
+    "follow the dialogue box instructions.");
 
 
     //Add a Hide button to hide the Help popup window.
