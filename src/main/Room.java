@@ -1,10 +1,11 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Class that handles everything related to the rooms of the grid map.
  * Last Edited by Dayan - 27 Mar 2018
  */
-public class Room {
+public class Room implements Serializable{
   private int roomNumber = 0;
   private Door aDoor = new Door();
   //no door in tileList
@@ -81,3 +82,4 @@ public class Room {
   }
 
 }
+
