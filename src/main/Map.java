@@ -1,14 +1,14 @@
-import resources.Constants;
-
 /**
 * Class for the creations of the maps, sizing of the maps, and contains the path restriction for the pathfinding.
 */
-
-public class Map{
+import java.io.Serializable;
+import resources.Constants;
+public class Map implements Serializable{
 
   private int roomNum;
   private String building;
   private FloorPlans currentFloorPlan = new FloorPlans();
+  private Building currentBuilding;
   private int startX;
   private int startY;
   private int endX;
@@ -42,6 +42,14 @@ public class Map{
   */
   public void setCurrentFloorPlan(FloorPlans newFloorPlan){
     currentFloorPlan = newFloorPlan;
+  }
+
+  public Building getCurrentBuilding(){
+    return new Building(currentBuilding);
+  }
+
+  public void setCurrentBuilding(Building newBuilding){
+    currentBuilding = new Building(newBuilding);
   }
 
   /**
