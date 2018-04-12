@@ -1,11 +1,11 @@
 import resources.BuiltFloorPlans;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Class for Buildings
+ * This class is for the buildings.
  */
+
 public class Building implements Serializable{
 
   private ArrayList<FloorPlans> floorList = new ArrayList<FloorPlans>();
@@ -15,13 +15,14 @@ public class Building implements Serializable{
   private String buildingName;
 
   /**
-  * Basic constructor for Building.
+  * Default constructor for Building.
   *
   */
   public Building(){}
 
   /**
   * Constructor for Building which takes a String as the building's name.
+  * @param: bName is a building name as a String.
   *
   */
   public Building(String bName){
@@ -32,6 +33,7 @@ public class Building implements Serializable{
   /**
   * Copy constructor for building that copies the name of the building toCopy
   * and the list of floors it has.
+  * @param: toCopy is the building to be copied of type Building.
   */
   public Building(Building toCopy){
     setBuildingName(toCopy.getName());
@@ -51,16 +53,19 @@ public class Building implements Serializable{
    * @param aBuildingName a Name of a building
    */
   public void setBuildingName(String aBuildingName) {
+    // Conditional controls if the parameter string is one of the two buildings floorplans have been built for.
     if (aBuildingName.equals("Taylor Family Digital Library") || aBuildingName.equals("Bioscience")) {
       buildingName = aBuildingName;
     }
   }
+
   /**
-  * Method that adds floors to the building, depending on its name.
+  * Method that adds the floorplans to the building, depending on its name.
   *
   */
   public void addFloors(){
     if(buildingName != null) {
+      //Adds the floorplans for Taylor Family Digital Library if this is the name of the Building object.
       if (buildingName.equals("Taylor Family Digital Library")) {
         String name = "Taylor Family Digital Library";
         floorList.add(new FloorPlans(name, BuiltFloorPlans.TFDLGROUND, 0, 23, 18));
@@ -70,6 +75,7 @@ public class Building implements Serializable{
         floorList.add(new FloorPlans(name, BuiltFloorPlans.TFDLFOUR, 4, 474, 475));
         floorList.add(new FloorPlans(name, BuiltFloorPlans.TFDLFIVE, 5, 552, 517));
         floorList.add(new FloorPlans(name, BuiltFloorPlans.TFDLSIX, 6, 603, 679));
+        //Adds the floorplans for the BioScience building if this is the name of the Building object.
       } else if (buildingName.equals("Bioscience")) {
         String name = "Bioscience";
         floorList.add(new FloorPlans(name, BuiltFloorPlans.BIOSCIONE, 1, 180, 100));
@@ -81,15 +87,16 @@ public class Building implements Serializable{
   /**
   * Method that finds the floor plan that contains the given room number.
   * @param roomNumber: integer value of the room to look for
-  * @return a copy of floor, the floor found that contains the given room number.
+  * @return a copy of floor, the floor of type FloorPlans found that contains the given room number
   * @return null if no floorPlans is found.
   */
   public FloorPlans getFloorPlan(int roomNumber){
     int floorNum;
     int numDigits;
+    // Determines the number of digits in the roomNumber parameter.
     numDigits = (int) Math.log10(roomNumber) + 1;
-    // If the provided room number has less than three digits it will be on the
-    // basement floor.
+    /* If the provided room number has less than three digits it will be on the
+    basement floor. */
     if (numDigits < 3) {
       floorNum = 0;
     }
@@ -100,6 +107,7 @@ public class Building implements Serializable{
         floorNum /= 10;
       }
     }
+    // Return a copy of the FloorPlans for the floor number the room number is on.
     for(FloorPlans floor : getFloorList()){
       if(floor.getFlNum() == floorNum) {
         return new FloorPlans(floor);
@@ -110,9 +118,10 @@ public class Building implements Serializable{
 
   /**
   * Method to get the current list of floors for the building.
-  * @return ArrayList<FloorPlans> : copy list of floors
+  * @return ArrayList<FloorPlans> : copy list of floors of type FloorPlans for the building.
   */
   public ArrayList<FloorPlans> getFloorList(){
+    // Copying the floors for the building into an ArrayList.
     ArrayList<FloorPlans> copyList = new ArrayList<FloorPlans>();
     for(FloorPlans floor : floorList){
       copyList.add(floor);
@@ -121,15 +130,21 @@ public class Building implements Serializable{
   }
 
   /**
-  * Method to find out of a number is on any floor and if so, which one.
+  * Method to find out if a room is on any floor and if so, which one.
   * @param roomNumber: integer that is the room number.
-  * @return nextFloor: floorPlans for which floor the room number is on
+  * @return nextFloor: FloorPlans for which floor the room number is on
   * or null if it is not on any floor plan in the building.
   */
   public FloorPlans onAFloor(int roomNumber){
     FloorPlans nextFloor = null;
+    // Loop through all the FloorPlans for the building.
     for(FloorPlans floor : getFloorList()){
+      // Loop through the roomlist for the current floor being looped through.
       for(Room room : floor.getRoomList()){
+        /* Check if the interested roomNumber passed as a parameter is equal to 
+        the current iterated room from the roomlist. Adds 1000 to the roomNumber parameter 
+        because on floor plans the rooms are denoted by 1000 series numbers, while the
+        3 digit numbers actually designate the doors of the rooms of type Door. */
         if((roomNumber + 1000) == room.getRoomsNumber()){
           nextFloor = floor;
         }
@@ -140,5 +155,3 @@ public class Building implements Serializable{
 
 
 }
-
-
