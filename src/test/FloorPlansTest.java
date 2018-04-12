@@ -1,11 +1,9 @@
-/**
- * Class to test the FloorPlans class
- */
-
-
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+/**
+ * Class to test the FloorPlans class
+ */
 public class FloorPlansTest {
   /**
    * Test the constructors and ensure instances are properly set
@@ -13,10 +11,10 @@ public class FloorPlansTest {
   @Test
   public void testConstructors() {
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", 150);
-    assertEquals("Destination number is", 150, a.getDestNumber());
+    assertEquals("Destination number is", 150, a.getFlNum());
     assertEquals("Building is", "Taylor Family Digital Library", a.getBuildingName());
     FloorPlans b = new FloorPlans(a);
-    assertEquals("Destination number is", 150, b.getDestNumber());
+    assertEquals("Destination number is", 150, b.getFlNum());
     assertEquals("Building is", "Taylor Family Digital Library", b.getBuildingName());
 
   }
@@ -81,5 +79,62 @@ public class FloorPlansTest {
     assertEquals("There is this many rooms on an empty floorplan:",
       0, c.getRoomList().size());
     assertNull("Rooms do not exist on empty floorplan grid", c.getRoom(0));
+  }
+
+  @Test
+  public void getFlNum() {
+    FloorPlans a = new FloorPlans("Taylor Family Digital Library", 150);
+  }
+
+  @Test
+  public void getElevatorNum() {
+  }
+
+  @Test
+  public void getStairsNum() {
+  }
+
+  @Test
+  public void copyGrid() {
+  }
+
+  @Test
+  public void getRowLength() {
+  }
+
+  @Test
+  public void getColLength() {
+  }
+
+  @Test
+  public void getBuildingName() {
+  }
+
+  @Test
+  public void getGrid() {
+  }
+
+  @Test
+  public void getRoom() {
+  }
+
+  @Test
+  public void addRoom() {
+  }
+
+  @Test
+  public void getRoomList() {
+  }
+
+  @Test
+  public void makeRooms() {
+  }
+
+  @Test
+  public void populateRooms() {
+  }
+
+  @Test
+  public void printSavedGrid() {
   }
 }
