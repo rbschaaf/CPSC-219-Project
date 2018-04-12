@@ -141,8 +141,6 @@ public class MapMain {
     newMap.placeDest(endGrid);
 
     System.out.println("\nGrid with the path: ");
-    System.out.println("8 is the starting room, 5 is the destination room, and 7's are your path.");
-
 
     // Print the map again with the number 7 showing a path between the rooms.
     changeToSevens(endGrid);
@@ -156,6 +154,7 @@ public class MapMain {
 
   }
 }
+
 
 
 
