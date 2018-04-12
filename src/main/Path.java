@@ -8,14 +8,15 @@ import java.util.ArrayList;
  * 4 Mar 2018
  */
 public class Path {
-  private int[][] floorGrid;
-  private int[][] copyGrid;
-  private int startRoomNum;
-  private int endRoomNum;
+  int[][] floorGrid;
+  int[][] copyGrid;
+  int startRoomNum;
+  int endRoomNum;
+  ArrayList<Node> nodes = new ArrayList<Node>();
 
 
   /**
-   * Constructor requires a grid on which to find a path
+   * Contructor requires a grid on which to find a path
    *
    * @param newGrid of a desired grid
    */
@@ -59,7 +60,7 @@ public class Path {
   /**
    * Setter Method for the grid
    *
-   * @param aGrid the two dimensional integer grid containing the floor plan
+   * @param aGrid the two dimensional integer grid containing the floorplan
    */
   public void setFloorGrid(int[][] aGrid) {
     floorGrid = aGrid;
@@ -108,6 +109,24 @@ public class Path {
   }
 
   /**
+   * Getter method for the start node
+   *
+   * @param nodes an Arraylist that of the nodes of the grid
+   * @return the node that specifies it is the start location
+   */
+  public Node getStartNode(ArrayList<Node> nodes) {
+    Node startNode = null;
+    if (nodes != null) {
+      for (Node node : nodes) {
+        if (node.getStartNodeVal() == true) {
+          startNode = new Node(node);
+        }
+      }
+    }
+    return startNode;
+  }
+
+  /**
    * Getter method for the end node
    *
    * @param nodes an Arraylist that of the nodes of the grid
@@ -117,7 +136,7 @@ public class Path {
     Node endNode = null;
     if (nodes != null) {
       for (Node node : nodes) {
-        if (node.getEndNodeVal()) {
+        if (node.getEndNodeVal() == true) {
           endNode = new Node(node);
         }
       }
@@ -126,10 +145,10 @@ public class Path {
   }
 
   /**
-   * Add node to an ArrayList list of nodes
+   * Add node to an arraylist list of nodes
    *
-   * @param nodes ArrayList of nodes
-   * @param aNode the node to add to the ArrayList
+   * @param nodes arraylist of nodes
+   * @param aNode the node to add to the arraylist
    */
   public void addNodeToList(ArrayList<Node> nodes, Node aNode) {
     if (aNode != null) {
@@ -141,8 +160,8 @@ public class Path {
    * Removing a specific node from a list
    *
    * @param nodes   containing the the arraylist of nodes
-   * @param newNode that is to be removed from the ArrayList
-   * @return an ArrayList with the removed node
+   * @param newNode that is to be removed from the arraylist
+   * @return an arraylist with the removed node
    */
   public ArrayList<Node> removeNodeFromList(ArrayList<Node> nodes, Node newNode) {
     ArrayList<Node> copyList = getCopyNodes(nodes);
@@ -159,16 +178,16 @@ public class Path {
   }
 
   /**
-   * Create a copy of an ArrayList and its items
+   * Create a copy of an arraylist and its items
    *
-   * @param nodes the ArrayList to copy
-   * @return the copy of the ArrayList
+   * @param nodes the arraylist to copy
+   * @return the copy of the arraylist
    */
   public ArrayList<Node> getCopyNodes(ArrayList<Node> nodes) {
     ArrayList<Node> copyNodes = new ArrayList<Node>();
     if (nodes != null) {
-      for (Node node : nodes) {
-        addNodeToList(copyNodes, node);
+      for (int i = 0; i < nodes.size(); i++) {
+        addNodeToList(copyNodes, nodes.get(i));
       }
     }
     return copyNodes;
@@ -177,20 +196,20 @@ public class Path {
   /**
    * Determining the node with the lowest distance instance value from the start node
    *
-   * @param nodes containing the ArrayList of nodes
+   * @param nodes containing the arraylist of nodes
    * @return the node with the lowest distance from the start
    */
   public Node getLowestDistanceNode(ArrayList<Node> nodes) {
     Node lowestNode = null;
     Node finalLowestNode = null;
     if (nodes != null) {
-      for (Node node : nodes) {
+      for (int i = 0; i < nodes.size(); i++) {
         if (lowestNode != null) {
-          if (lowestNode.getStartDistance() > node.getStartDistance()) {
-            lowestNode = node;
+          if (lowestNode.getStartDistance() > nodes.get(i).getStartDistance()) {
+            lowestNode = nodes.get(i);
           }
         } else {
-          lowestNode = node;
+          lowestNode = nodes.get(i);
         }
         finalLowestNode = new Node(lowestNode);
       }
@@ -199,21 +218,23 @@ public class Path {
   }
 
   /**
-   * From a grid create an array of nodes that can be traversed
+   * From a grid create an array of nodes that are traversable
    *
-   * @param aGrid the grid from which to create an ArrayList of nodes
-   * @return the created ArrayList
+   * @param aGrid the grid from which to create an arraylist of nodes
+   * @return the created arraylist
    */
   public ArrayList<Node> createNodeArray(int[][] aGrid) {
     ArrayList<Node> nodes = new ArrayList<Node>();
     for (int row = 0; row < aGrid.length; row++) {
       for (int column = 0; column < aGrid[row].length; column++) {
-        //used for the Node constructor
+        //used for the Node constuctor
+        boolean endNode = false;
 
         if (aGrid[row][column] == 1) {
-          addNodeToList(nodes, new Node(row, column, false));
+          addNodeToList(nodes, new Node(row, column, endNode));
         } else if (floorGrid[row][column] == endRoomNum) {
-          addNodeToList(nodes, new Node(row, column, true));
+          endNode = true;
+          addNodeToList(nodes, new Node(row, column, endNode));
         } else if (floorGrid[row][column] == startRoomNum) {
           addNodeToList(nodes, new Node(row, column, 0));
         }
@@ -263,22 +284,31 @@ public class Path {
    * @return an arraylist of nodes with all the appropriate instance
    * variables set to create the shortest path
    */
-  private ArrayList<Node> setNodeDistances(ArrayList<Node> nodes) {
+  public ArrayList<Node> setNodeDistances(ArrayList<Node> nodes) {
+    int counter = 0;
     ArrayList<Node> unvisitedNodes = getCopyNodes(nodes);
     Node endNode = getEndNode(unvisitedNodes);
     ArrayList<Node> visitedNodes = new ArrayList<Node>();
     boolean endNodeVisited = false;
     do {
+      counter += 1;
+
       Node vertex = getLowestDistanceNode(unvisitedNodes);
       if (vertex.equals(endNode)) {
         endNodeVisited = true;
       }
+      //System.out.println(counter);
       addNodeToList(visitedNodes, vertex);
+      //ArrayList<Node> removeList = new ArrayList<Node>();
       unvisitedNodes = removeNodeFromList(unvisitedNodes, vertex);
+      //System.out.println(unvisitedNodes);
+      //System.out.println(visitedNodes);
       for (Node eachNode : unvisitedNodes) {
+        //System.out.println(eachNode.getStartDistance());
         setNeighborInstances(vertex, eachNode);
+        //System.out.println(eachNode.getStartDistance());
       }
-    } while (!endNodeVisited);
+    } while (endNodeVisited != true);
 
 
     return getCopyNodes(visitedNodes);
@@ -288,60 +318,60 @@ public class Path {
    * Returns a list of only the fully created path nodes to be used when
    * altering the grid
    *
-   * @param visitedNodes containing an ArrayList of nodes
-   * @return an ArrayList of nodes that only contain the direct path nodes
+   * @param visitedNodes containing an arraylist of nodes
+   * @return an arraylist of nodes that only contain the direct path nodes
    */
 
-  private ArrayList<Node> getConnectedNodes(ArrayList<Node> visitedNodes) {
+  public ArrayList<Node> getConnectedNodes(ArrayList<Node> visitedNodes) {
     ArrayList<Node> shortestPathNodes = new ArrayList<Node>();
     Node currentNode = getEndNode(visitedNodes);
     if (visitedNodes != null) {
       while (currentNode.getConnectedNode() != null) {
         addNodeToList(shortestPathNodes, currentNode);
-        currentNode = currentNode.getConnectedNode();
+        Node nextNode = currentNode.getConnectedNode();
+        currentNode = nextNode;
       }
     }
     return getCopyNodes(shortestPathNodes);
   }
 
   /**
-   * Takes an ArrayList of connected nodes forming the shortest path
+   * Takes an Arraylist of connected nodes forming the shortest path
    * and alters the grid to show the final path
    *
-   * @param shortPathNodes containing an ArrayList of the shortest path nodes
+   * @param shortPathNodes containing an arraylist of the shortest path nodes
    * @return a grid with the altered values showing the shortest path from point a to point b
    */
-  private int[][] addPathToGrid(ArrayList<Node> shortPathNodes) {
+  public int[][] addPathToGrid(ArrayList<Node> shortPathNodes) {
     for (Node aNode : shortPathNodes) {
       int nodeRow = aNode.getXCoord();
       int nodeCol = aNode.getYCoord();
-      if (!aNode.getEndNodeVal()) {
+      if (aNode.getEndNodeVal() == false) {
+        //copyGrid[nodeRow][nodeCol] = 7;
         String direction = aNode.getDirection();
-        switch (direction) {
-          case "N":
-            copyGrid[nodeRow][nodeCol] = 70001;
-            break;
-          case "NE":
-            copyGrid[nodeRow][nodeCol] = 70002;
-            break;
-          case "NW":
-            copyGrid[nodeRow][nodeCol] = 70003;
-            break;
-          case "S":
-            copyGrid[nodeRow][nodeCol] = 70011;
-            break;
-          case "SE":
-            copyGrid[nodeRow][nodeCol] = 70012;
-            break;
-          case "SW":
-            copyGrid[nodeRow][nodeCol] = 70013;
-            break;
-          case "E":
-            copyGrid[nodeRow][nodeCol] = 70020;
-            break;
-          case "W":
-            copyGrid[nodeRow][nodeCol] = 70030;
-            break;
+        if (direction.equals("N")) {
+          copyGrid[nodeRow][nodeCol] = 70001;
+        }
+        else if (direction.equals("NE")) {
+          copyGrid[nodeRow][nodeCol] = 70002;
+        }
+        else if (direction.equals("NW")) {
+          copyGrid[nodeRow][nodeCol] = 70003;
+        }
+        else if (direction.equals("S")) {
+          copyGrid[nodeRow][nodeCol] = 70011;
+        }
+        else if (direction.equals("SE")) {
+          copyGrid[nodeRow][nodeCol] = 70012;
+        }
+        else if (direction.equals("SW")) {
+          copyGrid[nodeRow][nodeCol] = 70013;
+        }
+        else if (direction.equals("E")) {
+          copyGrid[nodeRow][nodeCol] = 70020;
+        }
+        else if (direction.equals("W")) {
+          copyGrid[nodeRow][nodeCol] = 70030;
         }
 
       }
@@ -357,7 +387,8 @@ public class Path {
    */
   public int[][] createPath() {
     ArrayList<Node> gridNodes = createNodeArray(floorGrid);
-    return addPathToGrid(getConnectedNodes(setNodeDistances(gridNodes)));
+    int[][] finGrid = addPathToGrid(getConnectedNodes(setNodeDistances(gridNodes)));
+    return finGrid;
   }
 }
 
