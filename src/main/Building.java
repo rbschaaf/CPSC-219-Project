@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class Building implements Serializable{
 
   private ArrayList<FloorPlans> floorList = new ArrayList<FloorPlans>();
+
+
+
   private String buildingName;
 
   /**
@@ -22,7 +25,7 @@ public class Building implements Serializable{
   *
   */
   public Building(String bName){
-    buildingName = bName;
+    setBuildingName(bName);
     addFloors();
   }
 
@@ -31,7 +34,7 @@ public class Building implements Serializable{
   * and the list of floors it has.
   */
   public Building(Building toCopy){
-    buildingName = toCopy.getName();
+    setBuildingName(toCopy.getName());
     floorList = toCopy.getFloorList();
   }
 
@@ -43,6 +46,15 @@ public class Building implements Serializable{
     return buildingName;
   }
 
+  /**
+   * method that sets the building name
+   * @param aBuildingName a Name of a building
+   */
+  public void setBuildingName(String aBuildingName) {
+    if (aBuildingName.equals("Taylor Family Digital Library") || abuildingName.equals("Bioscience")) {
+      buildingName = aBuildingName;
+    }
+  }
   /**
   * Method that adds floors to the building, depending on its name.
   *
