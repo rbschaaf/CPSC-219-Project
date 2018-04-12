@@ -19,6 +19,7 @@ import java.lang.NumberFormatException;
 import java.io.*;
 import java.net.URL;
 import resources.Constants;
+import javafx.geometry.Rectangle2D;
 
 
 
@@ -53,7 +54,9 @@ public class FinderApp extends Application {
     private VBox mapSize = new VBox();
     private File curDir = new File((System.getProperty("user.dir"))); //The current directory. https://stackoverflow.com/questions/4871051/getting-the-current-working-directory-in-java
     private String operatingSystem = System.getProperty("os.name"); //The opearting system of the computer running the program. https://stackoverflow.com/questions/14288185/detecting-windows-or-linux
-
+    private Screen screen = Screen.getPrimary(); //https://stackoverflow.com/questions/6864540/how-to-set-a-javafx-stage-frame-to-maximized
+    private Rectangle2D bounds = screen.getVisualBounds();
+  
     private FloorPlans updatedPlan;
 
     // File variables
@@ -1151,6 +1154,29 @@ public class FinderApp extends Application {
         primaryStage.setScene(scene2);
       }
     });
+    
+    /**
+    * Handles resizing of the window by the user.
+    * https://stackoverflow.com/questions/15659817/listener-for-a-stage-minimizing-maximizing-etc
+    */
+    primaryStage.maximizedProperty().addListener(new ChangeListener<Boolean>() {
+      
+        @Override
+        public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean isMaximizedScreen) {
+            //If the screen is maximized, set the stage to fill the entire screen.
+            if(isMaximizedScreen == true){
+              primaryStage.setWidth(bounds.getWidth());
+              primaryStage.setHeight(bounds.getHeight());
+            }// If the screen is no longer maximized, set the stage to the original size and position it in the center of the screen.
+            else if(isMaximizedScreen == false){
+              primaryStage.setWidth(Constants.SCENESIZE);
+              primaryStage.setHeight(Constants.SCENESIZE);
+              primaryStage.setX((bounds.getWidth() - primaryStage.getWidth()) / 2);
+              primaryStage.setY((bounds.getHeight() - primaryStage.getHeight()) / 2);  
+            }
+        }
+    });
+
 
     primaryStage.setTitle("Room Finder App");
     primaryStage.setScene(scene1);
