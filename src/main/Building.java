@@ -51,7 +51,7 @@ public class Building implements Serializable{
    * @param aBuildingName a Name of a building
    */
   public void setBuildingName(String aBuildingName) {
-    if (aBuildingName.equals("Taylor Family Digital Library") || abuildingName.equals("Bioscience")) {
+    if (aBuildingName.equals("Taylor Family Digital Library") || aBuildingName.equals("Bioscience")) {
       buildingName = aBuildingName;
     }
   }
