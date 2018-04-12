@@ -12,13 +12,15 @@ public class Map implements Serializable{
   private int startY;
   private int endX;
   private int endY;
+  private int start;
+  private int dest;
 
   /**
   * Constructor with a provided FloorPlans.
   * @param newFloorPlan a floor plan of type FloorPlans.
   */
   public Map (FloorPlans newFloorPlan){
-    currentFloorPlan = newFloorPlan;
+    currentFloorPlan = new FloorPlans(newFloorPlan);
   }
 
 
@@ -59,7 +61,23 @@ public class Map implements Serializable{
   public FloorPlans getCurrentFloorPlan(){
     return new FloorPlans(currentFloorPlan);
   }
-
+  
+  /**
+  * Method to get the start value.
+  * @return start the start value as an integer.
+  */
+  public int getStart(){
+    return start;
+  }
+  
+  /**
+  * Method to get the dest value.
+  * @return dest the destination value as an integer.
+  */
+  public int getDest(){
+    return dest;
+  }
+  
   /**
   * Printing method for the floor plan as a 2-dimensional grid.
   */
@@ -77,6 +95,7 @@ public class Map implements Serializable{
   * @param aFP a floorPlan; startRoom the current start Room.
   */
   public void setStartValues(FloorPlans aFP,int startRoom){
+    start = startRoom;
     for(int row=0;row<aFP.getRowLength();row++){
       for(int col=0;col<aFP.getColLength(row);col++){
         if(aFP.getGrid()[row][col]==startRoom){
@@ -92,6 +111,7 @@ public class Map implements Serializable{
   * @param aFP a floorPlan; endRoom the current end Room.
   */
   public void setEndValues(FloorPlans aFP, int endRoom){
+    dest = endRoom;
     for(int row=0;row<aFP.getRowLength();row++){
       for(int col=0;col<aFP.getColLength(row);col++){
         if(aFP.getGrid()[row][col]==endRoom){
@@ -102,22 +122,6 @@ public class Map implements Serializable{
     }
   }
 
-  /**
-  * Method to place start marker at the starting room on the grid.
-  * @param aGrid a chosen int[][] grid.
-  *
-  */
-  public void placeStart(int[][] aGrid){
-    aGrid[startX][startY]=Constants.START;
-  }
-
-  /**
-  * Method to place the Destination marker on the destination room.
-  * @param aGrid a chosen int[][] grid.
-  */
-  public void placeDest(int[][] aGrid){
-    aGrid[endX][endY] = Constants.DEST;
-  }
 
 
 }
