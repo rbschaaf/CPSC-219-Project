@@ -1086,9 +1086,12 @@ public class FinderApp extends Application {
     Label helpLabel = new Label(
     "To use this app: Select a building from the dropdown box, enter a starting room\n" +
     "number in the first textbox and a destination room in the second textbox. Then press\n" +
-    "the submit button. If you enter an invalid room, example room numbers will be provided\n" +
-    "in a message. Or, click a starting room label and a destination room label on the map and \n"+
-    "follow the dialogue box instructions.");
+    "the Submit button.  Or, click a starting room number on the map and click the\n" +
+    "corresponding button. Then click the destination room number on the map and click the\n" +
+    "corresponding button before clicking the Submit button. If the room numbers are on \n" +
+    "different floors: The path will start on the starting room's floor. To view the path\n" +
+    "on the destination room's floor press the red \"Next Floor\" button on the right side.\n" +
+    "If you enter an invalid room, example room numbers will be provided in a message.");
 
 
     //Add a Hide button to hide the Help popup window.
