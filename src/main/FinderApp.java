@@ -62,7 +62,7 @@ public class FinderApp extends Application {
     private String operatingSystem = System.getProperty("os.name"); //The opearting system of the computer running the program. https://stackoverflow.com/questions/14288185/detecting-windows-or-linux
     private Screen screen = Screen.getPrimary(); //https://stackoverflow.com/questions/6864540/how-to-set-a-javafx-stage-frame-to-maximized
     private Rectangle2D bounds = screen.getVisualBounds();
-  
+
     private FloorPlans updatedPlan;
 
     // File variables
@@ -420,7 +420,7 @@ public class FinderApp extends Application {
               // Updates the label above the map providing building name and floor number
               buildingAndFloorLabel.setText(setBuildingAndFloorLabel(currentFloorPlan.getFlNum(), buildingInput));
 
-             
+
 
             /*
             * If the start room is valid for the currents floor and the destination
@@ -555,13 +555,13 @@ public class FinderApp extends Application {
         int colLength = aGrid[0].length;
         rectangleGrid = new Rectangle[aGrid.length][aGrid[0].length];
         System.out.println("Rectangle grid set.");
-      
+
         // Set up the grid for the floor.
         for (int row = 0; row < aGrid.length; row++){
           for(int col = 0; col < aGrid[row].length; col++){
             Rectangle rect = setRectangles(row, col, aGrid, rectLength);
             rectangleGrid[row][col] = rect;
-          
+
 
             int roomNumbers = 0;
             roomNumbers = aGrid[row][col];
@@ -1040,6 +1040,7 @@ public class FinderApp extends Application {
 
     VBox topVBox = new VBox(15);
     topVBox.getChildren().addAll(topRow2,topRow,invalidHBox);
+    topVBox.setMinHeight(190);
 
 
     // Create an HBox to hold items in the  bottom row of the border pane.
@@ -1195,13 +1196,13 @@ public class FinderApp extends Application {
         primaryStage.setScene(scene2);
       }
     });
-    
+
     /**
     * Handles resizing of the window by the user.
     * https://stackoverflow.com/questions/15659817/listener-for-a-stage-minimizing-maximizing-etc
     */
     primaryStage.maximizedProperty().addListener(new ChangeListener<Boolean>() {
-      
+
         @Override
         public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean isMaximizedScreen) {
             //If the screen is maximized, set the stage to fill the entire screen.
@@ -1213,7 +1214,7 @@ public class FinderApp extends Application {
               primaryStage.setWidth(Constants.SCENESIZE);
               primaryStage.setHeight(Constants.SCENESIZE);
               primaryStage.setX((bounds.getWidth() - primaryStage.getWidth()) / 2);
-              primaryStage.setY((bounds.getHeight() - primaryStage.getHeight()) / 2);  
+              primaryStage.setY((bounds.getHeight() - primaryStage.getHeight()) / 2);
             }
         }
     });
@@ -1224,4 +1225,3 @@ public class FinderApp extends Application {
     primaryStage.show();
   }
 }
-
