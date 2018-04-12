@@ -230,7 +230,7 @@ public class FinderApp extends Application {
       int rNum;
       String buttonType;
 
-      public HandleStartRoomClick(int aRow, int aCol, int roomN, String type){
+      public HandleTileClick(int aRow, int aCol, int roomN, String type){
         rNum = roomN;
         row1 = aRow;
         col1 = aCol;
