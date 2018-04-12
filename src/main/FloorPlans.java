@@ -1,12 +1,14 @@
-/** New class description*/
-
 import resources.Constants;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+* This class handles the floor plans for each building.
+* Floor plans are what the path is built upon.
+*/
+
 public class FloorPlans implements Serializable {
-  private int[][] grid;
+  private int[][] grid; //FloorPlans are built on 2Dimensional integer arrays.
   private int destNum;
   private String building;
   private ArrayList<Room> roomList = new ArrayList<Room>();
@@ -43,8 +45,8 @@ public class FloorPlans implements Serializable {
    * @param bName : a building name of type String.
    * @param aGrid : an integer 2D array grid.
    * @param floorNumber : the floor number as an integer.
-   * @param stairsN : the number of the stairs tile as an integer.
-   * @param eleN : the number of the elevator tile as an integer.
+   * @param stairsN : the number of the stairs tile as an integer on the floor.
+   * @param eleN : the number of the elevator tile as an integer on the floor.
    *
    */
   public FloorPlans(String bName, int[][] aGrid, int floorNumber, int stairsN, int eleN){
@@ -53,14 +55,14 @@ public class FloorPlans implements Serializable {
     flNum = floorNumber;
     stairsNum = stairsN;
     elevatorNum = eleN;
-    makeRooms();
-    populateRooms();
+    makeRooms(); // Make the rooms on the grid.
+    populateRooms(); // Place the rooms on the floor plan.
   }
 
   /**
   * Method that returns the floor number.
   *
-  * @return flNum : floor number of the floor plan.
+  * @return flNum : floor number as an integer of the floor plan.
   */
   public int getFlNum(){
     return flNum;
@@ -69,7 +71,7 @@ public class FloorPlans implements Serializable {
   /**
   * Method that returns the tile number for elevator.
   *
-  * @return elevatorNum : number the elevator tile is set to.
+  * @return elevatorNum : number as an integer the elevator tile is set to.
   */
   public int getElevatorNum(){
     return elevatorNum;
@@ -78,7 +80,7 @@ public class FloorPlans implements Serializable {
   /**
   * Method that returns the tile number for stairs.
   *
-  * @return stairsNum : number the stairs tile is set to.
+  * @return stairsNum : number as an integer the stairs tile is set to.
   */
   public int getStairsNum(){
     return stairsNum;
@@ -87,11 +89,13 @@ public class FloorPlans implements Serializable {
   /**
   * Method that copies a given grid.
   *
-  *@param gridToCopy : the grid to be copied as a 2D integer array.
-  *@return newGrid : the copied grid.
+  *@param gridToCopy : the grid to be copied as a 2D integer array (int[][]).
+  *@return newGrid : the copied grid as a 2D integer array (int[][]).
   */
   public int[][] copyGrid(int[][] gridToCopy){
     int[][] newGrid = new int[gridToCopy.length][gridToCopy[0].length];
+    /* Loop through each row and column to copy each coordinate's values
+    from the old grid to the new grid. */
     for(int row=0; row<gridToCopy.length;row++){
       for(int col=0;col<gridToCopy[row].length;col++){
         newGrid[row][col] = gridToCopy[row][col];
@@ -104,7 +108,7 @@ public class FloorPlans implements Serializable {
   /**
    * Getter method for the row length of the grid.
    *
-   * @return: rowLength the row length of the grid
+   * @return: rowLength the row length of the grid as an integer.
    */
   public int getRowLength() {
     return grid.length;
@@ -114,8 +118,8 @@ public class FloorPlans implements Serializable {
   /**
    * Getter method for the column length of the grid.
    *
-   * @param: rowNumber the number of the current row in the grid
-   * @return: colLength the column length of the grid
+   * @param: rowNumber the number of the current row in the grid as an integer.
+   * @return: colLength the column length of the grid as an integer.
    */
   public int getColLength(int rowNumber) {
     return grid[rowNumber].length;
@@ -135,7 +139,7 @@ public class FloorPlans implements Serializable {
   /**
    * Method that is a getter method for the current grid of the floorplan.
    *
-   * @return: grid the current grid from the floorplan as an 2-dimensional int array.
+   * @return: grid the current grid from the floorplan as an 2-dimensional int array (int[][]).
    */
   public int[][] getGrid() {
     return grid;
@@ -143,16 +147,21 @@ public class FloorPlans implements Serializable {
 
 
   /**
-   * Getter method to get a room.
+   * Getter method to get a room object of type Room from a room number of type int from the room list.
+   * These values for gridNum will be 1000 series numbers.
    *
-   * @param gridNum the number of a grid of type int
-   * @return room a room of type Room
+   * @param gridNum the number of a room of type int
+   * @return room the room as an object of type Room
+   * @return null is returned if the passed in gridNum is not actually denoting a room that exists.
    */
   public Room getRoom(int gridNum) {
     Room room = null;
+    // Loop through the room list for the floor to see if the room exists.
     for (int i = 0; i < roomList.size(); i++) {
+      // If the room exists as an integer, return the room as type Room.
       if (roomList.get(i).getRoomsNumber() == gridNum) {
         room = new Room(roomList.get(i));
+        //Else if the current iterated room is the destination room, return the destination as type Room.
       } else if (roomList.get(i).getRoomsNumber() == Constants.DEST) {
         room = new Room(roomList.get(i));
       }
@@ -161,7 +170,7 @@ public class FloorPlans implements Serializable {
   }
 
   /**
-   * Method to  add a room to the roomlist in the floorplan
+   * Method to add a room to the roomlist in the floorplan
    *
    * @param gridNum the number of a grid as an int.
    */
@@ -173,10 +182,11 @@ public class FloorPlans implements Serializable {
   /**
    * Method to get the list of rooms for the current floor plan
    *
-   * @return copyList a copy of roomList.
+   * @return copyList a copy of roomList as type ArrayList<Room>.
    */
   public ArrayList<Room> getRoomList() {
     ArrayList<Room> copyList = new ArrayList<Room>();
+    // Loop through and copy each Room to the copyList.
     for (int i = 0; i < roomList.size(); i++) {
       copyList.add(new Room(roomList.get(i)));
     }
@@ -184,15 +194,18 @@ public class FloorPlans implements Serializable {
   }
 
   /**
-   * Method to make a room for each corresponding room on a grid
-   * meant to be used in a for-loop
+   * Method to go through the grid and find and add any rooms to the room list.
    */
   public void makeRooms() {
     int gridNum;
+    // Loop through each coordinate in the 2D grid.
     for (int row = 0; row < grid.length; row++) {
       for (int col = 0; col < grid[row].length; col++) {
         gridNum = grid[row][col];
+        // If the current coordinate's value is > 1000, it would be a room.
         if (gridNum > 1000) {
+          /* If the room is not already on the room list call the addRoom method to add the
+          currently iterated room to the list. */
           if (getRoom(gridNum) == null) {
             addRoom(gridNum);
           }
@@ -208,14 +221,17 @@ public class FloorPlans implements Serializable {
    */
   public void populateRooms() {
     int gridNum;
+    // Loop through each coordinate in the 2D grid.
     for (int row = 0; row < grid.length; row++) {
       for (int col = 0; col < grid[row].length; col++) {
         gridNum = grid[row][col];
+        // If the current coordinate being iterated is a room, add a tile to the coordinate.
         if (getRoom(gridNum) != null) {
           getRoom(gridNum).addTile(row, col);
+          // If the current coordinate being iterated through has a value less than 1000
         } else if (gridNum < 1000) {
-          // get the room for a door (1000+ item) and subtract 1000 to find
-          // which room it is for. Set the door as the current tile in the loop.
+          /* get the room for a door (1000+ item) and subtract 1000 to find
+          which room it is for. Set the door as the current tile in the loop. */
           if (getRoom(gridNum) != null) {
             Room tempRoom = getRoom(gridNum);
             tempRoom.setDoor(row, col);
@@ -227,18 +243,4 @@ public class FloorPlans implements Serializable {
     }
   }
 
-  /**
-   * Printing method for the a saved 2-dimensional grid from a file
-   */
-  public static void printSavedGrid(int[][] aGrid) {
-    for (int row = 0; row < aGrid.length; row++) {
-      for (int column = 0; column < aGrid[row].length; column++) {
-        System.out.printf("%4d", aGrid[row][column]);
-      }
-      System.out.println();
-    }
-  }
-
-
 }
-
