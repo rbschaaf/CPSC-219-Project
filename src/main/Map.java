@@ -6,7 +6,6 @@ import resources.Constants;
 public class Map implements Serializable{
 
   private int roomNum;
-  private String building;
   private FloorPlans currentFloorPlan = new FloorPlans();
   private Building currentBuilding;
   private int startX;
@@ -41,13 +40,21 @@ public class Map implements Serializable{
   * @param: newFloorPlan the currently being used floorplan as type FloorPlans.
   */
   public void setCurrentFloorPlan(FloorPlans newFloorPlan){
-    currentFloorPlan = newFloorPlan;
+    currentFloorPlan = new FloorPlans(newFloorPlan);
   }
 
+  /**
+  * Method to get the current building associated with the map.
+  * @return : a copy of the currentBuilding of type Building.
+  */
   public Building getCurrentBuilding(){
     return new Building(currentBuilding);
   }
 
+  /**
+  * Method that sets the current building.
+  *
+  */
   public void setCurrentBuilding(Building newBuilding){
     currentBuilding = new Building(newBuilding);
   }
@@ -57,7 +64,7 @@ public class Map implements Serializable{
   * @return: currentFloorPlan the current floorplan as type FloorPlans.
   */
   public FloorPlans getCurrentFloorPlan(){
-    return currentFloorPlan;
+    return new FloorPlans(currentFloorPlan);
   }
 
   /**
@@ -66,7 +73,7 @@ public class Map implements Serializable{
   public void printGrid() {
     for (int row = 0; row < currentFloorPlan.getRowLength(); row++) {
       for (int column = 0; column <currentFloorPlan.getColLength(row); column++) {
-        System.out.printf("%5d", currentFloorPlan.getGrid()[row][column]);
+        System.out.printf("%4d", currentFloorPlan.getGrid()[row][column]);
       }
       System.out.println();
     }
@@ -77,10 +84,8 @@ public class Map implements Serializable{
   * @param: aFP a floorPlan; startRoom the current start Room.
   */
   public void setStartValues(FloorPlans aFP,int startRoom){
-    int row;
-    int col;
-    for(row=0;row<aFP.getRowLength();row++){
-      for(col=0;col<aFP.getColLength(row);col++){
+    for(int row=0;row<aFP.getRowLength();row++){
+      for(int col=0;col<aFP.getColLength(row);col++){
         if(aFP.getGrid()[row][col]==startRoom){
           startX = row;
           startY = col;
@@ -94,10 +99,8 @@ public class Map implements Serializable{
   * @param: aFP a floorPlan; endRoom the current end Room.
   */
   public void setEndValues(FloorPlans aFP, int endRoom){
-    int row;
-    int col;
-    for(row=0;row<aFP.getRowLength();row++){
-      for(col=0;col<aFP.getColLength(row);col++){
+    for(int row=0;row<aFP.getRowLength();row++){
+      for(int col=0;col<aFP.getColLength(row);col++){
         if(aFP.getGrid()[row][col]==endRoom){
           endX = row;
           endY = col;
@@ -123,16 +126,7 @@ public class Map implements Serializable{
     aGrid[endX][endY] = Constants.DEST;
   }
 
-  /**
-  * Getter method to get the associated number for each point in the grid.
-  * @param: row the row of the point as an int. column the column of the point as an int.
-  * @return: gridPointVal the value off the grid for the point as an int.
-  */
-  public int getGridPointNum(int row, int column) {
-    int gridPointVal;
-    gridPointVal = currentFloorPlan.getGrid()[row][column];
-    return gridPointVal;
-  }
 
 }
+
 
