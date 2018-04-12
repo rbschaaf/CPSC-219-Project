@@ -248,63 +248,68 @@ public class FinderApp extends Application {
     * at it.
     http://code.makery.ch/blog/javafx-8-event-handling-examples/
     */
-    public class HandleRoomClick implements EventHandler<ActionEvent>{
-      int roomNum;
-      int count =0;
-      StackPane aSP;
-      int rowLength;
-      int colLength;
-      public HandleRoomClick(int aRowLength, int aColLength, int roomNumber, StackPane aStackPane){
-        roomNum = roomNumber;
-        aSP = aStackPane;
-        rowLength = aRowLength;
-        colLength = aColLength;
-      }
-      public void handle(ActionEvent event){
-        int row;
-        int col;
+        public class HandleRoomClick implements EventHandler<ActionEvent>{
+          int roomNum;
+          int count =0;
+          StackPane aSP;
+          int rowLength;
+          int colLength;
+          public HandleRoomClick(int aRowLength, int aColLength, int roomNumber, StackPane aStackPane){
+            roomNum = roomNumber;
+            aSP = aStackPane;
+            rowLength = aRowLength;
+            colLength = aColLength;
+          }
+          public void handle(ActionEvent event){
+            try{
+              int row;
+              int col;
 
-        enterStartRoomVBox.getChildren().remove(startRoomButton);
-        enterDestRoomVBox.getChildren().remove(destRoomButton);
-        for(row=0;row< rowLength;row++){
-          for(col=0;col< colLength;col++){
-            if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==0){
+              enterStartRoomVBox.getChildren().remove(startRoomButton);
+              enterDestRoomVBox.getChildren().remove(destRoomButton);
+              for(row=0;row< rowLength;row++){
+                for(col=0;col< colLength;col++){
+                  if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==0){
 
-              rectangleGrid[row][col].setFill(Color.RED);
-              count+=1;
-              if(enterStartRoomVBox.getChildren().contains(startRoomButton)==false){
-                enterStartRoomVBox.getChildren().add(startRoomButton);
-              }
-              if(enterDestRoomVBox.getChildren().contains(destRoomButton) ==false){
-                enterDestRoomVBox.getChildren().add(destRoomButton);
-              }
+                    rectangleGrid[row][col].setFill(Color.RED);
+                    count+=1;
+                    if(enterStartRoomVBox.getChildren().contains(startRoomButton)==false){
+                      enterStartRoomVBox.getChildren().add(startRoomButton);
+                    }
+                    if(enterDestRoomVBox.getChildren().contains(destRoomButton) ==false){
+                      enterDestRoomVBox.getChildren().add(destRoomButton);
+                    }
 
 
-              /*
-              * Clicking the button below the Start room textfield stores the selected room
-              * number in the textfield.
-              */
-              startRoomButton.setOnAction(new HandleStartRoomClick(row,col,roomNum));
+                    /*
+                    * Clicking the button below the Start room textfield stores the selected room
+                    * number in the textfield.
+                    */
+                    startRoomButton.setOnAction(new HandleStartRoomClick(row,col,roomNum));
 
-              /*
-              * Clicking the button below the Destination room textfield stores the selected room
-              * number in the textfield.
-              */
-              destRoomButton.setOnAction(new EventHandler<ActionEvent>(){
-                public void handle(ActionEvent event){
-                  enterDestRoom.setText(""+roomNum);
-                  enterStartRoomVBox.getChildren().remove(startRoomButton);
-                  enterDestRoomVBox.getChildren().remove(destRoomButton);
+                    /*
+                    * Clicking the button below the Destination room textfield stores the selected room
+                    * number in the textfield.
+                    */
+                    destRoomButton.setOnAction(new EventHandler<ActionEvent>(){
+                      public void handle(ActionEvent event){
+                        enterDestRoom.setText(""+roomNum);
+                        enterStartRoomVBox.getChildren().remove(startRoomButton);
+                        enterDestRoomVBox.getChildren().remove(destRoomButton);
+                      }
+                    });
+                  }else if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==1){
+                    rectangleGrid[row][col].setFill(Color.LIGHTBLUE);
+                    count=0;
+                  }
                 }
-              });
-            }else if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==1){
-              rectangleGrid[row][col].setFill(Color.LIGHTBLUE);
-              count=0;
+              }
+            }
+            catch (ArrayIndexOutOfBoundsException e){
+              invalidEntry.setText("Error occurred. Please do not click on the map if you are also changing the building on the dropdown box.");
             }
           }
         }
-      }
-    }
 
     /**
     * Recursive method that takes a number and finds the ordinal ending for it.
