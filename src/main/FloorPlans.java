@@ -1,9 +1,8 @@
 /** New class description*/
 
-import resources.Constants;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import resources.Constants;
 
 public class FloorPlans implements Serializable {
   private int[][] grid;
@@ -138,9 +137,12 @@ public class FloorPlans implements Serializable {
    * @return: grid the current grid from the floorplan as an 2-dimensional int array.
    */
   public int[][] getGrid() {
-    return grid;
+    return copyGrid(grid);
   }
 
+  public void setGrid(int[][] newGrid){
+    grid = copyGrid(newGrid);
+  }
 
   /**
    * Getter method to get a room.
@@ -230,7 +232,7 @@ public class FloorPlans implements Serializable {
   /**
    * Printing method for the a saved 2-dimensional grid from a file
    */
-  public static void printSavedGrid(int[][] aGrid) {
+  public void printSavedGrid(int[][] aGrid) {
     for (int row = 0; row < aGrid.length; row++) {
       for (int column = 0; column < aGrid[row].length; column++) {
         System.out.printf("%4d", aGrid[row][column]);
