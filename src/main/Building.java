@@ -50,7 +50,7 @@ public class Building implements Serializable{
       floorList.add(new FloorPlans(name, BuiltFloorPlans.TFDLONE, 1, 125,170));
       floorList.add(new FloorPlans(name,BuiltFloorPlans.TFDLTWO, 2, 225, 270));
       floorList.add(new FloorPlans(name,BuiltFloorPlans.TFDLTHREE, 3,370,366));
-      floorList.add(new FloorPlans(name,BuiltFloorPlans.TFDLFOUR, 4,450,470));//add real stairs and ele nums
+      floorList.add(new FloorPlans(name,BuiltFloorPlans.TFDLFOUR, 4,474,475));
       floorList.add(new FloorPlans(name,BuiltFloorPlans.TFDLFIVE, 5,552,517));
       floorList.add(new FloorPlans(name,BuiltFloorPlans.TFDLSIX, 6,603,679));
     }else if(buildingName.equals("Bioscience")){
