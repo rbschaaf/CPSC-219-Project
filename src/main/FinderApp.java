@@ -1036,7 +1036,8 @@ public class FinderApp extends Application {
     "The app will then highlight the path between these two destinations.\n" +
     "To use this app: Select a building from the dropdown box, enter a starting room\n" +
     "number in the first textbox and a destination room in the second textbox. Then press\n" +
-    "the submit button. Or, click a starting room label and a destination room label on the map.\n" +
+    "the Submit button. Or, click a starting room label and a destination room label on the map\n" +
+    "with their corresponding buttons before submitting.\n" +
     "Creators: Nicki, Dayan, and Riley. Created Winter 2018 for CPSC 219.");
 
 
