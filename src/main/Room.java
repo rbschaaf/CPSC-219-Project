@@ -24,7 +24,7 @@ public class Room implements Serializable{
   /**
    * Copy constructor for Room class.
    *
-   * @param toBeCopied the room to be copied.
+   * @param roomToCopy the room to be copied.
    */
   public Room(Room toBeCopied) {
     roomNumber = toBeCopied.getRoomsNumber();
