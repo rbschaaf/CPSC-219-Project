@@ -38,8 +38,8 @@ public class FinderApp extends Application {
     private Label buildingAndFloorLabel = new Label("");
     private int rectLength;
     private int roomNumberFontSize = 10;
-    private int startNumberInput;
-    private int destNumberInput ;
+    private int startNumberInput=0;
+    private int destNumberInput =0;
     private String buildingInput;
     private int clickedRoom;
     private VBox enterStartRoomVBox = new VBox();
@@ -58,7 +58,7 @@ public class FinderApp extends Application {
 
     // File variables
     private File savedPathDir;
-    private FloorPlans planToSave;
+    private FloorPlans planToSave = new FloorPlans();
     private int startToSave;
     private int destToSave;
     private boolean gridVisible = false;
@@ -302,7 +302,7 @@ public class FinderApp extends Application {
         }
       }
     }
-   
+
     /**
     * Recursive method that takes a number and finds the ordinal ending for it.
     */
@@ -339,40 +339,37 @@ public class FinderApp extends Application {
           } catch(NumberFormatException e){
             invalidEntry.setText ("Please enter the room number as an integer.");
           }
-          if(buildingDropDown.getValue()!=null){
+
+          if(buildingDropDown.getValue()!=null && startNumberInput!=0 && destNumberInput!=0){
             buildingInput = buildingDropDown.getValue();
 
-            map1.setCurrentBuilding(new Building(buildingInput));
-            System.out.println("building input is: "+buildingInput);
-            System.out.println(map1.getCurrentBuilding().getName());
-            updatedPlan = map1.getCurrentBuilding().getFloorPlan(startNumberInput);
-            updatedPlan.printSavedGrid(updatedPlan.getGrid());
-            //updatedPlan = new FloorPlans(buildingInput, startNumberInput);
+            Building building1 = new Building(buildingInput);
+            map1.setCurrentBuilding(building1);
+            map1.setCurrentFloorPlan(building1.getFloorPlan(startNumberInput));
+            currentFloorPlan = map1.getCurrentFloorPlan();
 
-            // Create a new FloorPlan and set it as the current floorplan of the map.
-            map1.setCurrentFloorPlan(updatedPlan);
-            currentFloorPlan = updatedPlan;
-            // Check if the numbers entered by the user are valid.
-            isValidStartRoom(startNumberInput,currentFloorPlan);
-            isValidDestRoom(destNumberInput,currentFloorPlan);
+
+
 
             /*
             * If the start room and destination rooms are valid for the current
             * floor, create a 1-part path.
             */
-            if(isValidStartRoom(startNumberInput,currentFloorPlan)
-              && isValidDestRoom(destNumberInput,currentFloorPlan)){
+            if(building1.getFloorPlan(startNumberInput).getFlNum()==
+            building1.getFloorPlan(destNumberInput).getFlNum() &&
+            building1.onAFloor(startNumberInput)!=null &&
+            building1.onAFloor(destNumberInput)!=null){
               invalidEntry.setText("");
 
               // Create a new path and set its start and dest inputs.
-              Path path = new Path(updatedPlan.getGrid(),
+              Path path = new Path(currentFloorPlan.getGrid(),
               startNumberInput, destNumberInput);
 
               map1.setStartValues(currentFloorPlan,startNumberInput);
               map1.setEndValues(currentFloorPlan,destNumberInput);
 
               int[][] finalGrid = path.createPath();
-              planToSave = updatedPlan;
+              planToSave = currentFloorPlan;
               startToSave = startNumberInput;
               destToSave = destNumberInput;
 
@@ -395,14 +392,15 @@ public class FinderApp extends Application {
             * is invalid for the current floor, check if the destination is valid
             * on floor 2. If it is, create part 1 of a temporary path.
             */
-          }else if(isValidStartRoom(startNumberInput,currentFloorPlan)==true
-              && isValidDestRoom(destNumberInput,currentFloorPlan)==false
-              && map1.getCurrentBuilding().onAFloor(destNumberInput)!=null){
+          }else if(building1.getFloorPlan(startNumberInput).getFlNum()!=
+          building1.getFloorPlan(destNumberInput).getFlNum()
+              && building1.onAFloor(startNumberInput)!=null &&
+              building1.onAFloor(destNumberInput)!=null){
 
               // Determine which floor is the next floor
-              nextFloor = map1.getCurrentBuilding().onAFloor(destNumberInput);
+              nextFloor = building1.onAFloor(destNumberInput);
               whichFloor = nextFloor.getFlNum();
-              
+
               // Communicate with the user that their destination is on a separate floor.
 
               invalidEntry.setText("Your destination is on the " + getOrdinalNumber(whichFloor)+" floor. Use the elevator and stair buttons"+
@@ -428,13 +426,18 @@ public class FinderApp extends Application {
               makeGrid(finalGrid,gridPane,rectLength);
               buildingAndFloorLabel.setText(setBuildingAndFloorLabel(currentFloorPlan.getFlNum(), buildingInput));
 
-          }else if(isValidStartRoom(startNumberInput,currentFloorPlan)==false
-              && isValidStartRoom(startNumberInput,currentFloorPlan)==false){
-                System.out.println("No valid start/dest info. added");
+          }else if(building1.onAFloor(startNumberInput)==null ||
+          building1.onAFloor(destNumberInput)==null){
+              if(building1.onAFloor(startNumberInput)==null) invalidEntry.setText("Please enter a valid start number.");
+              else if(building1.onAFloor(destNumberInput)==null)invalidEntry.setText("Please enter a valid destination number.");
+              System.out.println("No valid start/dest info. added");
           }
-          }else{
+        }else if(buildingDropDown.getValue()==null){
             invalidEntry.setText("Please select a building.");
-          }
+        }else if(startNumberInput==0 || destNumberInput ==0){
+            if(startNumberInput ==0) invalidEntry.setText("Please enter a valid start number.");
+            else if(destNumberInput ==0) invalidEntry.setText("Please enter a valid destination number.");
+        }
 
         }
       }
@@ -617,7 +620,7 @@ public class FinderApp extends Application {
         }else{
           rect.setFill(Color.LIGHTBLUE);
         }
-        
+
         rect.setWidth(rectLength);
         rect.setHeight(rectLength);
         rectangleGrid[row][col] = rect;
@@ -675,45 +678,6 @@ public class FinderApp extends Application {
         return aRoomButton;
       }
 
-    /**
-    * Method to check if a valid start value for the floorplan inputted has been entered.
-    *@param aStartRoom the room number entered by the user
-    *@return isValidStart a boolean
-    */
-    public boolean isValidStartRoom (int aStartRoom, FloorPlans aFP){
-        boolean isValidStart = false;
-        ArrayList<Room> listOfRooms = aFP.getRoomList();
-        for(int i=0; i<listOfRooms.size();i++){
-          int number = (listOfRooms.get(i).getRoomsNumber())-1000;
-          if(aStartRoom==number){
-            isValidStart = true;
-            System.out.println("Start room is valid");
-          }else{
-            invalidEntry.setText("Please enter a valid start room. Example: 262 or 264");
-          }
-        }
-        return isValidStart;
-      }
-
-    /**
-    * Method to check if a valid destination value for the floorplan inputted has been entered.
-    *@param aDestRoom the room number entered by the user
-    *@return isValidDest a boolean
-    */
-    public boolean isValidDestRoom (int aDestRoom, FloorPlans aFP){
-      boolean isValidDest = false;
-      ArrayList<Room> listOfRooms = aFP.getRoomList();
-      for(int i=0; i<listOfRooms.size();i++){
-        int number = (listOfRooms.get(i).getRoomsNumber())-1000;
-        if(aDestRoom==number){
-          isValidDest = true;
-          System.out.println("Dest room is valid");
-        }else{
-          invalidEntry.setText("Please enter a valid destination room. Example: 262 or 264");
-        }
-      }
-      return isValidDest;
-    }
 
     /**
     * Method to write the current path to a file of a name the user chooses.
@@ -800,7 +764,7 @@ public class FinderApp extends Application {
     borderPanes1.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #dc143c, #661a33)");
     //https://stackoverflow.com/questions/22007595/borderpane-with-color-gradient
 
-    Label appTitle = new Label("Room-Finder App!");
+    Label appTitle = new Label("Room-Finder App");
     appTitle.setFont(Font.font("Verdana", FontWeight.BOLD,Constants.APPTITLE_FONTSIZE));
 
     DropShadow titleShadow = new DropShadow();
@@ -959,10 +923,10 @@ public class FinderApp extends Application {
               //fileName = (System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
               readFromFile(System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
               String buildingNameRead = "";
-              if(planRead.getBuildingName()!=null){
+              if(planRead!=null && planRead.getBuildingName()!=null){
                 buildingNameRead = planRead.getBuildingName();
                 System.out.println(buildingNameRead);
-              }
+
               buildingAndFloorLabel.setText(setBuildingAndFloorLabel(planRead.getFlNum(), buildingNameRead));
               invalidEntry.setText("You have loaded a path from "+ startRead+ " to " + destRead+".");
               enterStartRoom.setText(startRead+"");
@@ -971,6 +935,9 @@ public class FinderApp extends Application {
               map1.setCurrentFloorPlan(planRead);
               makeGrid(planRead.getGrid(),gridPane,rectLength);
               gridVisible = true;
+            }else{
+              System.out.println("No file to load.");
+            }
 
 
             }
