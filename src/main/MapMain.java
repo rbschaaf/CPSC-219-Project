@@ -7,7 +7,6 @@ import java.util.InputMismatchException;
 
 public class MapMain {
 
-
   /**
    * Default constructor for MapMain
    */
@@ -108,10 +107,12 @@ public class MapMain {
     }
 
     // Call method to get destination room from user and ensure it is a valid number.
-    System.out.println("Enter the room number of your destination: ");
+    System.out.println("Enter the room number of your destination (on the same floor): ");
     int roomDest = getDestRoom();
-    while(currentBuilding.onAFloor(roomDest)==null){
-      System.out.println("That room number is not valid. Please enter another number.");
+    while(currentBuilding.onAFloor(roomDest)==null ||
+    (currentBuilding.getFloorPlan(roomDest).getFlNum()!=currentBuilding.getFloorPlan(roomStart).getFlNum())){
+      System.out.println("That room number is not valid or is on a different floor.");
+      System.out.println("Please enter another number: ");
       roomDest = getDestRoom();
     }
 
