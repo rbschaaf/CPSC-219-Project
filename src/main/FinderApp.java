@@ -228,14 +228,20 @@ public class FinderApp extends Application {
       int row1;
       int col1;
       int rNum;
+      String buttonType;
 
-      public HandleStartRoomClick(int aRow, int aCol, int roomN){
+      public HandleStartRoomClick(int aRow, int aCol, int roomN, String type){
         rNum = roomN;
         row1 = aRow;
         col1 = aCol;
+        buttonType = type;
       }
       public void handle(ActionEvent event){
-        enterStartRoom.setText(""+rNum);
+          if(buttonType.equals("start")){
+          enterStartRoom.setText(""+rNum);
+        }else if(buttonType.equals("dest")){
+          enterDestRoom.setText(""+rNum);
+        }
         rectangleGrid[row1][col1].setFill(Color.LIGHTBLUE);
         enterStartRoomVBox.getChildren().remove(startRoomButton);
         enterDestRoomVBox.getChildren().remove(destRoomButton);
@@ -307,13 +313,13 @@ public class FinderApp extends Application {
                 * Clicking the button below the Start room textfield stores the selected room
                 * number in the textfield.
                 */
-                startRoomButton.setOnAction(new HandleTileClick(row,col,roomNum));
+                startRoomButton.setOnAction(new HandleTileClick(row,col,roomNum,"start"));
 
                 /*
                 * Clicking the button below the Destination room textfield stores the selected room
                 * number in the textfield.
                 */
-                destRoomButton.setOnAction(new HandleTileClick(row,col,roomNum));
+                destRoomButton.setOnAction(new HandleTileClick(row,col,roomNum,"dest"));
 
 
 
