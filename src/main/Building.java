@@ -71,7 +71,7 @@ public class Building implements Serializable{
   * @return null if no floorPlans is found.
   */
   public FloorPlans getFloorPlan(int roomNumber){
-    int floorNum=0;
+    int floorNum;
     int numDigits;
     numDigits = (int) Math.log10(roomNumber) + 1;
     // If the provided room number has less than three digits it will be on the
@@ -86,9 +86,10 @@ public class Building implements Serializable{
         floorNum /= 10;
       }
     }
-    FloorPlans toReturn = new FloorPlans();
     for(FloorPlans floor : getFloorList()){
-      if(floor.getFlNum() == floorNum) return new FloorPlans(floor);
+      if(floor.getFlNum() == floorNum) {
+        return new FloorPlans(floor);
+      }
     }
     return null;
   }
