@@ -10,8 +10,8 @@ public class BuildingTest {
         assertEquals("This is not the correct name", "Taylor Family Digital Library", a.getName());
         Building b = new Building("Bioscience");
         assertEquals("This is not the correct name", "Bioscience", b.getName());
-        Building b = new Building("incorrect");
-        assertNull("This is not the correct name", b.getName());
+        Building c = new Building("incorrect");
+        assertNull("This is not the correct name", c.getName());
     }
 
     @Test
@@ -26,15 +26,22 @@ public class BuildingTest {
 
     @Test
     public void getFloorPlan() {
-
+        Building a = new Building("Taylor Family Digital Library");
+        Building b = new Building("Taylor Family Digital Library");
+        assertEquals("These do not create the same lists", b.getFloorPlan(299) , a.getFloorPlan(200));
+        Building c = new Building("Taylor Family Digital Library");
+        Building d = new Building("Taylor Family Digital Library");
+        assertNotEquals("These do not create the same lists", c.getFloorPlan(199) , d.getFloorPlan(200));
     }
 
     @Test
     public void getFloorList() {
 
+
     }
 
     @Test
     public void onAFloor() {
+
     }
 }
