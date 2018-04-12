@@ -25,7 +25,7 @@ public class Constants{
   public static final int TRANSPARENT = 998; //Transparent spots used fot allowing staggered grid rows and columns (formatting TFDLTWO)
 
   public static final int POPUP_WINDOW_HEIGHT = 600;
-  public static final int HELP_POPUP_WIDTH = 150;
+  public static final int HELP_POPUP_WIDTH = 130;
   public static final int ABOUT_POPUP_WIDTH = 170;
   public static final int SCENESIZE = 700;
   public static final int SMALL_RECT = 30;
