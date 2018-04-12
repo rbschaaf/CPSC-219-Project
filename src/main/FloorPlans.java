@@ -5,23 +5,7 @@ import java.util.ArrayList;
 import resources.Constants;
 
 public class FloorPlans implements Serializable {
-  private int[][] grid =
-    {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-
-
+  private int[][] grid;
   private int destNum;
   private String building;
   private ArrayList<Room> roomList = new ArrayList<Room>();
@@ -39,10 +23,9 @@ public class FloorPlans implements Serializable {
   /**
    * Copy constructor for FloorPlans
    *
-   * @param: toBeCopied an object of type FloorPlans to be copied.
+   * @param toBeCopied:  an object of type FloorPlans to be copied.
    *
    */
-
   public FloorPlans(FloorPlans toBeCopied){
     grid = copyGrid(toBeCopied.getGrid());
     flNum = toBeCopied.getFlNum();
@@ -53,26 +36,16 @@ public class FloorPlans implements Serializable {
   }
 
   /**
-   * Constructor with a building and room number.
+   * Constructor for FloorPlans  with the building name, grid, floor number,
+   * stairs number, and elevator number.
    *
-   * @param: aBuilding a building name of type String.
-   * @theDestNum a destination room of type int.
+   * @param bName : a building name of type String.
+   * @param aGrid : an integer 2D array grid.
+   * @param floorNumber : the floor number as an integer.
+   * @param stairsN : the number of the stairs tile as an integer.
+   * @param eleN : the number of the elevator tile as an integer.
+   *
    */
-  public FloorPlans(String aBuilding, int theDestNum) {
-    building = aBuilding;
-    destNum = theDestNum;
-    //setGrid(aBuilding, theDestNum);
-    makeRooms();
-    populateRooms();
-  }
-
-  public FloorPlans(int[][] aGrid, int floorNumber){
-    grid = aGrid;
-    flNum = floorNumber;
-    makeRooms();
-    populateRooms();
-  }
-
   public FloorPlans(String bName, int[][] aGrid, int floorNumber, int stairsN, int eleN){
     building = bName;
     grid = copyGrid(aGrid);
@@ -82,17 +55,40 @@ public class FloorPlans implements Serializable {
     makeRooms();
     populateRooms();
   }
+
+  /**
+  * Method that returns the floor number.
+  *
+  * @return flNum : floor number of the floor plan.
+  */
   public int getFlNum(){
     return flNum;
   }
+
+  /**
+  * Method that returns the tile number for elevator.
+  *
+  * @return elevatorNum : number the elevator tile is set to.
+  */
   public int getElevatorNum(){
     return elevatorNum;
   }
+
+  /**
+  * Method that returns the tile number for stairs.
+  *
+  * @return stairsNum : number the stairs tile is set to.
+  */
   public int getStairsNum(){
     return stairsNum;
   }
 
-
+  /**
+  * Method that copies a given grid.
+  *
+  *@param gridToCopy : the grid to be copied as a 2D integer array.
+  *@return newGrid : the copied grid.
+  */
   public int[][] copyGrid(int[][] gridToCopy){
     int[][] newGrid = new int[gridToCopy.length][gridToCopy[0].length];
     for(int row=0; row<gridToCopy.length;row++){
@@ -103,14 +99,6 @@ public class FloorPlans implements Serializable {
     return newGrid;
   }
 
-  /**
-   * Getter method for destinaton room number.
-   *
-   * @return: destNum destination room number as an int.
-   */
-  public int getDestNumber() {
-    return destNum;
-  }
 
   /**
    * Getter method for the row length of the grid.
@@ -133,7 +121,7 @@ public class FloorPlans implements Serializable {
   }
 
   /**
-   * Getter method for building name of current flooplan.
+   * Getter method for building name of current floorplan.
    *
    * @return: getBuildingName the building name as a String.
    */
@@ -144,31 +132,6 @@ public class FloorPlans implements Serializable {
 
 
   /**
-   * Method provides the floor number a provided room is on.
-   *
-   * @param: newRoomNumber a room as an int.
-   * @return: floorNum the floor number the room is on as int.
-   */
-  public int getFloorNum(int newRoomNumber) {
-    int floorNum;
-    int numDigits;
-    numDigits = (int) Math.log10(newRoomNumber) + 1;
-    /* if the provided room number has less than three digits it will be on the
-    basement floor.*/
-    if (numDigits < 3) {
-      floorNum = 0;
-    }
-    /*get floor number from first digit of room number if it is not the basement*/
-    else {
-      floorNum = newRoomNumber;
-      while (floorNum > 9) {
-        floorNum /= 10;
-      }
-    }
-    return floorNum;
-  }
-
-  /**
    * Method that is a getter method for the current grid of the floorplan.
    *
    * @return: grid the current grid from the floorplan as an 2-dimensional int array.
@@ -176,30 +139,6 @@ public class FloorPlans implements Serializable {
   public int[][] getGrid() {
     return grid;
   }
-
-
-  /**
-   * Method to set the appropriate grid for the floorplan based on the building
-   * and room of choice.
-   *
-   * @param: building the current building as a String. roomNum the desired room number as an int.
-   */
-   /*
-  public void setGrid(String building, int roomNum) {
-    int floor = getFloorNum(roomNum);
-    // Enters the outer loop based on the building name.
-    if (building.equals("Taylor Family Digital Library")) {
-      /* Enters the inner loops based on the floor number, which is based on
-      * desired room number.
-      if (floor == 0) {
-        grid = tfdlGround;
-      } else if (floor == 1) {
-        grid = tfdlOne;
-      } else if (floor == 2) {
-        grid = tfdlTwo;
-      }
-    }
-  }*/
 
 
   /**
@@ -233,7 +172,7 @@ public class FloorPlans implements Serializable {
   /**
    * Method to get the list of rooms for the current floor plan
    *
-   * @ return a copy of roomList.
+   * @return copyList a copy of roomList.
    */
   public ArrayList<Room> getRoomList() {
     ArrayList<Room> copyList = new ArrayList<Room>();
