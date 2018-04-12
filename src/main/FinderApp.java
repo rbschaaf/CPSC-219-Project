@@ -51,7 +51,7 @@ public class FinderApp extends Application {
     private int clickedRoom;
     private VBox enterStartRoomVBox = new VBox();
     private VBox enterDestRoomVBox = new VBox();
-    private Rectangle[][] rectangleGrid = new Rectangle[Constants.MAX_GRIDSIZE][Constants.MAX_GRIDSIZE];
+    private Rectangle[][] rectangleGrid;
     private Button startRoomButton = new Button("Store in start");
     private Button destRoomButton = new Button("Store in destination");
     private boolean stairs = false;
@@ -76,7 +76,7 @@ public class FinderApp extends Application {
     private int destRead;
 
 
-    private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,Constants.START,Constants.DEST,
+    private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,
       Constants.REST,1270,1170,1171,1172,1225,1125,Constants.COFF};
 
     private int whichFloor = 0;
@@ -132,6 +132,7 @@ public class FinderApp extends Application {
 
 
         FloorPlans tempFloorPlan = map1.getCurrentBuilding().getFloorPlan(startNumberInput);
+        map1.setCurrentFloorPlan(tempFloorPlan);
         int tempDest = tempFloorPlan.getElevatorNum();
 
         invalidEntry.setText("");
@@ -143,9 +144,6 @@ public class FinderApp extends Application {
         map1.setEndValues(tempFloorPlan,tempDest);
 
         int[][] finalGrid2 = tempPath.createPath();
-
-        map1.placeStart(finalGrid2);
-        map1.placeDest(finalGrid2);
 
         // Update the grid with the temporary path to the elevator.
         makeGrid(finalGrid2,gridPane,rectLength);
@@ -163,6 +161,7 @@ public class FinderApp extends Application {
         stairs = true;
 
         FloorPlans tempFloorPlan1 = map1.getCurrentBuilding().getFloorPlan(startNumberInput);
+        map1.setCurrentFloorPlan(tempFloorPlan1);
         int tempDest = tempFloorPlan1.getStairsNum();
         invalidEntry.setText("");
 
@@ -173,9 +172,6 @@ public class FinderApp extends Application {
         map1.setEndValues(tempFloorPlan1,tempDest);
 
         int[][] finalGrid3 = tempPath1.createPath();
-
-        map1.placeStart(finalGrid3);
-        map1.placeDest(finalGrid3);
 
         //Update the grid with the temporary path to the stairs.
         makeGrid(finalGrid3,gridPane,rectLength);
@@ -212,8 +208,6 @@ public class FinderApp extends Application {
 
         int[][] finalGridpt2 = tempPath2.createPath();
 
-        map1.placeStart(finalGridpt2);
-        map1.placeDest(finalGridpt2);
 
         makeGrid(finalGridpt2,gridPane,rectLength);
 
@@ -230,7 +224,7 @@ public class FinderApp extends Application {
     * Method that allows the user to click a start room on the grid.
     * Removes the start and dest room buttons on click.
     */
-    public class HandleStartRoomClick implements EventHandler<ActionEvent>{
+    public class HandleTileClick implements EventHandler<ActionEvent>{
       int row1;
       int col1;
       int rNum;
@@ -247,6 +241,27 @@ public class FinderApp extends Application {
         enterDestRoomVBox.getChildren().remove(destRoomButton);
       }
     }
+      /**
+    * Method to remove a red square, if present on the grid.
+    * @param aRow integer for the row number.
+    * @param aCol integer for the column number.
+    */
+    public void removeRedSquare(int aRow, int aCol){
+      for(int row=0;row<map1.getCurrentFloorPlan().getGrid().length;row++){
+        for(int col=0;col<map1.getCurrentFloorPlan().getGrid()[0].length;col++){
+          if(rectangleGrid[row][col].getFill().equals(Color.RED)
+          && rectangleGrid[row][col]!=rectangleGrid[aRow][aCol]){
+            if(map1.getCurrentFloorPlan().getGrid()[row][col] == map1.getStart()){
+              rectangleGrid[row][col].setFill(Color.ORANGE);
+            }else if(map1.getCurrentFloorPlan().getGrid()[row][col] == map1.getDest()){
+              rectangleGrid[row][col].setFill(Color.YELLOW);
+            }else{
+              rectangleGrid[row][col].setFill(Color.LIGHTBLUE);
+            }
+          }
+        }
+      }
+    }
     /**
     * Method that handles the clicking of a room button/room number on the map.
     * Allows user to select to store the room value in the start room or destination
@@ -254,68 +269,70 @@ public class FinderApp extends Application {
     * at it.
     http://code.makery.ch/blog/javafx-8-event-handling-examples/
     */
-        public class HandleRoomClick implements EventHandler<ActionEvent>{
-          int roomNum;
-          int count =0;
-          StackPane aSP;
-          int rowLength;
-          int colLength;
-          public HandleRoomClick(int aRowLength, int aColLength, int roomNumber, StackPane aStackPane){
-            roomNum = roomNumber;
-            aSP = aStackPane;
-            rowLength = aRowLength;
-            colLength = aColLength;
-          }
-          public void handle(ActionEvent event){
-            try{
-              int row;
-              int col;
+    public class HandleRoomClick implements EventHandler<ActionEvent>{
+      int roomNum;
+      StackPane aSP;
+      int rowLength;
+      int colLength;
+      public HandleRoomClick(int aRowLength, int aColLength, int roomNumber, StackPane aStackPane){
+        roomNum = roomNumber;
+        aSP = aStackPane;
+        rowLength = aRowLength;
+        colLength = aColLength;
+      }
+      public void handle(ActionEvent event){
+        int row;
+        int col;
 
-              enterStartRoomVBox.getChildren().remove(startRoomButton);
-              enterDestRoomVBox.getChildren().remove(destRoomButton);
-              for(row=0;row< rowLength;row++){
-                for(col=0;col< colLength;col++){
-                  if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==0){
+        enterStartRoomVBox.getChildren().remove(startRoomButton);
+        enterDestRoomVBox.getChildren().remove(destRoomButton);
+        System.out.println("You roomNum is: " + roomNum);
 
-                    rectangleGrid[row][col].setFill(Color.RED);
-                    count+=1;
-                    if(enterStartRoomVBox.getChildren().contains(startRoomButton)==false){
-                      enterStartRoomVBox.getChildren().add(startRoomButton);
-                    }
-                    if(enterDestRoomVBox.getChildren().contains(destRoomButton) ==false){
-                      enterDestRoomVBox.getChildren().add(destRoomButton);
-                    }
+        for(row=0;row<rowLength;row++){
+          for(col=0;col<colLength;col++){
+            if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum){
+              if(rectangleGrid[row][col].getFill().equals(Color.RED)==false){
+
+                rectangleGrid[row][col].setFill(Color.RED);
 
 
-                    /*
-                    * Clicking the button below the Start room textfield stores the selected room
-                    * number in the textfield.
-                    */
-                    startRoomButton.setOnAction(new HandleStartRoomClick(row,col,roomNum));
-
-                    /*
-                    * Clicking the button below the Destination room textfield stores the selected room
-                    * number in the textfield.
-                    */
-                    destRoomButton.setOnAction(new EventHandler<ActionEvent>(){
-                      public void handle(ActionEvent event){
-                        enterDestRoom.setText(""+roomNum);
-                        enterStartRoomVBox.getChildren().remove(startRoomButton);
-                        enterDestRoomVBox.getChildren().remove(destRoomButton);
-                      }
-                    });
-                  }else if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum && count ==1){
-                    rectangleGrid[row][col].setFill(Color.LIGHTBLUE);
-                    count=0;
-                  }
+                if(enterStartRoomVBox.getChildren().contains(startRoomButton)==false){
+                  enterStartRoomVBox.getChildren().add(startRoomButton);
                 }
+                if(enterDestRoomVBox.getChildren().contains(destRoomButton) ==false){
+                  enterDestRoomVBox.getChildren().add(destRoomButton);
+                }
+
+                /*
+                * Clicking the button below the Start room textfield stores the selected room
+                * number in the textfield.
+                */
+                startRoomButton.setOnAction(new HandleTileClick(row,col,roomNum));
+
+                /*
+                * Clicking the button below the Destination room textfield stores the selected room
+                * number in the textfield.
+                */
+                destRoomButton.setOnAction(new HandleTileClick(row,col,roomNum));
+
+
+
+              }else if(rectangleGrid[row][col].getFill().equals(Color.RED)){
+                  if(map1.getCurrentFloorPlan().getGrid()[row][col] == map1.getStart()){
+                    rectangleGrid[row][col].setFill(Color.ORANGE);
+                  }else if(map1.getCurrentFloorPlan().getGrid()[row][col] == map1.getDest()){
+                    rectangleGrid[row][col].setFill(Color.YELLOW);
+                  }else{
+                    rectangleGrid[row][col].setFill(Color.LIGHTBLUE);
+                  }
               }
+              removeRedSquare(row,col);
             }
-            catch (ArrayIndexOutOfBoundsException e){
-              invalidEntry.setText("Error occurred. Please do not click on the map if you are also changing the building on the dropdown box.");
-            }
+
           }
         }
+      }
+    }
 
     /**
     * Recursive method that takes a number and finds the ordinal ending for it.
@@ -359,11 +376,11 @@ public class FinderApp extends Application {
 
             Building building1 = new Building(buildingInput);
             map1.setCurrentBuilding(building1);
-            map1.setCurrentFloorPlan(building1.getFloorPlan(startNumberInput));
-            currentFloorPlan = map1.getCurrentFloorPlan();
-
-
-
+            if(building1.onAFloor(startNumberInput)!=null &&
+            building1.onAFloor(destNumberInput)!=null){
+              map1.setCurrentFloorPlan(building1.getFloorPlan(startNumberInput));
+              currentFloorPlan = map1.getCurrentFloorPlan();
+            }
 
             /*
             * If the start room and destination rooms are valid for the current
@@ -383,23 +400,21 @@ public class FinderApp extends Application {
               map1.setEndValues(currentFloorPlan,destNumberInput);
 
               int[][] finalGrid = path.createPath();
-              planToSave = currentFloorPlan;
+              planToSave = new FloorPlans(currentFloorPlan);
               startToSave = startNumberInput;
               destToSave = destNumberInput;
 
-              map1.placeStart(finalGrid);
-              map1.placeDest(finalGrid);
 
               makeGrid(finalGrid,gridPane,rectLength);
               gridVisible = true;
 
               // Highlight the room chosen as the destination in blue.
-            //  highlight(currentFloorPlan, destNumberInput);
+                highlight(currentFloorPlan, destNumberInput);
 
               // Updates the label above the map providing building name and floor number
               buildingAndFloorLabel.setText(setBuildingAndFloorLabel(currentFloorPlan.getFlNum(), buildingInput));
 
-              //http://www.java2s.com/Code/Java/JavaFX/SetLabelTextcolor.htm
+             
 
             /*
             * If the start room is valid for the currents floor and the destination
@@ -433,9 +448,6 @@ public class FinderApp extends Application {
               map1.setEndValues(currentFloorPlan,tempDest);
 
               int[][] finalGrid = path.createPath();
-
-              map1.placeStart(finalGrid);
-              map1.placeDest(finalGrid);
 
               makeGrid(finalGrid,gridPane,rectLength);
               buildingAndFloorLabel.setText(setBuildingAndFloorLabel(currentFloorPlan.getFlNum(), buildingInput));
@@ -509,8 +521,8 @@ public class FinderApp extends Application {
           //Room colours
           if(aFloorPlan.getRoom(roomNum+1000) != null ){
             if(aFloorPlan.getGrid()[row][col] == aFloorPlan.getRoom(roomNum+1000).getRoomsNumber()){
-              if(aFloorPlan.getGrid()[row][col]!= 1270 && aFloorPlan.getGrid()[row][col]!= 1170
-              && aFloorPlan.getGrid()[row][col]!= 1225 && aFloorPlan.getGrid()[row][col]!= 1125){
+              if(aFloorPlan.getGrid()[row][col]!= aFloorPlan.getStairsNum()
+              && aFloorPlan.getGrid()[row][col]!= aFloorPlan.getElevatorNum()){
                 rectangleGrid[row][col].setFill(Color.BLUE);
               }
 
@@ -533,17 +545,19 @@ public class FinderApp extends Application {
     public void makeGrid(int[][] aGrid, GridPane aGridPane, int rectLength){
         // Clear the gridPane.
         aGridPane.getChildren().clear();
-
+        int rowLength = aGrid.length;
+        int colLength = aGrid[0].length;
+        rectangleGrid = new Rectangle[aGrid.length][aGrid[0].length];
+        System.out.println("Rectangle grid set.");
+      
         // Set up the grid for the floor.
         for (int row = 0; row < aGrid.length; row++){
           for(int col = 0; col < aGrid[row].length; col++){
-            int rowLength = aGrid.length;
-            int colLength = aGrid[row].length;
             Rectangle rect = setRectangles(row, col, aGrid, rectLength);
-
+            rectangleGrid[row][col] = rect;
+          
 
             int roomNumbers = 0;
-
             roomNumbers = aGrid[row][col];
 
             // An overlaying stackpane that is mouse transparent containing the rect and room labels.
@@ -594,9 +608,9 @@ public class FinderApp extends Application {
           rect.setStroke(Color.TRANSPARENT);
         } else if (aGrid[row][col] == Constants.ROOM){
           rect.setFill(Color.GREY);
-        } else if (aGrid[row][col] == Constants.DEST){
+        } else if (aGrid[row][col] == map1.getDest()){
           rect.setFill(Color.YELLOW);
-        } else if (aGrid[row][col] == Constants.START){
+        } else if (aGrid[row][col] == map1.getStart()){
           rect.setFill(Color.ORANGE);
         } else if (aGrid[row][col] == Constants.NPATH){
           rect.setFill(new ImagePattern(imgFootPrintsN));
@@ -637,7 +651,6 @@ public class FinderApp extends Application {
 
         rect.setWidth(rectLength);
         rect.setHeight(rectLength);
-        rectangleGrid[row][col] = rect;
 
         return rect;
       }
@@ -653,12 +666,12 @@ public class FinderApp extends Application {
         if (contains(notMap,roomNumbers) == false){
           rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, roomNumberFontSize));
           rooms.setText("" + roomNumbers);
-        } else if (roomNumbers == Constants.START){
+        } else if (roomNumbers == map1.getStart()){
           rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, roomNumberFontSize));
-          rooms.setText("" + "S");
-        } else if (roomNumbers == Constants.DEST){
+          rooms.setText("S");
+        } else if (roomNumbers == map1.getDest()){
           rooms.setFont(Font.font("Times New Roman", FontWeight.BOLD, roomNumberFontSize));
-          rooms.setText("" + "D");
+          rooms.setText("D");
         }
       }
       return rooms;
@@ -676,10 +689,10 @@ public class FinderApp extends Application {
         if (contains(notMap,roomNumbers) == false){
           aRoomButton = new Button (""+roomNumbers);
 
-        } else if(roomNumbers == Constants.START){
+        } else if(roomNumbers == map1.getStart()){
           aRoomButton = new Button (""+startNumberInput);
 
-        } else if(roomNumbers == Constants.DEST){
+        } else if(roomNumbers == map1.getDest()){
           aRoomButton = new Button (""+destNumberInput);
 
         }
@@ -842,7 +855,7 @@ public class FinderApp extends Application {
     stairB.setOnAction(new HandleStairClick());
     stairB.setStyle("-fx-background-color: #f1b10e;");
 
-    Button nextFloorB = new Button("Next Floor.");
+    Button nextFloorB = new Button("Next Floor");
     nextFloorB.setOnAction(new HandleNextFloorClick());
     nextFloorB.setStyle("-fx-background-color: #ff4d4d");
 
@@ -933,11 +946,10 @@ public class FinderApp extends Application {
     */
     savedPathDropDown.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
-              //Completing the abridged file name to the full file name
-              //fileName = (System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
+             //Completing the abridged file name to the full file name
               readFromFile(System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
               String buildingNameRead = "";
-              if(planRead!=null && planRead.getBuildingName()!=null){
+              if(planRead!=null && planRead.getBuildingName()!=null && planRead.getGrid()!=null){
                 buildingNameRead = planRead.getBuildingName();
                 System.out.println(buildingNameRead);
 
@@ -946,9 +958,17 @@ public class FinderApp extends Application {
               enterStartRoom.setText(startRead+"");
               enterDestRoom.setText(destRead+"");
               buildingDropDown.setValue(buildingNameRead);
+
               map1.setCurrentFloorPlan(planRead);
-              makeGrid(planRead.getGrid(),gridPane,rectLength);
+              Path readPath = new Path(planRead.getGrid(),startRead,destRead);
+              map1.setStartValues(planRead,startRead);
+              map1.setEndValues(planRead,destRead);
+              int[][] readGrid = readPath.createPath();
+
+              makeGrid(readGrid,gridPane,rectLength);
               gridVisible = true;
+
+              buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
             }else{
               System.out.println("No file to load.");
             }
