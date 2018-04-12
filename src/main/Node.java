@@ -26,8 +26,8 @@ public class Node extends Tile {
   /**
    * Constructor used for setting the node with an x and y coordinate as well as the endnode value
    *
-   * @param initX xcoordinate integer
-   * @param initY ycoordinate integer
+   * @param initX x coordinate integer
+   * @param initY y coordinate integer
    * @param val   boolean value whether it is an end point node or not
    */
   public Node(int initX, int initY, boolean val) {
@@ -38,8 +38,8 @@ public class Node extends Tile {
   /**
    * Constructor used for setting the node with an x and y coordinate as well as the endnode value
    *
-   * @param initX xcoordinate integer
-   * @param initY ycoordinate integer
+   * @param initX x coordinate integer
+   * @param initY y coordinate integer
    */
   public Node(int initX, int initY) {
     super(initX, initY);
@@ -48,7 +48,7 @@ public class Node extends Tile {
   /**
    * Copy Constuctor for the node
    *
-   * @param copyNode
+   * @param copyNode a node to copy
    */
   public Node(Node copyNode) {
     super(copyNode.getXCoord(), copyNode.getYCoord());
@@ -96,16 +96,16 @@ public class Node extends Tile {
   }
 
   /**
-   * Getter method for the distance from the startnode
+   * Getter method for the distance from the start node
    *
-   * @return the startnode distance
+   * @return the start node distance
    */
   public double getStartDistance() {
     return startDistance;
   }
 
   /**
-   * Getter method for the distance from the startnode
+   * Getter method for the distance from the start node
    *
    * @param newDistance double
    */
@@ -129,10 +129,10 @@ public class Node extends Tile {
   /**
    * Getter method for the connected node
    *
-   * @return: the connected node
+   * @return the connected node
    */
   public Node getConnectedNode() {
-    Node newConnectedNode = null;
+    Node newConnectedNode;
     if (connectedNode != null) {
       newConnectedNode = new Node(connectedNode);
     } else {
@@ -143,11 +143,11 @@ public class Node extends Tile {
 
   /**
    * Checks the direction of the movement from the connected node
-   * @return: the direction as a string
+   * @return the direction as a string
    */
   public String getDirection() {
     Node connectedNode = getConnectedNode();
-    String currentDirection = null;
+    String currentDirection;
     double nonDiagonalMove = 1;
     //Check if diagonal
     if (calcDistance(connectedNode) <= nonDiagonalMove) {

@@ -1,5 +1,8 @@
 import java.io.Serializable;
 
+/**
+ *
+ */
 public class Door implements Serializable{
   private int doorX;
   private int doorY;

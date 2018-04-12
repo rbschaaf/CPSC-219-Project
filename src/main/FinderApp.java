@@ -1,25 +1,31 @@
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.Group;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.paint.*;
-import javafx.geometry.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.text.*;
-import javafx.scene.image.*;
-import javafx.beans.value.*;
-import javafx.scene.effect.*;
-import javafx.scene.control.ScrollPane.*;
-import java.util.ArrayList;
-import java.lang.NumberFormatException;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Popup;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import resources.Constants;
+
 import java.io.*;
 import java.net.URL;
-import resources.Constants;
-import javafx.geometry.Rectangle2D;
+import java.util.ArrayList;
 
 
 

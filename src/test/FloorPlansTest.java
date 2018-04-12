@@ -1,4 +1,6 @@
 import static org.junit.Assert.*;
+import static resources.BuiltFloorPlans.*;
+
 import org.junit.Test;
 
 /**
@@ -10,7 +12,7 @@ public class FloorPlansTest {
    */
   @Test
   public void testConstructors() {
-    FloorPlans a = new FloorPlans("Taylor Family Digital Library", 150);
+    FloorPlans a = new FloorPlans("Taylor Family Digital Library", TFDLONE , 1, );
     assertEquals("Destination number is", 150, a.getFlNum());
     assertEquals("Building is", "Taylor Family Digital Library", a.getBuildingName());
     FloorPlans b = new FloorPlans(a);
@@ -81,6 +83,10 @@ public class FloorPlansTest {
     assertNull("Rooms do not exist on empty floorplan grid", c.getRoom(0));
   }
 
+  @Test
+  public void floorPlansConstructorTest() {
+    FloorPlans a = FloorPlans("Taylor Family Digital Library", int[][] aGrid, int floorNumber, int stairsN, int eleN)
+  }
   @Test
   public void getFlNum() {
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", 150);

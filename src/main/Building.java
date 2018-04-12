@@ -1,7 +1,11 @@
-import java.util.ArrayList;
 import resources.BuiltFloorPlans;
-import java.io.Serializable;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
+/**
+ * Class for Buildings
+ */
 public class Building implements Serializable{
 
   private ArrayList<FloorPlans> floorList = new ArrayList<FloorPlans>();
