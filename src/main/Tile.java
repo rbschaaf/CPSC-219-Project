@@ -1,9 +1,10 @@
-import java.io.Serializable;
+// Last updated 29 by Nicki.
 
 /**
  * Class that represents a single point in the grid
  * Last edited by Dayan - 27 Mar 2018
  */
+import java.io.Serializable;
 public class Tile implements Serializable{
   private int xCoord;
   private int yCoord;
@@ -12,8 +13,8 @@ public class Tile implements Serializable{
   /**
    * Constructor used for setting the node with an x and y coordinate as well as the endnode value
    *
-   * @param initX x coordinate integer
-   * @param initY y coordinate integer
+   * @param initX xcoordinate integer
+   * @param initY ycoordinate integer
    */
   public Tile(int initX, int initY) {
     setXCoord(initX);
@@ -21,9 +22,9 @@ public class Tile implements Serializable{
   }
 
   /**
-   * Copy Constructor for the node
+   * Copy Constuctor for the node
    *
-   * @param copyTile a tile to copy
+   * @param copyNode
    */
   public Tile(Tile copyTile) {
     setXCoord(copyTile.getXCoord());
@@ -31,9 +32,9 @@ public class Tile implements Serializable{
   }
 
   /**
-   * Setter method for the x coordinate
+   * Setter method for the xcoordinate
    *
-   * @param newX an x coordinate cannot be a negative value
+   * @param newX an xcoordinate cannot be a negative value
    */
   public void setXCoord(int newX) {
     if (newX >= 0) {
@@ -44,18 +45,18 @@ public class Tile implements Serializable{
   }
 
   /**
-   * Getter method for the x coordinate
+   * Getter method for the xcoordinate
    *
-   * @return an x coordinate
+   * @return an xcoordinate
    */
   public int getXCoord() {
     return xCoord;
   }
 
   /**
-   * Setter method for the y coordinate
+   * Setter method for the ycoordinate
    *
-   * @param newY an y coordinate cannot be a negative value
+   * @param newY an ycoordinate cannot be a negative value
    */
   public void setYCoord(int newY) {
     if (newY >= 0) {
@@ -66,9 +67,9 @@ public class Tile implements Serializable{
   }
 
   /**
-   * Getter method for the y coordinate
+   * Getter method for the ycoordinate
    *
-   * @return a y coordinate
+   * @return a yoordinate
    */
   public int getYCoord() {
     return yCoord;
@@ -83,7 +84,8 @@ public class Tile implements Serializable{
   public double calcDistance(Tile aTile) {
     int xDistance = getXCoord() - aTile.getXCoord();
     int yDistance = getYCoord() - aTile.getYCoord();
-    return Math.sqrt((xDistance * xDistance) + (yDistance * yDistance));
+    double eucDistance = Math.sqrt((xDistance * xDistance) + (yDistance * yDistance));
+    return eucDistance;
   }
 
   /**
@@ -100,5 +102,4 @@ public class Tile implements Serializable{
     return equality;
   }
 }
-
 
