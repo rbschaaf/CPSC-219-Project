@@ -56,7 +56,7 @@ public class DoorTest{
     assertEquals("Door's Y is not correct", 20, b.getDoorY());
     Door c = new Door();
     c.setDoorY(0);
-    assertEquals("Door's Y is not correct", 0, b.getDoorY());
+    assertEquals("Door's Y is not correct", 0, c.getDoorY());
   }
 
 }
