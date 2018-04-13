@@ -1,9 +1,9 @@
 import org.junit.Test;
-
 import java.util.Arrays;
-
 import static org.junit.Assert.*;
-
+import static resources.BuiltFloorPlans.TFDLONE;
+import static resources.BuiltFloorPlans.TFDLSIX;
+import static resources.Constants.*;
 /**
 * Test class of JUnit tests to test the Building class for the room finding app.
 * The Building class has associated FloorPlans with it for each floor.
@@ -28,7 +28,7 @@ public class BuildingTest {
     * Test that all the correct floors can be added for the building and this list of floors can be gotten.
     */
     @Test
-    public void addFloors() {
+    public void addFloorsAndGetFloorList() {
         Building a = new Building("Taylor Family Digital Library");
         Building b = new Building("Taylor Family Digital Library");
         assertEquals("These do not create the same lists", a.getFloorList().size(), b.getFloorList().size());
@@ -52,19 +52,11 @@ public class BuildingTest {
     }
 
     /**
-    * Test the getter method for the list of floors for a building.
-    */
-    @Test
-    public void getFloorList() {
-        
-
-    }
-
-    /**
     * Test the room provided as a parameter actually exists on a floor in the building.
     */
     @Test
     public void onAFloor() {
-
+        Building a = new Building("Taylor Family Digital Library");
+        assertTrue("Should create the same floorplans", Arrays.deepEquals(TFDLONE,a.onAFloor(150).getGrid()));
     }
 }
