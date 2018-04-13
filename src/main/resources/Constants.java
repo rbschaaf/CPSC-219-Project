@@ -1,6 +1,6 @@
 /**
 * This class consists of all the constants used in the room finding program
-* and application.
+* and application. Part of the resources package.
 *
 */
 
