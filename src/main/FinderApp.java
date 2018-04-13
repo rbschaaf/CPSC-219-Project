@@ -940,7 +940,7 @@ public class FinderApp extends Application {
       public void handle(ActionEvent event){
         if(gridVisible== false){
           invalidEntry.setText("There is no path to save.");
-        }else if(differentFloor = true){
+        }else if(differentFloor == true){
           invalidEntry.setText("Please choose a path with a start and end on the same floor.");
         }else if(fileTextField.getText().equals("")){
           invalidEntry.setText("Enter a name for the saved path.");
