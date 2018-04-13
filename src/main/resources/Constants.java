@@ -11,6 +11,7 @@ public class Constants{
   public static final int WALL = 0;
   public static final int START = 8;
   public static final int DEST = 5;
+  public static final int ROOM = 9;
   public static final int NPATH = 70001;
   public static final int NEPATH = 70002;
   public static final int NWPATH = 70003;
