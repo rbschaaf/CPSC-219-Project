@@ -1376,10 +1376,12 @@ public class FinderApp extends Application {
 
         @Override
         public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean isMaximizedScreen) {
-            //If the screen is maximized, set the stage to fill the entire screen.
+            //If the screen is maximized, set the stage to fill the entire screen and position it in the center of the screen.
             if(isMaximizedScreen == true){
               primaryStage.setWidth(bounds.getWidth());
               primaryStage.setHeight(bounds.getHeight());
+              primaryStage.setX((bounds.getWidth() - primaryStage.getWidth()) / 2);
+              primaryStage.setY((bounds.getHeight() - primaryStage.getHeight()) / 2);
             }// If the screen is no longer maximized, set the stage to the original default size and position it in the center of the screen.
             else if(isMaximizedScreen == false){
               primaryStage.setWidth(Constants.SCENESIZE);
