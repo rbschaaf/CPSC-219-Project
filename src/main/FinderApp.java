@@ -32,22 +32,21 @@ import java.util.ArrayList;
 public class FinderApp extends Application {
 
   /*
-  * Runs the GUI application, including scene creation, button handling
+  * Class runs the GUI application, including scene creation, button handling
   * and the production of a visual grid.
   *
-  * Last edited March 19, 2018 by Nicki.
   */
-
+    //Variables to do with constructing the gridd and placing of labels and buttons on the GUI
     private Map map1 = new Map();
     private GridPane gridPane = new GridPane();
     private int roomNumbers = 0;
-    private Label invalidEntry = new Label ("");
-    private Label buildingAndFloorLabel = new Label("");
-    private int rectLength;
+    private Label invalidEntry = new Label (""); //Label used for messaging to the user through the GUI app
+    private Label buildingAndFloorLabel = new Label(""); //Label for above the map.
+    private int rectLength; //grid square size on the map.
     private int roomNumberFontSize = 10;
     private int startNumberInput=0;
     private int destNumberInput =0;
-    private String buildingInput;
+    private String buildingInput; //Building name from the building combobox.
     private int clickedRoom;
     private VBox enterStartRoomVBox = new VBox();
     private VBox enterDestRoomVBox = new VBox();
@@ -56,17 +55,17 @@ public class FinderApp extends Application {
     private Button destRoomButton = new Button("Store in destination");
     private boolean stairs = false;
     private FloorPlans currentFloorPlan;
-    private VBox eleStairBox = new VBox(10);
+    private VBox eleStairBox = new VBox(Constants.PREFERRED_HBOX_VBOX_SIZE); //VBox that holds the buttons involved with changing floors.
     private VBox mapSize = new VBox();
     private File curDir = new File((System.getProperty("user.dir"))); //The current directory. https://stackoverflow.com/questions/4871051/getting-the-current-working-directory-in-java
     private String operatingSystem = System.getProperty("os.name"); //The opearting system of the computer running the program. https://stackoverflow.com/questions/14288185/detecting-windows-or-linux
     private Screen screen = Screen.getPrimary(); //https://stackoverflow.com/questions/6864540/how-to-set-a-javafx-stage-frame-to-maximized
-    private Rectangle2D bounds = screen.getVisualBounds();
+    private Rectangle2D bounds = screen.getVisualBounds(); //The screens dimensions.
     private boolean differentFloor = false;
     private FloorPlans updatedPlan;
 
     // File variables
-    private File savedPathDir;
+    private File savedPathDir; //saved paths' directory
     private FloorPlans planToSave = new FloorPlans();
     private int startToSave;
     private int destToSave;
@@ -75,25 +74,28 @@ public class FinderApp extends Application {
     private int startRead;
     private int destRead;
 
-
+    //Variables that are not part of the map that can be moved through, plus the room numbers for elevators and stairs.
     private int[] notMap = {Constants.WALL,Constants.HALL,Constants.ROOM,
       Constants.REST,1270,1170,1171,1172,1225,1125,Constants.COFF};
 
     private int whichFloor = 0;
     private FloorPlans nextFloor = new FloorPlans();
 
+    //Variables for the top row to do with inputting values to generate the path.
     private TextField enterStartRoom = new TextField("Enter the start room");
     private TextField enterDestRoom= new TextField("Enter destination room");
     private ComboBox<String> buildingDropDown = new ComboBox<String>();
     private ComboBox<String> savedPathDropDown = new ComboBox<String>();
     //https://docs.oracle.com/javafx/2/ui_controls/combo-box.htm
 
+    //Variables to do with the map sizing.
     private ToggleGroup sizeGroup = new ToggleGroup();
     private RadioButton smallButton = new RadioButton("Small Map");
     private RadioButton mediumButton = new RadioButton("Medium Map");
     private RadioButton largeButton = new RadioButton("Large Map");
     //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/RadioButton.html
 
+    //Variables to do with generating the footprint images on the path.
     private URL resource = FinderApp.class.getResource("/resources/");
     private Image imgRestroom = new Image(resource+ "RestroomImage.png",rectLength,rectLength, true, false);
     //Image source: http://maxpixel.freegreatpicture.com/Rest-Room-Restroom-Ladies-Restroom-Public-Restroom-99226
@@ -201,6 +203,7 @@ public class FinderApp extends Application {
         // Set the current floor plan to the destination floor.
         map1.setCurrentFloorPlan(nextFloor);
 
+        //Reset the error messaging box
         invalidEntry.setText("");
 
         /* Set the next floor map with the values inputted by the user, using a temporary start
@@ -223,7 +226,8 @@ public class FinderApp extends Application {
       int col1;
       int rNum;
       String buttonType;
-
+      /*parameters are a row number (aRow) as an int, a column number (aCol) as an int,
+      a room number (roomN) as an int, and a button type (type) as a String*/
       public HandleAddClick(int aRow, int aCol, int roomN, String type){
         rNum = roomN;
         row1 = aRow;
@@ -257,10 +261,13 @@ public class FinderApp extends Application {
         for(int col=0;col<map1.getCurrentFloorPlan().getGrid()[0].length;col++){
           if(rectangleGrid[row][col].getFill().equals(Color.RED)
           && rectangleGrid[row][col]!=rectangleGrid[aRow][aCol]){
+            //Starting door change to orange.
             if(map1.getCurrentFloorPlan().getGrid()[row][col] == map1.getStart()){
               rectangleGrid[row][col].setFill(Color.ORANGE);
+              //Destination door change to yellow.
             }else if(map1.getCurrentFloorPlan().getGrid()[row][col] == map1.getDest()){
               rectangleGrid[row][col].setFill(Color.YELLOW);
+              //All other doors change to light blue.
             }else{
               rectangleGrid[row][col].setFill(Color.LIGHTBLUE);
             }
@@ -272,7 +279,7 @@ public class FinderApp extends Application {
     /**
     * Method that handles the clicking of a room button/room number on the map.
     * Allows user to select to store the room value in the start room or destination
-    room. The user can also unselect the room by clicking the temporary button generated
+    * room. The user can also unselect the room by clicking the temporary button generated
     * at it.
     http://code.makery.ch/blog/javafx-8-event-handling-examples/
     */
@@ -281,6 +288,8 @@ public class FinderApp extends Application {
       StackPane aSP;
       int rowLength;
       int colLength;
+      /* Parameters are a row length (aRowLength) as an int, a column length (aColLength) as an int,
+      a room number (roomNumber) as an int, and a StackPane (aStackPane). */
       public HandleRoomClick(int aRowLength, int aColLength, int roomNumber, StackPane aStackPane){
         roomNum = roomNumber;
         aSP = aStackPane;
@@ -291,24 +300,27 @@ public class FinderApp extends Application {
         int row;
         int col;
 
+        //Remove any previously present buttons for entering selected rooms as start or destination.
         enterStartRoomVBox.getChildren().remove(startRoomButton);
         enterDestRoomVBox.getChildren().remove(destRoomButton);
 
         /* If the tile clicked is a room number and not red, make it red
         and activate the add buttons with the value of the tile clicked. If
         the tile is a room number and is red, change it to the specified colour.
-        */
+        Loop through all coordinates.*/
         for(row=0;row<rowLength;row++){
           for(col=0;col<colLength;col++){
+            //if current coordinate is a door number.
             if(map1.getCurrentFloorPlan().getGrid()[row][col] == roomNum){
+              //If not already red, colour the door red.
               if(rectangleGrid[row][col].getFill().equals(Color.RED)==false){
 
                 rectangleGrid[row][col].setFill(Color.RED);
 
-
+                //If no start room button present, add it below the corresponding textfield.
                 if(enterStartRoomVBox.getChildren().contains(startRoomButton)==false){
                   enterStartRoomVBox.getChildren().add(startRoomButton);
-                }
+                } //If no destination room button present, add it below the corresponding textfield.
                 if(enterDestRoomVBox.getChildren().contains(destRoomButton) ==false){
                   enterDestRoomVBox.getChildren().add(destRoomButton);
                 }
@@ -325,12 +337,15 @@ public class FinderApp extends Application {
                 */
                 destRoomButton.setOnAction(new HandleAddClick(row,col,roomNum,"dest"));
 
-
+                //Else if the door is already coloured red.
               }else if(rectangleGrid[row][col].getFill().equals(Color.RED)){
+                //if door is Starting door, change to orange.
                   if(map1.getCurrentFloorPlan().getGrid()[row][col] == map1.getStart()){
                     rectangleGrid[row][col].setFill(Color.ORANGE);
+                    //Else if destination door, change to yellow.
                   }else if(map1.getCurrentFloorPlan().getGrid()[row][col] == map1.getDest()){
                     rectangleGrid[row][col].setFill(Color.YELLOW);
+                    //All other doors change to light blue.
                   }else{
                     rectangleGrid[row][col].setFill(Color.LIGHTBLUE);
                   }
@@ -373,9 +388,9 @@ public class FinderApp extends Application {
    *
    */
    public void submitSameFloor(){
-     FloorPlans floorPlan = map1.getCurrentFloorPlan();
+     FloorPlans floorPlan = map1.getCurrentFloorPlan(); //Get the current floorplan from the map.
 
-     setMap(floorPlan,startNumberInput,destNumberInput);
+     setMap(floorPlan,startNumberInput,destNumberInput); //Set the map's floorplan with starting and destination room numbers
 
      /* Set the instance varibles for file saving: the FloorPlans
      being used, the start number, and the desination.*/
@@ -415,7 +430,10 @@ public class FinderApp extends Application {
    /**
    * Method that sets the map's current state. This includes setting the map
    * start and end values based on the given floorplan and start and end numbers
-   and then creating a grid based on those values and displaying it
+   * and then creating a grid based on those values and displaying it.
+   * @param: floorPlan a floor plan of type FloorPlans
+   * @param: start starting room of type int
+   * @param: end ending room of type int
    */
    public void setMap(FloorPlans floorPlan, int start, int end){
      /* Create a new path along the given floor plan from the start room
@@ -438,6 +456,7 @@ public class FinderApp extends Application {
      // Update the grid label with the floor number and building name.
      buildingAndFloorLabel.setText(setBuildingAndFloorLabel(floorPlan.getFlNum(),buildingInput));
    }
+
    /*
    * Handle class that responds to the Submit button click by reading
    * the start and destination text fields and the dropdown value for
@@ -462,6 +481,7 @@ public class FinderApp extends Application {
         try{
           startNumberInput = Integer.parseInt(enterStartRoom.getText());
           destNumberInput  = Integer.parseInt(enterDestRoom.getText());
+          //If not an integer, message the user.
         } catch(NumberFormatException e){
           invalidEntry.setText ("Please enter the room number as an integer.");
         }
@@ -535,21 +555,27 @@ public class FinderApp extends Application {
     /**
     * Method to set the building and floor label above the map. Returns a string for the label
     * and requires a floor number and building name.
-    *@param floorNumber floor number to use on the floor label.
-    *@param buildingName building name to use on the floor label.
+    *@param floorNumber floor number to use on the floor label as an int.
+    *@param buildingName building name to use on the floor label as a String.
     */
     public String setBuildingAndFloorLabel(int floorNumber, String buildingName){
       String currentBuildingAndFloor = "";
+      //If floor number is not 0.
       if (floorNumber > 0){
+        //If first floor.
       if (floorNumber%10 == 1){
         currentBuildingAndFloor = buildingName + " " + floorNumber + "st Floor";
+        //Else if second floor
       } else if (floorNumber%10 == 2){
         currentBuildingAndFloor = buildingName + " " + floorNumber +  "nd Floor";
+        //Else if third floor.
       } else if (floorNumber%10 == 3){
         currentBuildingAndFloor = buildingName + " " + floorNumber +  "rd Floor";
+        //All other floors.
       } else{
         currentBuildingAndFloor = buildingName + " " + floorNumber +  "th Floor";
       }}
+      //Else ground floor
       else{
         currentBuildingAndFloor = buildingName + " Ground Floor";
       }
@@ -559,13 +585,15 @@ public class FinderApp extends Application {
 
     /**
     * Method to confirm whether an array contains a value.
-    *@param anArray an array to search.
-    *@param aValue the value to find in the array.
-    *@return boolean value for if value is in the array.
+    *@param anArray an array to search as an int[]
+    *@param aValue the value to find in the array as an int..
+    *@return result boolean value for if value is in the array.
     */
     public boolean contains(int[] anArray, int aValue){
       boolean result = false;
+      //Iterate through the array parameter.
       for(int i : anArray){
+        //If current iteration contains the value of interest, return true.
         if(i == aValue){
           result = true;
         }
@@ -575,10 +603,11 @@ public class FinderApp extends Application {
 
     /**
     * Method to highlight a room in the Grid (change colours of member tiles).
-    *@param aFloorPlan floorplan to add highlights to.
-    *@param roomNumber number of room to highlight.
+    *@param aFloorPlan floorplan as type FlooPlans to add highlights to.
+    *@param roomNumber number of room as an integer to highlight.
     */
     public void highlight(FloorPlans aFloorPlan, int roomNumber){
+      //Loop through each coordinate in the floorplan parameter
       for(int row=0;row<aFloorPlan.getRowLength();row++){
         for(int col=0;col<aFloorPlan.getColLength(row);col++){
           /* Add 1000 to the roomNumber to see if the room exists on
@@ -599,9 +628,9 @@ public class FinderApp extends Application {
 
     /**
     * Method that generates a visual of the current grid.
-    *@param aGrid an integer grid to take data from.
-    *@param aGridPane a gridPane to add the grid's data to.
-    *@param rectLength the length of the rectangles to be created.
+    *@param aGrid an integer grid (int[][]) to take data from.
+    *@param aGridPane a GridPane to add the grid's data to.
+    *@param rectLength the length as an int of the rectangles to be created.
     */
     public void makeGrid(int[][] aGrid, GridPane aGridPane, int rectLength){
       int rowLength = aGrid.length;
@@ -612,7 +641,7 @@ public class FinderApp extends Application {
       // Clear the gridPane.
       aGridPane.getChildren().clear();
 
-
+      //Loop through each coordinate of the 2D grid.
       for (int row = 0; row < aGrid.length; row++){
         for(int col = 0; col < aGrid[row].length; col++){
 
@@ -657,28 +686,34 @@ public class FinderApp extends Application {
 
     /**
     * Method that sets the rectangles and their colours for the grid.
-    *@param row the row to place the rectangle
-    *@param col the column to place the rectangle
-    *@param aGrid an integer grid to take data from.
-    *@param rectLength the length of the rectangles to be created.
-    *@return a rectangle.
+    *@param row the row as an int to place the rectangle
+    *@param col the column as an int to place the rectangle
+    *@param aGrid an integer grid (int[][]) to take data from.
+    *@param rectLength the length as an int of the rectangles to be created.
+    *@return rect a rectangle as type Rectangle.
     */
     public Rectangle setRectangles(int row, int col, int[][] aGrid, int rectLength){
 
       Rectangle rect = new Rectangle();
       rect.setStroke(Color.BLACK);
 
-      if (aGrid[row][col] == 0){
+      //Color walls black
+      if (aGrid[row][col] == Constants.WALL){
         rect.setFill(Color.BLACK);
+        //Halls are clear
       } else if (aGrid[row][col] == Constants.HALL){
         rect.setFill(Color.TRANSPARENT);
         rect.setStroke(Color.TRANSPARENT);
+        //Rooms are coloured grey.
       } else if (aGrid[row][col] == Constants.ROOM){
         rect.setFill(Color.GREY);
+        //Destination room is coloured yellow.
       } else if (aGrid[row][col] == map1.getDest()){
         rect.setFill(Color.YELLOW);
+        //Starting room is coloured orange.
       } else if (aGrid[row][col] == map1.getStart()){
         rect.setFill(Color.ORANGE);
+        //Path direction values determine which direction the feet images will point.
       } else if (aGrid[row][col] == Constants.NPATH){
         rect.setFill(new ImagePattern(imgFootPrintsN));
         rect.setStroke(Color.TRANSPARENT);
@@ -703,19 +738,25 @@ public class FinderApp extends Application {
       } else if (aGrid[row][col] == Constants.WPATH){
         rect.setFill(new ImagePattern(imgFootPrintsW));
         rect.setStroke(Color.TRANSPARENT);
+        //Restrooms will have appropriate image.
       } else if(aGrid[row][col] == Constants.REST){
         rect.setFill(new ImagePattern(imgRestroom));
         //https://stackoverflow.com/questions/22848829/how-do-i-add-an-image-inside-a-rectangle-or-a-circle-in-javafx
+        //Stairs will have stair image.
       } else if(aGrid[row][col] == (map1.getCurrentFloorPlan().getStairsNum()+1000)){
         rect.setFill(new ImagePattern(imgStairs));
+        //Elevators will have elevator image.
       } else if(aGrid[row][col] == (map1.getCurrentFloorPlan().getElevatorNum()+1000)){
         rect.setFill(new ImagePattern(imgElevator));
+        //Coffee shop will have an image of a coffee cup.
       } else if(aGrid[row][col] == Constants.COFF){
         rect.setFill(new ImagePattern(imgCoffee));
+        //All other rectangles will be light blue.
       }else{
         rect.setFill(Color.LIGHTBLUE);
       }
 
+      //set the rectangle dimensions based on the size of the map selected.
       rect.setWidth(rectLength);
       rect.setHeight(rectLength);
 
@@ -724,8 +765,8 @@ public class FinderApp extends Application {
 
     /**
     * Method that sets number labels for tiles in the grid.
-    *@param roomNumbers the integer number to set.
-    *@return a label with the room number.
+    *@param roomNumbers the integer room number to set.
+    *@return rooms a Label with the room number.
     */
     public Label setNumbers(int roomNumbers){
       Label rooms = new Label("");
@@ -750,15 +791,18 @@ public class FinderApp extends Application {
 
     /**
     * Method that creates buttons for the room numbers on the map.
-    *@param roomNumbers a room number on the grid.
+    *@param roomNumbers a room number as an int on the grid.
     *@param startNumberInput an integer representing the start room number.
     *@param destNumberInput an integer representing the destination room number.
     *@param stack a stackPane to add the buttons to.
+    *@param rowLength the length of the row as an int
+    *@param colLength the length of the column as an int
+    *@return aRoomButton a button for the room as a Button
     */
     public Button  createRoomButtons(int roomNumbers, int startNumberInput, int destNumberInput, StackPane stack, int rowLength, int colLength){
         Button aRoomButton = new Button();
         /* If the tile is either a room number or more specifically the start
-        or end room, create a button on top of it.*/
+        or end room, create a button on top of it with an appropriate String on it.*/
         if (contains(notMap,roomNumbers) == false && roomNumbers != map1.getStart() &&
         roomNumbers !=map1.getDest()){
           aRoomButton = new Button (""+roomNumbers);
@@ -770,7 +814,7 @@ public class FinderApp extends Application {
           aRoomButton = new Button (""+destNumberInput);
 
         }
-        Integer roomNumberValue = Integer.parseInt(aRoomButton.getText());
+        Integer roomNumberValue = Integer.parseInt(aRoomButton.getText()); //the room number value from the button String.
 
         /*
         * Clicking a room button is handled by HandleRoomClick.
@@ -858,11 +902,12 @@ public class FinderApp extends Application {
     /**
     * Method to get all the saved files from a directory.
     * @param: curDir is a directory of type File.
-    * @return: savedFiles is a list of the saved files in the parametar direcotry. Returned as a an array of type File.
+    * @return: savedFiles is an array of type File of the saved files in the parametar direcotry's SavedPaths subdirectory..
     */
     public File[] getSavedFileList(File curDir){
+      //The files saved in the current directory.
       File[] savedFiles = curDir.listFiles(); //https://stackoverflow.com/questions/15482423/how-to-list-the-files-in-current-directory
-      //Loop through the current directory to find the full name of the SavedPaths directory.
+      //Loop through the current directory to find the files that belong to the SavedPaths subdirectory.
       for (File file : savedFiles){
         if(file.getName().endsWith("SavedPaths")){ //http://javaconceptoftheday.com/list-all-files-in-directory-in-java/
           savedPathDir = (file);
@@ -1071,9 +1116,11 @@ public class FinderApp extends Application {
           differentFloor = false;
           //Adjust the size of building and floor number label above the map based on the mapsize.
           buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
+          //Remove the buttons below the start room textfield if it is there.
           if(enterStartRoomVBox.getChildren().contains(startRoomButton)){
             enterStartRoomVBox.getChildren().remove(startRoomButton);
           }
+          //Remove the buttons below the destination room textfield if it is there.
           if(enterDestRoomVBox.getChildren().contains(destRoomButton)){
             enterDestRoomVBox.getChildren().remove(destRoomButton);
           }
