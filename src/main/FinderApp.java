@@ -1071,6 +1071,12 @@ public class FinderApp extends Application {
           differentFloor = false;
           //Adjust the size of building and floor number label above the map based on the mapsize.
           buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
+          if(enterStartRoomVBox.getChildren().contains(startRoomButton)){
+            enterStartRoomVBox.getChildren().remove(startRoomButton);
+          }
+          if(enterDestRoomVBox.getChildren().contains(destRoomButton)){
+            enterDestRoomVBox.getChildren().remove(destRoomButton);
+          }
         }else{
           System.out.println("No file to load.");
         }
