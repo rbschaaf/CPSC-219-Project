@@ -34,7 +34,7 @@ public class TileTest {
 
 
 
-    /*
+    /**
     * Method to test if the copy constructor sets the new object with appropriate x and y values 
     * from the tile object it copies.
     */
@@ -51,7 +51,7 @@ public class TileTest {
     }
 
 
-    /*
+    /**
     * Method to test when the x value setter is given 0 as a parameter.
     *
     */
@@ -131,75 +131,125 @@ public class TileTest {
         assertEquals("Created Tile(5,7) then set ycoord to 3 - testing y value", 3, n.getYCoord());
     }
 
-
+    /* A series of methods to test the distance between two tiles. Each method uses two new tiles
+    with different x and y values*/
+    /**
+    * First method to test the distance between two tiles.
+    *
+    */
     @Test
-    /* Creating two tiles and finding the distance between them should return the correct distance.*/
     public void test_distance_StartIsTopLeft_EndIsBottomRight() {
+        // Create two different tiles.
         Tile n1 = new Tile(1,2);
         Tile n2 = new Tile(4,6);
+        // Find the distance from the first tile to the second.
         double length = n1.calcDistance(n2);
 
         assertEquals("Distance from Tile (1,2) to (4,6) should be 5.0", 5.0, length, 0.00001);
     }
 
+    /**
+    * Second method to test the distance between two tiles.
+    *
+    */
     @Test
     public void test_distance_StartIsTopRight_EndIsBottomLeft() {
+        // Create two different tiles.
         Tile n1 = new Tile(10,2);
         Tile n2 =  new Tile(4,6);
+        // Find the distance from the first tile to the second.
         double length = n1.calcDistance(n2);
 
         assertEquals("Distance from Tile (10,2) to (4,6) should be 7.21110", 7.21110, length, 0.00001);
     }
 
+    /**
+    * Third method to test the distance between two tiles.
+    *
+    */
     @Test
     public void test_distance_StartIsBottomRight_EndIsTopLeft() {
+        // Create two different tiles.
         Tile n1 = new Tile(10,20);
         Tile n2 = new Tile(4,6);
+        // Find the distance from the first tile to the second.
         double length = n1.calcDistance(n2);
 
         assertEquals("Distance from Tile (10,20) to (4,6) should be 15.2315462", 15.2315462, length, 0.00001);
     }
-
+    
+    /**
+    * Fourth method to test the distance between two tiles.
+    *
+    */
     @Test
     public void test_distance_StartIsBottomLeft_EndIsTopRight() {
+        // Create two different tiles.
         Node n1 = new Node(2,20);
         Node n2 = new Node(4,6);
+        // Find the distance from the first tile to the second.
         double length = n1.calcDistance(n2);
-
         assertEquals("Distance from point (2,20) to (4,6) should be 14.142135", 14.142135, length, 0.00001);
     }
 
+    /**
+    * Method to test the distance between two tiles that are set to be the same.
+    *
+    */
     @Test
     public void test_equals_SameInstance() {
+        // Create a new tile.
         Tile n1 = new Tile(2,20);
+        // Set n2 to be the same as the new tile.
         Tile n2 = n1;
+        // Calculate the distance between n1 and n2.
         boolean same = n1.equals(n2);
 
         assertTrue("Expected variables that reference same object to be equal", same);
     }
 
+    /**
+    * Method to test the distance between two tiles that are the same.
+    *
+    */
     @Test
     public void test_equals_SameXAndY() {
+        // Create a new tile.
         Tile n1 = new Tile(2,20);
+        // Create another new tile with the same parameters as the first.
         Tile n2 = new Tile(2,20);
+        // Find the distance between the two tiles.
         boolean same = n1.equals(n2);
 
         assertTrue("Expected variables that have the same x and y-coordinate to be equal", same);
     }
 
+    /**
+    * Method to test if two tiles are equal when one has a different x value.
+    *
+    */
     @Test
     public void test_equals_DifferentX() {
+        // Create a new tile.
         Tile n1 = new Tile(2,20);
+        // Create another new tile with a different x value fromt the first.
         Tile n2 = new Tile(3,20);
+        // Check if the tiles are equal.
         boolean same = n1.equals(n2);
 
         assertFalse("Expected variables with different x-coordinates to be unequal", same);
     }
-
+    /**
+    * Method to test if two tiles are equal when one has a different y value.
+    *
+    */
     @Test
     public void test_equals_DifferentY() {
+        // Create a new tile.
         Tile n1 = new Tile(2,20);
+        // Create another new tile with a different y value from the first.
         Tile n2 = new Tile(2,0);
+        // Check if the tiles are equal.
         boolean same = n1.equals(n2);
 
         assertFalse("Expected variables with different y-coordinates to be unequal", same);
