@@ -151,7 +151,7 @@ public class FloorPlans implements Serializable {
   * @param toSet the 2-dimensional int array we want to set as the new grid.
   */
   public void setGrid(int[][] newGrid){
-    grid = newGrid;
+    grid = copyGrid(newGrid);
   }
 
   /**
