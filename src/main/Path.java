@@ -368,7 +368,7 @@ public class Path {
             copyGrid[nodeRow][nodeCol] = Constants.SEPATH;
             break;
           case "SW":
-            copyGrid[nodeRow][nodeCol] = Constants.SWPATH
+            copyGrid[nodeRow][nodeCol] = Constants.SWPATH;
             break;
           case "E":
             copyGrid[nodeRow][nodeCol] = Constants.EPATH;
