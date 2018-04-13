@@ -156,7 +156,7 @@ public class MapMain {
           System.out.println("Found start.");
           //Else if current coordinate is destination room, change the coordinate's value to 5.
         }else if(endGrid[row][col] == newMap.getDest()){
-          endGrid[row][col] =Constants.END;
+          endGrid[row][col] =Constants.DEST;
         }
       }
     }
