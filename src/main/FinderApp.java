@@ -62,7 +62,7 @@ public class FinderApp extends Application {
     private String operatingSystem = System.getProperty("os.name"); //The opearting system of the computer running the program. https://stackoverflow.com/questions/14288185/detecting-windows-or-linux
     private Screen screen = Screen.getPrimary(); //https://stackoverflow.com/questions/6864540/how-to-set-a-javafx-stage-frame-to-maximized
     private Rectangle2D bounds = screen.getVisualBounds();
-
+    private boolean differentFloor = false;
     private FloorPlans updatedPlan;
 
     // File variables
@@ -147,6 +147,8 @@ public class FinderApp extends Application {
 
         // Update the grid with the temporary path to the elevator.
         makeGrid(finalGrid2,gridPane,rectLength);
+
+        highlight(currentFloorPlan, tempDest);
       }
     }
     /**
@@ -175,6 +177,9 @@ public class FinderApp extends Application {
 
         //Update the grid with the temporary path to the stairs.
         makeGrid(finalGrid3,gridPane,rectLength);
+
+
+        highlight(currentFloorPlan, tempDest);
       }
     }
 
@@ -210,6 +215,8 @@ public class FinderApp extends Application {
 
 
         makeGrid(finalGridpt2,gridPane,rectLength);
+
+        highlight(nextFloor, destNumberInput);
 
         //Update the floor label
         buildingAndFloorLabel.setText(setBuildingAndFloorLabel(nextFloor.getFlNum(), buildingInput));
@@ -421,7 +428,7 @@ public class FinderApp extends Application {
               buildingAndFloorLabel.setText(setBuildingAndFloorLabel(currentFloorPlan.getFlNum(), buildingInput));
 
 
-
+            differentFloor = false;
             /*
             * If the start room is valid for the currents floor and the destination
             * is invalid for the current floor, check if the destination is valid
@@ -431,7 +438,7 @@ public class FinderApp extends Application {
           building1.getFloorPlan(destNumberInput).getFlNum()
               && building1.onAFloor(startNumberInput)!=null &&
               building1.onAFloor(destNumberInput)!=null){
-
+              differentFloor = true;
               // Determine which floor is the next floor
               nextFloor = building1.onAFloor(destNumberInput);
               whichFloor = nextFloor.getFlNum();
@@ -456,6 +463,10 @@ public class FinderApp extends Application {
               int[][] finalGrid = path.createPath();
 
               makeGrid(finalGrid,gridPane,rectLength);
+
+              // Highlight the room chosen as the destination in blue.
+              highlight(currentFloorPlan, tempDest);
+
               buildingAndFloorLabel.setText(setBuildingAndFloorLabel(currentFloorPlan.getFlNum(), buildingInput));
 
           }else if(building1.onAFloor(startNumberInput)==null ||
@@ -929,6 +940,8 @@ public class FinderApp extends Application {
       public void handle(ActionEvent event){
         if(gridVisible== false){
           invalidEntry.setText("There is no path to save.");
+        }else if(differentFloor = true){
+          invalidEntry.setText("Please choose a path with a start and end on the same floor.");
         }else if(fileTextField.getText().equals("")){
           invalidEntry.setText("Enter a name for the saved path.");
         }else if(new File(curDir + "/SavedPaths/"  + fileTextField.getText() + ".dat" ).exists()){
@@ -975,6 +988,7 @@ public class FinderApp extends Application {
               makeGrid(readGrid,gridPane,rectLength);
               highlight(planRead, destRead);
               gridVisible = true;
+              differentFloor = false;
 
               buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
             }else{
