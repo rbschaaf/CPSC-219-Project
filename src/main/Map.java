@@ -62,7 +62,7 @@ public class Map implements Serializable{
   public FloorPlans getCurrentFloorPlan(){
     return new FloorPlans(currentFloorPlan);
   }
-  
+
   /**
   * Method to get the start value.
   * @return start the start value as an integer.
@@ -78,7 +78,7 @@ public class Map implements Serializable{
   public int getDest(){
     return dest;
   }
-  
+
   /**
   * Printing method for the floor plan as a 2-dimensional grid to print to the console.
   */
@@ -116,13 +116,17 @@ public class Map implements Serializable{
 
   /**
   * Method that sets the coordinate values endX and endY for the end/destination room.
-  * @param aFP a floorPlan; endRoom the current end Room.
+  * @param aFP a floorPlan as type FloorPlans
+  * aparam endRoom the current end room number as an int.
   */
   public void setEndValues(FloorPlans aFP, int endRoom){
     // Set the destination value equal to the given endRoom.
     dest = endRoom;
+    // Loop through each coordinate on the floor plan parameter aFP.
     for(int row=0;row<aFP.getRowLength();row++){
       for(int col=0;col<aFP.getColLength(row);col++){
+        /* If the current iteration's coordinate's values are equal to the end room, 
+        set the end room's x and y coordinate. */
         if(aFP.getGrid()[row][col]==endRoom){
           endX = row;
           endY = col;
