@@ -9,7 +9,7 @@ public class NodeTest {
 		Node n = new Node(0,0, 0);
 		assertEquals("Created Node(0,0,0) - testing x value", 0, n.getXCoord());
 		assertEquals("Created Node(0,0,0) - testing y value", 0, n.getYCoord());
-		assertEquals("Created Node(0,0,0) - testing distance value", 0, n.getStartDistance());
+		assertEquals("Created Node(0,0,0) - testing distance value", 0, n.getStartDistance(), 0.00001);
 	}
 
 	@Test
@@ -25,7 +25,7 @@ public class NodeTest {
 		Node n = new Node(1,2, true);
 		assertEquals("Created Node(-1,10) - testing x value", 1, n.getXCoord());
 		assertEquals("Created Node(-1,10) - testing y value", 2, n.getYCoord());
-		assertEquals("Created Node(-1,10) - testing y value", false, n.getEndNodeVal());
+		assertEquals("Created Node(-1,10) - testing y value", true, n.getEndNodeVal());
 	}
 
 
@@ -33,24 +33,24 @@ public class NodeTest {
 	public void test_CopyEndConstructor() {
 		Node n = new Node(1,2, true);
 		Node n2 = new Node(n);
-		assertEquals("Created Node(1,2,true) and copied it.  Testing x value of original.", 5, n.getXCoord());
-		assertEquals("Created Node(1,2,true) and copied it.  Testing y value of original.", 7, n.getYCoord());
-		assertEquals("Created Node(1,2,true) and copied it. Testing EndNodeVal of original", false, n.getEndNodeVal());
-		assertEquals("Created Node(1,2,true) and copied it.  Testing x value of copy.", 5, n2.getXCoord());
-		assertEquals("Created Node(1,2,true) and copied it.  Testing y value of copy.", 7, n2.getYCoord());
-		assertEquals("Created Node(1,2,true) and copied it. Testing EndNodeVal of copy", false, n2.getEndNodeVal());
+		assertEquals("Created Node(1,2,true) and copied it.  Testing x value of original.", 1, n.getXCoord());
+		assertEquals("Created Node(1,2,true) and copied it.  Testing y value of original.", 2, n.getYCoord());
+		assertEquals("Created Node(1,2,true) and copied it. Testing EndNodeVal of original", true, n.getEndNodeVal());
+		assertEquals("Created Node(1,2,true) and copied it.  Testing x value of copy.", 1, n2.getXCoord());
+		assertEquals("Created Node(1,2,true) and copied it.  Testing y value of copy.", 2, n2.getYCoord());
+		assertEquals("Created Node(1,2,true) and copied it. Testing EndNodeVal of copy", true, n2.getEndNodeVal());
 	}
 
 	@Test
 	public void test_CopyStartConstructor() {
 		Node n = new Node(1,2, 0);
 		Node n2 = new Node(n);
-		assertEquals("Created Node(1,2,0) and copied it.  Testing x value of original.", 5, n.getXCoord());
-		assertEquals("Created Node(1,2,0) and copied it.  Testing y value of original.", 7, n.getYCoord());
-		assertEquals("Created Node(1,2,0) and copied it. Testing distance of original", false, n.getStartDistance());
-		assertEquals("Created Node(1,2,0) and copied it.  Testing x value of copy.", 5, n2.getXCoord());
-		assertEquals("Created Node(1,2,0) and copied it.  Testing y value of copy.", 7, n2.getYCoord());
-		assertEquals("Created Node(1,2,0) and copied it. Testing distance of copy", false, n2.getStartDistance());
+		assertEquals("Created Node(1,2,0) and copied it.  Testing x value of original.", 1, n.getXCoord());
+		assertEquals("Created Node(1,2,0) and copied it.  Testing y value of original.", 2, n.getYCoord());
+		assertEquals("Created Node(1,2,0) and copied it. Testing distance of original", 0, n.getStartDistance(), 0.00001);
+		assertEquals("Created Node(1,2,0) and copied it.  Testing x value of copy.", 1, n2.getXCoord());
+		assertEquals("Created Node(1,2,0) and copied it.  Testing y value of copy.", 2, n2.getYCoord());
+		assertEquals("Created Node(1,2,0) and copied it. Testing distance of copy",0, n2.getStartDistance(), 0.00001);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class NodeTest {
 	public void test_setXCoord_Negative() {
 		Node n = new Node(5,7);
 		n.setXCoord(-54);
-		assertEquals("Created Node(5,7) then set xcoord to -54 - testing x value", 5, n.getXCoord());
+		assertEquals("Created Node(5,7) then set xcoord to -54 - testing x value", 0, n.getXCoord());
 		assertEquals("Created Node(5,7) then set xcoord to -54 - testing y value", 7, n.getYCoord());
 	}
 
@@ -82,7 +82,7 @@ public class NodeTest {
 		Node n = new Node(5,7);
 		n.setYCoord(-32);
 		assertEquals("Created Node(5,7) then set ycoord to -32 - testing x value", 5, n.getXCoord());
-		assertEquals("Created Node(5,7) then set ycoord to -32 - testing y value", 7, n.getYCoord());
+		assertEquals("Created Node(5,7) then set ycoord to -32 - testing y value", 0, n.getYCoord());
 	}
 
 	@Test
