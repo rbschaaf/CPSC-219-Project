@@ -124,8 +124,8 @@ public class MapMain {
     System.out.println("\nGrid without the path: ");
     newMap.printGrid();
 
-    // Create a new path and set its start and end values on the map for
-    // the current floorplan.
+    /* Create a new path and set its start and end values on the map for
+     the current floorplan.*/
     Path path = new Path(floorPlan.getGrid(), roomStart, roomDest);
     newMap.setStartValues(floorPlan, roomStart);
     newMap.setEndValues(floorPlan, roomDest);
@@ -134,15 +134,25 @@ public class MapMain {
     // Form the path from starting room to destination room.
     int[][] endGrid = path.createPath();
 
-    // Place the number 8 as a marker for the starting room.
-    newMap.placeStart(endGrid);
 
-    // Place the number 5 as a marker for destination room.
-    newMap.placeDest(endGrid);
+    /* Place the number 8 as a marker for the starting room.
+    and place the number 5 as a marker for the destination room.*/
+    for(int row=0;row<endGrid.length;row++){
+      for(int col=0;col<endGrid[0].length;col++){
+        if(endGrid[row][col] == newMap.getStart()){
+          endGrid[row][col] = 8;
+          System.out.println("Found start.");
+        }else if(endGrid[row][col] == newMap.getDest()){
+          endGrid[row][col] =5;
+        }
+      }
+    }
+
+    // Set the new grid as the current grid.
+    floorPlan.setGrid(endGrid);
 
     System.out.println("\nGrid with the path: ");
     System.out.println("8 is the starting room, 5 is the destination room, and 7's are your path.");
-
 
     // Print the map again with the number 7 showing a path between the rooms.
     changeToSevens(endGrid);
@@ -156,6 +166,4 @@ public class MapMain {
 
   }
 }
-
-
 
