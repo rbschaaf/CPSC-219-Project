@@ -4,11 +4,10 @@ import resources.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static resources.BuiltFloorPlans.BIOSCIONE;
 import static resources.BuiltFloorPlans.TFDLSIX;
+import static resources.Constants.*;
 
 /**
 * Class used to develop the Path Class
@@ -17,52 +16,7 @@ import static resources.BuiltFloorPlans.TFDLSIX;
 */
 
 public class PathTest {
-  /*  public static void main(String[] args) {
-    String building = "Taylor Family Digital Library";
-    int roomNum = 250;
-    TestGrid testGrid = new TestGrid();
-    testGrid.setGrid(building, roomNum);
-    int[][] grid = testGrid.getGrid();
-    testGrid.print(grid);
-    Path path = new Path(grid, 261, 262);
-    ArrayList<Node> nodeList = path.createNodeArray(grid);
-    //nodeList = path.createNodeArray(grid);
-    Node lowStartNode = path.getLowestDistanceNode(nodeList);
-    boolean val = lowStartNode.getStartNodeVal();
 
-    /*
-    * WORKING
-    */
-  /*
-    Node startNode = path.getStartNode(nodeList);
-    Node endNode = path.getEndNode(nodeList);
-    System.out.println(nodeList);
-    */
-    /*
-    *Working
-    */
-    //path.addNodeToList(nodeList, endNode);
-    /*
-    * Working
-    */
-  //ArrayList<Node> removedArrays = new ArrayList<Node>();
-  //  removedArrays = path.removeNodeFromList(nodeList,endNode);
-    //System.out.println(removedArrays);
-
-
-  //  ArrayList<Node> nodeDistanceList = new ArrayList<Node>();
-  //  nodeDistanceList = path.setNodeDistances(nodeList);
-    //System.out.println(nodeDistanceList);
-
-  ///  ArrayList<Node> shortestDistanceList = new ArrayList<Node>();
-  //  shortestDistanceList = path.getConnectedNodes(nodeDistanceList);
-    //System.out.println(shortestDistanceList);
-
-//    int[][] finalGrid = path.addPathToGrid(shortestDistanceList);
-   /*
-    int[][] finalGrid = path.createPath();
-    testGrid.print(finalGrid);
-    */
   @Test
   public void pathConstructorTestWithStartAndEnd() {
     Path a = new Path(BIOSCIONE,180, 129);
@@ -327,8 +281,6 @@ public class PathTest {
     Path c = new Path(BIOSCIONE ,180, 129);
     Node m1 = new Node(9, 9, true);
     Node m2 = new Node(1, 7);
-    Node m3 = new Node(10, 5);
-    Node m4 = new Node(4, 10);
     Node m5 = new Node(8, 9);
     Node m6 = new Node(12, 4);
     m5.setConnectedNode(m6);
@@ -341,7 +293,28 @@ public class PathTest {
 
   @Test
   public void addPathToGrid() {
-    
+    int[][] a = {{0,0,0,129,0,0,0},
+            {0,0,1,0,0,0,0},
+            {0,0,1,1,0,0,0},
+            {0,0,0,0,180,0,0}};
+    Path c = new Path(a ,129, 180);
+    Node m1 = new Node(0, 3, 0);
+    Node m2 = new Node(1, 2);
+    Node m3 = new Node(2, 2);
+    Node m4 = new Node(2, 3);
+    Node m5 = new Node(3, 4, true);
+    ArrayList<Node> list = new ArrayList<>();
+    c.addNodeToList(list,m1);
+    c.addNodeToList(list,m2);
+    c.addNodeToList(list,m3);
+    c.addNodeToList(list,m4);
+    c.addNodeToList(list,m5);
+    int[][] b = {{0,0,0,129,0,0,0},
+            {0,0,SPATH,0,0,0,0},
+            {0,0,1,SEPATH,0,0,0},
+            {0,0,0,0,180,0,0}};
+
+    assertTrue("Check if nodes added properly to the grid.", Arrays.deepEquals(b, c.createPath()));
   }
 
   @Test
