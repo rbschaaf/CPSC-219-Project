@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 /**
@@ -29,10 +31,11 @@ public class BuildingTest {
     public void addFloors() {
         Building a = new Building("Taylor Family Digital Library");
         Building b = new Building("Taylor Family Digital Library");
-        assertEquals("These do not create the same lists", b.getFloorList(), a.getFloorList());
+        assertEquals("These do not create the same lists", a.getFloorList().size(), b.getFloorList().size());
         Building c = new Building("Bioscience");
         Building d = new Building("Bioscience");
-        assertEquals("These do not create the same lists", d.getFloorList(), c.getFloorList());
+        assertEquals("These do not create the same lists", c.getFloorList().size(), d.getFloorList().size());
+        assertFalse("Lists should not be the same size should not be the same size.", a.getFloorList().size() == c.getFloorList().size());
     }
 
     /**
@@ -42,10 +45,10 @@ public class BuildingTest {
     public void getFloorPlan() {
         Building a = new Building("Taylor Family Digital Library");
         Building b = new Building("Taylor Family Digital Library");
-        assertEquals("These do not create the same lists", b.getFloorPlan(299) , a.getFloorPlan(200));
+        assertTrue("These do not create the same floorplans", Arrays.deepEquals(b.getFloorPlan(200).getGrid(), a.getFloorPlan(299).getGrid()));
         Building c = new Building("Taylor Family Digital Library");
         Building d = new Building("Taylor Family Digital Library");
-        assertNotEquals("These do not create the same lists", c.getFloorPlan(199) , d.getFloorPlan(200));
+        assertFalse("These should not create the same floorplans", Arrays.deepEquals(b.getFloorPlan(200).getGrid(), a.getFloorPlan(199).getGrid()));
     }
 
     /**
@@ -53,7 +56,7 @@ public class BuildingTest {
     */
     @Test
     public void getFloorList() {
-
+        
 
     }
 
