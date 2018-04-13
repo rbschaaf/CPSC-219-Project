@@ -9,10 +9,6 @@ public class Map implements Serializable{
 
   private FloorPlans currentFloorPlan = new FloorPlans();
   private Building currentBuilding;
-  private int startX;
-  private int startY;
-  private int endX;
-  private int endY;
   private int start;
   private int dest;
 
@@ -107,32 +103,19 @@ public class Map implements Serializable{
         /* If the current position on the floorplan is equal to the starting room number,
         set the current x and y coordinates. */
         if(aFP.getGrid()[row][col]==startRoom){
-          startX = row;
-          startY = col;
         }
       }
     }
   }
 
   /**
-  * Method that sets the coordinate values endX and endY for the end/destination room.
+  * Method that sets the destination point for the end/destination room.
   * @param aFP a floorPlan as type FloorPlans
-  * aparam endRoom the current end room number as an int.
+  * @param endRoom the current end room number as an int.
   */
   public void setEndValues(FloorPlans aFP, int endRoom){
     // Set the destination value equal to the given endRoom.
     dest = endRoom;
-    // Loop through each coordinate on the floor plan parameter aFP.
-    for(int row=0;row<aFP.getRowLength();row++){
-      for(int col=0;col<aFP.getColLength(row);col++){
-        /* If the current iteration's coordinate's values are equal to the end room, 
-        set the end room's x and y coordinate. */
-        if(aFP.getGrid()[row][col]==endRoom){
-          endX = row;
-          endY = col;
-        }
-      }
-    }
   }
 
 
