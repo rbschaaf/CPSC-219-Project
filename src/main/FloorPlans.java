@@ -144,7 +144,15 @@ public class FloorPlans implements Serializable {
   public int[][] getGrid() {
     return copyGrid(grid);
   }
-
+  
+  /**
+  * Method that sets the grid for the current floorplan.
+  *
+  * @param toSet the 2-dimensional int array we want to set as the new grid.
+  */
+  public void setGrid(int[][] newGrid){
+    grid = newGrid;
+  }
 
   /**
    * Getter method to get a room object of type Room from a room number of type int from the room list.
