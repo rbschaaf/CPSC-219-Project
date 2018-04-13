@@ -2,20 +2,18 @@ package resources;
 
 /**
 * This class is for built FloorPlans based
-* on the floorplans of a building.
+* on the floorplans of a building. Part of the resources package.
 *
-* NUMBERS       CORRESPONDING ROOM
-*    0          Wall
-*    1          Hallway - only thing path can move through
-*    9          Portions of rooms
-*    25         Constants.STAIRs
-*   >= 100      Room Numbers, represent doors
-*  888 Bathrooms
+* NUMBERS       CORRESPONDING
+*    0                Wall
+*    1                Hallway - only thing path can move through besides the start and end room.
+*    1000 series      Part of rooms
+*    3-digit series   Doors of rooms
 */
 
 public class BuiltFloorPlans{
 
-public static final int[][] TFDLGROUND =
+public static final int[][] TFDLGROUND = //Taylor Family Digital Library basement
 {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 {0, 1011, 1011, 1011, 1011, 1011, 1011, 1011, 0, 1015, 1015, 1015, 1015, 1015, 1015, 0},
 {0, 1011, 1011, 1011, 1011, 1011, 1011, 1011, 0,1015, 1015, 1015, 1015, 1015, 1015, 0},
@@ -50,9 +48,8 @@ public static final int[][] TFDLGROUND =
 {0, 1035, 1035, 0, 10, 1010, 1010, 1010, 1010, 0, 13, 1013, 1013, 1013,1013,  0},
 {0, 1035, 1035, 0, 1010, 1010, 1010, 1010, 1010, 0, 1013, 1013, 1013, 1013, 1013, 0},
 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-//17 is Bathroom, 18/20 is elevator, 21/23 is stairs
 
-public static final int[][] TFDLONE =
+public static final int[][] TFDLONE = //Taylor Family Digital Library floor one
 {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
 {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0},
@@ -68,7 +65,7 @@ public static final int[][] TFDLONE =
 {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-public static final int[][] TFDLTWO =
+public static final int[][] TFDLTWO = //Taylor Family Digital Library floor two
 {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   {0, 0, 1, 1, 1, 1, 1, 1, 1252, 1252, 9, 9, 1, 1, 0, 0, 0, 0},
   {0, 0, 1, 1, 1, 1, 1, 1, 252, 1252, 9, 9, 1, 1, 0, 0, 0, 0},
@@ -84,7 +81,7 @@ public static final int[][] TFDLTWO =
   {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 270, 1270, 0, 0},
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-public static final int[][] TFDLTHREE =
+public static final int[][] TFDLTHREE = //Taylor Family Digital Library floor three
 {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   {0, 0, 1, 1, 1, 1, 1, 1, 1353, 1353, 9, 9, 1, 1, 0, 0, 0, 0},
   {0, 0, 1, 1, 1, 1, 1, 1, 353, 1353, 9, 9, 1, 1, 0, 0, 0, 0},
@@ -99,9 +96,9 @@ public static final int[][] TFDLTHREE =
   {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 366, 1366, 0, 0},
   {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 370, 1370, 0, 0},
   {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-// 10,11,12,13 are elevators; 303, 366 are stairs
 
-public static final int[][] TFDLFOUR =
+
+public static final int[][] TFDLFOUR = //Taylor Family Digital Library floor four
 {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0},
 {0, 1450, 1450, 1450, 1450, 1450, 1450,1450, 1, 1,1451,1451,1451,1451,1451,1451,1451,0,1472, 1472,0,1471,1471,1 ,1452,1452,0},
 {0, 1450, 1450, 1450, 1450, 1450, 1450,1450, 1, 1,1451,1451,1451,1451,1451,1451,1451,0,1472, 472,0,471,1471,1 ,1452,1452,0},
@@ -122,7 +119,7 @@ public static final int[][] TFDLFOUR =
 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 
-public static final int[][] TFDLFIVE =
+public static final int[][] TFDLFIVE = //Taylor Family Digital Library floor five
 {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0},
 {0, 1550, 1550, 1550, 1550, 1550, 1550,1550, 1550, 0,1547,1547,1547,1547,1547,1547,1547,1547,1547, 1547,1547,1547,1547,1547 ,1547,1547,0},
 {0, 1550, 1550, 1550, 1550, 1550, 1550,1550, 1550, 0,1547,1547,1547,1547,1547,1547,1547,1547,1547, 1547,1547,1547,1547,1547 ,1547,1547,0},
@@ -140,8 +137,7 @@ public static final int[][] TFDLFIVE =
 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 
-
-public static final int[][] TFDLSIX =
+public static final int[][] TFDLSIX = //Taylor Family Digital Library floor six
 {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 {0, 1640, 1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1652, 0},
 {0, 640, 1,1647,  1, 1648,0, 636, 1636, 0,  638, 1638,0, 653, 1653,  1, 1652,0  },
@@ -166,7 +162,7 @@ public static final int[][] TFDLSIX =
 {0, 1625, 1625, 1625, 1625, 1625, 1,679,1679,1624,624,  1,1675, 1675,675, 1,  1651, 0},
 {0, 0, 0, 0, 0, 0, 0, 0, 0,0,0, 0,0, 0,0, 0,  0, 0}};
 
-public static final int[][] BIOSCIONE =
+public static final int[][] BIOSCIONE = //Biological Sciences floor one
 {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,1,1,1196,1196,1196,1108,1108,1108,1118,1118,1118,1126,1126,1126,1,129,1129,0,0},
 {0,1192,1192,1192,1,196,1196,1196,1108,1108,1108,1118,1118,1118,1126,1126,1126,1,1,1,0,0},
@@ -181,7 +177,7 @@ public static final int[][] BIOSCIONE =
 {1186,1186,1186,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1136,1136,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 
-public static final int[][] BIOSCITWO =
+public static final int[][] BIOSCITWO = //Biological Sciences floor two
 {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,1,1,1291,1291,1291,1210,1210,1222,1222,1228,0,0},
 {0,1213,1288,1,1,1291,1291,1291,1210,210,1222,1222,228,0,0},
@@ -199,4 +195,3 @@ public static final int[][] BIOSCITWO =
 {0,1295,295,1,1273,1273,1273,1249,1249,0,1251,1251,1243,1243,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 }
-
