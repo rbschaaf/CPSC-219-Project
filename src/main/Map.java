@@ -36,7 +36,7 @@ public class Map implements Serializable{
   * @param newFloorPlan the currently being used floor plan as type FloorPlans.
   */
   public void setCurrentFloorPlan(FloorPlans newFloorPlan){
-    currentFloorPlan = new FloorPlans(newFloorPlan);
+    currentFloorPlan = newFloorPlan;
   }
 
   /**
@@ -52,7 +52,7 @@ public class Map implements Serializable{
   * @param : newBuilding is the currently being used building as type Building.
   */
   public void setCurrentBuilding(Building newBuilding){
-    currentBuilding = new Building(newBuilding);
+    currentBuilding = newBuilding;
   }
 
   /**
