@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static resources.BuiltFloorPlans.BIOSCIONE;
 import static resources.BuiltFloorPlans.TFDLSIX;
@@ -288,11 +289,42 @@ public class PathTest {
 
   @Test
   public void setNodeDistances() {
+    int[][] a = {{0,0,0,129,0,0,0},
+            {0,0,1,0,0,0,0},
+            {0,0,1,1,0,0,0},
+            {0,0,0,0,180,0,0}};
+    Path c = new Path(a ,180, 129);
+    ArrayList<Node> list = c.setNodeDistances(c.createNodeArray(a));
+    boolean infinityExists = false;
+    for (Node n : list) {
+      if (n.getStartDistance() > 1000000000) {
+          infinityExists = true;
+      }
+    }
+    assertFalse("Ensure all instances got set", infinityExists);
+  }
 
+  @Test
+  public void setNodeDistances_checkifTestisGood() {
+    int[][] a = {{0,0,0,129,0,0,0},
+            {0,0,1,0,0,0,0},
+            {0,0,1,1,0,0,0},
+            {0,0,0,0,180,0,0}};
+    Path c = new Path(a ,180, 129);
+    ArrayList<Node> list = c.setNodeDistances(c.createNodeArray(a));
+    list.get(3).setStartDistance(1000000);
+    boolean infinityExists = false;
+    for (Node n : list) {
+      if (n.getStartDistance() > 100000) {
+        infinityExists = true;
+      }
+    }
+    assertTrue("Ensure all instances got set", infinityExists);
   }
 
   @Test
   public void getConnectedNodes() {
+
   }
 
   @Test

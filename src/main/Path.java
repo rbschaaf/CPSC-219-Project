@@ -1,5 +1,6 @@
-import java.util.ArrayList;
 import resources.Constants;
+
+import java.util.ArrayList;
 
 /**
  * Class that finds the shortest path from point A to point B
@@ -284,7 +285,7 @@ public class Path {
    * @return visitedNodes an arraylist of nodes with all the appropriate instance
    * variables set to create the shortest path
    */
-  private ArrayList<Node> setNodeDistances(ArrayList<Node> nodes) {
+  public ArrayList<Node> setNodeDistances(ArrayList<Node> nodes) {
     // copy the arraylist of nodes passed in as an arguement.
     ArrayList<Node> unvisitedNodes = getCopyNodes(nodes);
     Node endNode = getEndNode(unvisitedNodes); //get the end node from the arraylist passed in.
@@ -320,7 +321,7 @@ public class Path {
    * @return shortestPathNodes an ArrayList of nodes of type ArrayList<Node> that only contain the direct path nodes from the start to end node.
    */
 
-  private ArrayList<Node> getConnectedNodes(ArrayList<Node> visitedNodes) {
+  public ArrayList<Node> getConnectedNodes(ArrayList<Node> visitedNodes) {
     ArrayList<Node> shortestPathNodes = new ArrayList<Node>();
     Node currentNode = getEndNode(visitedNodes); //Start with the end node.
     if (visitedNodes != null) {
@@ -342,7 +343,7 @@ public class Path {
    * @param shortPathNodes containing an ArrayList of the shortest path nodes as type ArrayList<Node>
    * @return copyGrid a grid (int[][]) with the altered values showing the shortest path from the start node to end node.
    */
-  private int[][] addPathToGrid(ArrayList<Node> shortPathNodes) {
+  public int[][] addPathToGrid(ArrayList<Node> shortPathNodes) {
     // Iterate through the shortest path getting the coordinates of each node from the arraylist passed in as an arguement.
     for (Node aNode : shortPathNodes) {
       int nodeRow = aNode.getXCoord();
