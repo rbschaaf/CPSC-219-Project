@@ -73,7 +73,6 @@ public class FloorPlansTest {
   public void testRooms() {
     // Make a new floor plan and give it rooms.
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", BuiltFloorPlans.TFDLONE , 1, 125, 170);
-    a.makeRooms();
     // Check the number of rooms on the floor plan.
     assertEquals("The number of rooms on the 1st floor of Taylor Digital Library is",
       8, a.getRoomList().size());
@@ -82,7 +81,6 @@ public class FloorPlansTest {
 
     // Make another new floor plan and give it rooms.
     FloorPlans b = new FloorPlans("Taylor Family Digital Library", BuiltFloorPlans.TFDLTWO, 2, 250, 261);
-    b.makeRooms();
     // Check the number of rooms on the floor plan.
     assertEquals("The number of rooms on the 1st floor of Taylor Digital Library is",
       11, b.getRoomList().size());
@@ -96,7 +94,7 @@ public class FloorPlansTest {
   *
   */
   @Test
-  public void getFlNum() {
+  public void testFlNum() {
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", BuiltFloorPlans.TFDLTHREE, 3, 350, 361);
     assertEquals("The floor number is", 3, a.getFlNum());
   }
@@ -106,7 +104,7 @@ public class FloorPlansTest {
   *
   */
   @Test
-  public void getElevatorNum() {
+  public void testElevatorNum() {
     FloorPlans a = new FloorPlans("Bioscience", BuiltFloorPlans.BIOSCIONE, 1, 190,177);
     assertEquals("The elevator number is", 177, a.getElevatorNum());
   }
@@ -116,19 +114,28 @@ public class FloorPlansTest {
   *
   */
   @Test
-  public void getStairsNum() {
+  public void testStairsNum() {
     FloorPlans a = new FloorPlans("Bioscience", BuiltFloorPlans.BIOSCITWO, 2, 291,284);
     assertEquals("The stairs number is", 291, a.getStairsNum());
   }
 
+  /**
+  * Method to test creating a copy Grid
+  *
+  */
   @Test
-  public void copyGrid() {
+  public void testCopyGrid() {
+    /* Create a floor plan object and get it's grid. Compare this to the copy of
+    that same grid */
     FloorPlans a = new FloorPlans("Bioscience", BuiltFloorPlans.BIOSCITWO, 2, 291,284);
     assertTrue("The grids are equal", Arrays.deepEquals(a.getGrid(),a.copyGrid(a.getGrid())));
   }
 
   @Test
-  public void getRowLength() {
+  public void testRowLength() {
+    FloorPlans a = new FloorPlans("Taylor Family Digital Library", BuiltFloorPlans.TFDLONE, 1,150,153);
+    assertEquals("The row length is",14,a.getRowLength());
+
   }
 
   /**
@@ -136,42 +143,82 @@ public class FloorPlansTest {
   *
   */
   @Test
-  public void getColLength() {
-    int[][] g = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,1,1,1291,1291,1291,1210,1210,1222,1222,1228,0,0},
-    {0,1213,1288,1,1,1291,1291,1291,1210,210,1222,1222,228,0,0},
-    {0,213,288,1,1,1291,1291,1291,1210,1,1222,1222,1,0,0},
-    {0,1,1,1,291,1291,1291,1291,1217,1,222,1222,1,0,0},
-    {0,289,290,1,292,1292,1297,1297,1217,1,1227,1227,1,0,0},
-    {0,1289,1290,1,1293,1293,1297,1297,217,1,1227,227,1,0,0},
-    {0,1284,284,1,0,293,1297,297,1217,1,1227,1227,1,0,0},
-    {0,1283,1283,1,1,1,1,1,1,1,1,1,1,1,0},
-    {0,1283,283,1,1281,0,0,1,1211,1211,211,1211,263,1263,0},
-    {0,1283,1283,1,281,888,287,1,286,1286,1211,1211,1263,1263,0},
-    {0,1280,280,1,1281,0,1287,1,1211,1211,1211,1211,0,0,0},
-    {0,1280,1280,1,1,1,1,1,1,1,1,1,1,1,0},
-    {0,1295,1295,1,1273,273,1273,1249,249,0,251,1251,1243,243,0},
-    {0,1295,295,1,1273,1273,1273,1249,1249,0,1251,1251,1243,1243,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+  public void testColLength() {
     FloorPlans a = new FloorPlans("Bioscience", BuiltFloorPlans.BIOSCITWO, 2, 291,284);
-    a.setGrid(g);
     assertEquals("The column length is",15,a.getColLength(15)); // 15 is the row length of g
   }
 
+  /**
+  * Method to test the building name getter method.
+  *
+  */
   @Test
   public void getBuildingName() {
+    FloorPlans a = new FloorPlans("Taylor Family Digital Library",BuiltFloorPlans.TFDLFIVE,5,543,553);
+    assertEquals("The building's name is","Taylor Family Digital Library",a.getBuildingName());
+
+    FloorPlans b = new FloorPlans("Bioscience",BuiltFloorPlans.BIOSCITWO,2,295,213);
+    assertEquals("The building's name is","Bioscience",b.getBuildingName());
   }
 
+  /**
+  * Method to test the grid return from getGrid()
+  * is the same as the grid of the floor plan.
+  */
   @Test
   public void getGrid() {
+    // Create a new floor plan
+    FloorPlans a = new FloorPlans("Taylor Family Digital Library", BuiltFloorPlans.TFDLONE,1,150,151);
+    /*Check if the grid returned from getGrid() is the same as the one the floor plans
+    is created with */
+    assertTrue("The grids are equal", Arrays.deepEquals(a.getGrid(),BuiltFloorPlans.TFDLONE));
   }
 
-
+  /**
+  * Method to test that the rooms are given the correct number
+  * of tiles and that these tiles are valid.
+  */
   @Test
   public void populateRooms() {
+    int[][] g = {{1001,1,1001,1002,2,1002},{1300,300,500,1500,1500,1500}};
+    FloorPlans a = new FloorPlans();
+    a.setGrid(g);
+    a.makeRooms();
+    a.populateRooms();
+    // Check that the correct rooms were created.
+    assertNotNull("Room 1 exists",a.getRoom(1+1000));
+    assertNotNull("Room 2 exists",a.getRoom(2+1000));
+    assertNotNull("Room 300 exists",a.getRoom(300+1000));
+    assertNotNull("Room 500 exists", a.getRoom(500+1000));
+    // Check for the correct amount of tiles for each room.
+    assertEquals("Tiles for Room 1",2,a.getRoom(1+1000).getTileList().size());
+    assertEquals("Tiles for Room 2",2,a.getRoom(2+1000).getTileList().size());
+    assertEquals("Tiles for Room 300",1,a.getRoom(300+1000).getTileList().size());
+    assertEquals("Tiles for Room 500",3,a.getRoom(500+1000).getTileList().size());
   }
 
+  /**
+  * Method to test that the correct number of rooms are made
+  * and that the rooms are valid.
+  *
+  */
   @Test
-  public void printSavedGrid() {
+  public void makeRooms() {
+    int[][] g = {{1001,999,8},{1375,40,1700}};
+    // Make a new floor plan and set its grid to g. Make rooms based on g.
+    FloorPlans a = new FloorPlans();
+    a.setGrid(g);
+    a.makeRooms();
+
+    // Check if the room list is the appropriate size.
+    assertEquals("Number of rooms made",3,a.getRoomList().size());
+
+    // Check if each room added exists.
+    assertNotNull("Room 1 exists",a.getRoom(1+1000));
+    assertNotNull("Room 375 exists",a.getRoom(375+1000));
+    assertNotNull("Room 700 exists",a.getRoom(700+1000));
+
   }
+
 }
+
