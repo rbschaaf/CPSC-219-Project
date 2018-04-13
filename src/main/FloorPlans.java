@@ -142,7 +142,7 @@ public class FloorPlans implements Serializable {
    * @return: grid the current grid from the floorplan as an 2-dimensional int array (int[][]).
    */
   public int[][] getGrid() {
-    return grid;
+    return copyGrid(grid);
   }
 
 
