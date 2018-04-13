@@ -119,9 +119,9 @@ public class FinderApp extends Application {
     //Image source: https://commons.wikimedia.org/wiki/File%3AFootprints.png
     private Image imgFootPrintsW = new Image(resource + "FootprintsW.png", rectLength, rectLength, true, false);
     //Image source: https://commons.wikimedia.org/wiki/File%3AFootprints.png
-    
 
-  
+
+
     /**
     * Handle class that deals with the clicking of the elevator button.
     * Creates the first part of the temporary path with regards to the elevator.
@@ -1111,7 +1111,7 @@ public class FinderApp extends Application {
 
     //Button to submit textfield information for starting and destination rooms and building combobox.
     Button submitB = new Button("Submit");
-    submitB.setOnAction(new HandleButtonClick());
+    submitB.setOnAction(new HandleSubmitClick());
 
     //The combobox for selecting and providing the building name.
     buildingDropDown.setPromptText("Select a Building:");
