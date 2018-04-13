@@ -33,7 +33,8 @@ public class Constants{
   public static final int PREFERRED_HBOX_VBOX_SIZE = 10;
   public static final int SAVETEXTFIELDSIZE = 130;
   public static final int MAX_GRIDSIZE = 100;
-
+  public static final int TOP_VBOX_SIZE = 15;
+  public static final int TOP_VBOX_MIN_HEIGHT = 190;
 
   public static final int ROOMNUMBER_FONTSIZE = 10;
   public static final int APPTITLE_FONTSIZE = 40;
