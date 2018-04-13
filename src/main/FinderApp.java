@@ -814,7 +814,7 @@ public class FinderApp extends Application {
       }
       savedPathDropDown.getItems().add(fileName);
       // Provide confirmation that the file is saved to the user.
-      invalidMessage.setText("You have successfully saved a file from room "+
+      invalidEntry.setText("You have successfully saved a file from room "+
       startToSave+ " to "+ destToSave+".");
     }
 
