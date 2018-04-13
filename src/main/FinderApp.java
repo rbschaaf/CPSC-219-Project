@@ -151,7 +151,59 @@ public class FinderApp extends Application {
 
       }
     }
-
+    /**
+    * Method that handles the dropdown path item clicks by loading
+    * the file clicked and setting the map values. The textfields and the
+    * dropdown menu for building name are updated based on this information
+    * and the user is notified of a path being successfully loaded.
+    */
+    public class HandleLoadPathClick implements EventHandler<ActionEvent>{
+      public HandleLoadPathClick(){}
+      public void handle(ActionEvent event){
+        //Completing the abridged file name to the full file name
+        readFromFile(System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
+        String buildingNameRead = "";
+        //If building is successfully read from the file.
+        if(planRead!=null && planRead.getBuildingName()!=null && planRead.getGrid()!=null){
+          buildingNameRead = planRead.getBuildingName();
+          System.out.println(buildingNameRead);
+          /* Put the correct building and floor name above the map, inform the user the file has been loaded,
+          and autocomplete the building combobox and starting and destination room textfields.*/
+          buildingAndFloorLabel.setText(setBuildingAndFloorLabel(planRead.getFlNum(), buildingNameRead));
+          invalidEntry.setText("You have loaded a path from "+ startRead+ " to " + destRead+".");
+          enterStartRoom.setText(startRead+"");
+          startNumberInput = startRead;
+          enterDestRoom.setText(destRead+"");
+          destNumberInput = destRead;
+          buildingDropDown.setValue(buildingNameRead);
+          /* Set the floorplan from the file, create the path, place the starting and end values on the map,
+          and set the grid*/
+          map1.setCurrentFloorPlan(planRead);
+          Path readPath = new Path(planRead.getGrid(),startRead,destRead);
+          map1.setStartValues(planRead,startRead);
+          map1.setEndValues(planRead,destRead);
+          int[][] readGrid = readPath.createPath();
+          planRead.setGrid(readGrid);
+          // Make the grid on the screen and highlight the destination room.
+          makeGrid(readGrid,gridPane,rectLength);
+          highlight(planRead, destRead);
+          gridVisible = true;
+          differentFloor = false;
+          //Adjust the size of building and floor number label above the map based on the mapsize.
+          buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
+          //Remove the buttons below the start room textfield if it is there.
+          if(enterStartRoomVBox.getChildren().contains(startRoomButton)){
+            enterStartRoomVBox.getChildren().remove(startRoomButton);
+          }
+          //Remove the buttons below the destination room textfield if it is there.
+          if(enterDestRoomVBox.getChildren().contains(destRoomButton)){
+            enterDestRoomVBox.getChildren().remove(destRoomButton);
+          }
+        }else{
+          System.out.println("No file to load.");
+        }
+      }
+    }
     /**
     * Handle class that deals with the clicking of the stair button.
     * Creates the first part of the temporary path with regards to the stairs.
@@ -1085,51 +1137,7 @@ public class FinderApp extends Application {
     /**
     * Handles user selecting a saved path from the combobox.
     */
-    savedPathDropDown.setOnAction(new EventHandler<ActionEvent>(){
-      public void handle(ActionEvent event){
-        //Completing the abridged file name to the full file name
-        readFromFile(System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
-        String buildingNameRead = "";
-        //If building is successfully read from the file.
-        if(planRead!=null && planRead.getBuildingName()!=null && planRead.getGrid()!=null){
-          buildingNameRead = planRead.getBuildingName();
-          System.out.println(buildingNameRead);
-          /* Put the correct building and floor name above the map, inform the user the file has been loaded,
-          and autocomplete the building combobox and starting and destination room textfields.*/
-          buildingAndFloorLabel.setText(setBuildingAndFloorLabel(planRead.getFlNum(), buildingNameRead));
-          invalidEntry.setText("You have loaded a path from "+ startRead+ " to " + destRead+".");
-          enterStartRoom.setText(startRead+"");
-          enterDestRoom.setText(destRead+"");
-          buildingDropDown.setValue(buildingNameRead);
-          /* Set the floorplan from the file, create the path, place the starting and end values on the map,
-          and set the grid*/
-          map1.setCurrentFloorPlan(planRead);
-          Path readPath = new Path(planRead.getGrid(),startRead,destRead);
-          map1.setStartValues(planRead,startRead);
-          map1.setEndValues(planRead,destRead);
-          int[][] readGrid = readPath.createPath();
-          planRead.setGrid(readGrid);
-          // Make the grid on the screen and highlight the destination room.
-          makeGrid(readGrid,gridPane,rectLength);
-          highlight(planRead, destRead);
-          gridVisible = true;
-          differentFloor = false;
-          //Adjust the size of building and floor number label above the map based on the mapsize.
-          buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
-          //Remove the buttons below the start room textfield if it is there.
-          if(enterStartRoomVBox.getChildren().contains(startRoomButton)){
-            enterStartRoomVBox.getChildren().remove(startRoomButton);
-          }
-          //Remove the buttons below the destination room textfield if it is there.
-          if(enterDestRoomVBox.getChildren().contains(destRoomButton)){
-            enterDestRoomVBox.getChildren().remove(destRoomButton);
-          }
-        }else{
-          System.out.println("No file to load.");
-        }
-      }
-    });
-
+    savedPathDropDown.setOnAction(new HandleLoadPathClick());
 
 
 
