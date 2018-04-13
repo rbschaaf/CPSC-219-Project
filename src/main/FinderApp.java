@@ -415,7 +415,7 @@ public class FinderApp extends Application {
               gridVisible = true;
 
               // Highlight the room chosen as the destination in blue.
-                highlight(currentFloorPlan, destNumberInput);
+              highlight(currentFloorPlan, destNumberInput);
 
               // Updates the label above the map providing building name and floor number
               buildingAndFloorLabel.setText(setBuildingAndFloorLabel(currentFloorPlan.getFlNum(), buildingInput));
@@ -970,8 +970,10 @@ public class FinderApp extends Application {
               map1.setStartValues(planRead,startRead);
               map1.setEndValues(planRead,destRead);
               int[][] readGrid = readPath.createPath();
+              planRead.setGrid(readGrid);
 
               makeGrid(readGrid,gridPane,rectLength);
+              highlight(planRead, destRead);
               gridVisible = true;
 
               buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
@@ -1225,4 +1227,3 @@ public class FinderApp extends Application {
     primaryStage.show();
   }
 }
-
