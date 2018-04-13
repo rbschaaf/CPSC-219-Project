@@ -324,11 +324,24 @@ public class PathTest {
 
   @Test
   public void getConnectedNodes() {
-
+    Path c = new Path(BIOSCIONE ,180, 129);
+    Node m1 = new Node(9, 9, true);
+    Node m2 = new Node(1, 7);
+    Node m3 = new Node(10, 5);
+    Node m4 = new Node(4, 10);
+    Node m5 = new Node(8, 9);
+    Node m6 = new Node(12, 4);
+    m5.setConnectedNode(m6);
+    m2.setConnectedNode(m5);
+    m1.setConnectedNode(m2);
+    ArrayList<Node> list = new ArrayList<>();
+    c.addNodeToList(list, m1);
+    assertEquals("Check length of connected node array, should not include the EndNode", 3, c.getConnectedNodes(list).size());
   }
 
   @Test
   public void addPathToGrid() {
+    
   }
 
   @Test
