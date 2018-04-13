@@ -41,7 +41,7 @@ public class Map implements Serializable{
 
   /**
   * Method to get the current building associated with the map.
-  * @return : a copy of the currentBuilding of type Building.
+  * @return currentBuilding a copy of the currentBuilding of type Building.
   */
   public Building getCurrentBuilding(){
     return new Building(currentBuilding);
@@ -57,7 +57,7 @@ public class Map implements Serializable{
 
   /**
   * Method that gets the current floor plan.
-  * @return : a copy of the current floor plan as type FloorPlans.
+  * @return currentFloorPlan a copy of the current floor plan as type FloorPlans.
   */
   public FloorPlans getCurrentFloorPlan(){
     return new FloorPlans(currentFloorPlan);
