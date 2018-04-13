@@ -801,39 +801,39 @@ public class FinderApp extends Application {
   @Override
   public void start(Stage primaryStage){
 
-    //**
-    // Welcome screen (first scene)
-    //**
-    BorderPane borderPanes1 = new BorderPane();
-    borderPanes1.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #dc143c, #661a33)");
+    /*
+    * Welcome screen (first scene)
+    */
+    BorderPane welcomeBorderPane = new BorderPane(); //Welcome screen on a border pane.
+    welcomeBorderPane.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #dc143c, #661a33)");
     //https://stackoverflow.com/questions/22007595/borderpane-with-color-gradient
 
-    Label appTitle = new Label("Room-Finder App");
+    Label appTitle = new Label("Room-Finder App"); //Label for the title of the app.
     appTitle.setFont(Font.font("Verdana", FontWeight.BOLD,Constants.APPTITLE_FONTSIZE));
 
-    DropShadow titleShadow = new DropShadow();
+    DropShadow titleShadow = new DropShadow(); //Setting the background effect of the welcome screen.
     appTitle.setEffect(titleShadow);
     appTitle.setTextFill(Color.WHITE);
 
-    Button startButton = new Button("Find a Room");
+    Button startButton = new Button("Find a Room"); //Button to enter the program from the welcome screen.
     Image uOfCCoat = new Image(resource +"UofCcoat.png");
     ImageView uOfCImage = new ImageView(uOfCCoat);
     //https://docs.oracle.com/javafx/2/api/javafx/scene/image/ImageView.html
 
-    VBox startVBox = new VBox(Constants.PREFERRED_HBOX_VBOX_SIZE);
+    VBox startVBox = new VBox(Constants.PREFERRED_HBOX_VBOX_SIZE); //VBox for the welcome screen's contents set to the center of the border pane.
     startVBox.getChildren().addAll(appTitle, startButton, uOfCImage);
-    borderPanes1.setCenter(startVBox);
+    welcomeBorderPane.setCenter(startVBox);
     startVBox.setAlignment(Pos.CENTER);
 
-    Scene scene1 = new Scene(borderPanes1,Constants.SCENESIZE,Constants.SCENESIZE);
+    Scene welcomeScene = new Scene(welcomeBorderPane,Constants.SCENESIZE,Constants.SCENESIZE);
 
 
-    //**
-    // Main screen (second scene)
-    //**
+    /*
+    * Main screen (second scene)
+    */
 
     /* Put gridpane in VBox with a title above it infoming the user of the building
-    and floor number. Both are set to the center. */
+    and floor number. Both are set to the center. The gridpane can be scrolled. */
     VBox gridPaneVBox = new VBox();
     VBox scrollPaneVBox = new VBox();
     ScrollPane borderScroll = new ScrollPane();
@@ -852,11 +852,11 @@ public class FinderApp extends Application {
     gridPaneVBox.setAlignment(Pos.CENTER);
 
 
-    Label appName = new Label ("University of Calgary Pathfinder");
+    Label appName = new Label ("University of Calgary Pathfinder"); //The name of the app put at the top of the main scene.
     appName.setFont(Font.font("Verdana", FontWeight.BOLD,Constants.APP_LABEL_FONTSIZE+6));
     appName.setPadding(new Insets(10));
 
-    buildingDropDown.getItems().addAll("Taylor Family Digital Library","Bioscience");
+    buildingDropDown.getItems().addAll("Taylor Family Digital Library","Bioscience"); //add the two buildings to the dropdown list for choosing the building.
 
     /*
     * Elevator and stair button box
@@ -864,33 +864,31 @@ public class FinderApp extends Application {
 
     eleStairBox.setPadding(new Insets(10));
 
-    Button elevatorB = new Button("Elevator");
+    Button elevatorB = new Button("Elevator"); //Button for selecting the elevator to change floors.
     elevatorB.setOnAction(new HandleElevatorClick());
     elevatorB.setStyle("-fx-background-color: aquamarine;");
 
-    Button stairB = new Button("Stairs");
+    Button stairB = new Button("Stairs"); //Button for selecting the stairs to change floors.
     stairB.setOnAction(new HandleStairClick());
     stairB.setStyle("-fx-background-color: #f1b10e;");
 
-    Button nextFloorB = new Button("Next Floor");
+    Button nextFloorB = new Button("Next Floor"); //Button for changing floors when the start room and destination room are on seperate floors.
     nextFloorB.setOnAction(new HandleNextFloorClick());
     nextFloorB.setStyle("-fx-background-color: #ff4d4d");
 
-    eleStairBox.getChildren().addAll(elevatorB,stairB,nextFloorB);
+    eleStairBox.getChildren().addAll(elevatorB,stairB,nextFloorB); //Put the three buttons to do with changing floors in the same box.
 
 
-    // Set the radio buttons that control the size of the map into one group and in a VBox.
+    // Set the radio buttons that control the size of the map into one toggle group and in a VBox.
     smallButton.setToggleGroup(sizeGroup);
     smallButton.setUserData(Constants.SMALL_RECT);
-    smallButton.setSelected(true); //http://www.learningaboutelectronics.com/Articles/How-to-select-an-item-by-default-in-JavaFX.php
+    smallButton.setSelected(true); //Set the small map size as default. http://www.learningaboutelectronics.com/Articles/How-to-select-an-item-by-default-in-JavaFX.php
     String defaultSelection = (String)sizeGroup.getSelectedToggle().getUserData().toString();
-    rectLength = Integer.parseInt(defaultSelection);
+    rectLength = Integer.parseInt(defaultSelection); //Set the size of the grid squares to the default size.
     mediumButton.setToggleGroup(sizeGroup);
     mediumButton.setUserData(Constants.MEDIUM_RECT);
     largeButton.setToggleGroup(sizeGroup);
     largeButton.setUserData(Constants.LARGE_RECT);
-
-
 
 
     /*
@@ -906,7 +904,7 @@ public class FinderApp extends Application {
     Button savePath = new Button("Save Path");
     //TextField to enter the file name to save to.
     TextField fileTextField = new TextField("Save path as:");
-    fileTextField.setMaxWidth(130);
+    fileTextField.setMaxWidth(Constants.SAVETEXTFIELDSIZE);
 
     //get a list of saved paths currently saved within the SavedPaths package.
     File[] filesList = getSavedFileList(curDir);
@@ -927,35 +925,41 @@ public class FinderApp extends Application {
       }
       //https://stackoverflow.com/questions/3243721/how-to-get-the-last-characters-in-a-string-in-java-regardless-of-string-size
       //https://stackoverflow.com/questions/18220022/how-to-trim-a-string-after-a-specific-character-in-java
-      savedPathDropDown.getItems().add(shortenedNameFile);
+      savedPathDropDown.getItems().add(shortenedNameFile); //adds saved files' abrdiged names to drop down of saved paths.
     }
 
     savedPathDropDown.setPromptText("Saved Paths");
-    savedPathDropDown.setMaxWidth(130);
+    savedPathDropDown.setMaxWidth(Constants.SAVETEXTFIELDSIZE);
 
     /**
     * Handles the button click of the savePath button to save the path to a file.
     */
     savePath.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
+        //If no path has been created, informs the user there is nothing to save.
         if(gridVisible== false){
           invalidEntry.setText("There is no path to save.");
+          //Else if path is over two floors, informs user it will not be saved to prevent errors.
         }else if(differentFloor == true){
           invalidEntry.setText("Please choose a path with a start and end on the same floor.");
+          //Else if user does not provide a name for the saved path, prompts the user to provide a name to save path under.
         }else if(fileTextField.getText().equals("")){
           invalidEntry.setText("Enter a name for the saved path.");
+          //Else if the saving name already exists...
         }else if(new File(curDir + "/SavedPaths/"  + fileTextField.getText() + ".dat" ).exists()){
           int counter = 1;
-          //If file name already exists, loop adding a number in brackets to the end of the file name until it does not previously exist.
+          /*If file name already exists, loop adding a number in brackets to the end of the file name until it
+          does not previously exist and save path under this name and inform user.*/
           while(new File(curDir + "/SavedPaths/"  + fileTextField.getText() + "(" + counter + ")" + ".dat" ).exists()){
             counter += 1;
           }
           invalidEntry.setText("This file name already exists. Path saved as: "+ fileTextField.getText() + "(" + counter + ")" + ".dat instead.");
           writeToFile(fileTextField.getText() + "(" + counter + ")" + ".dat");
+          //else save file under name provided by user.
         }else{
           writeToFile(fileTextField.getText() + ".dat");
         }
-        // Reset text
+        // Reset messaging that infomrs the user of issues to blank.
         fileTextField.setText("");
       }
     });
@@ -964,40 +968,41 @@ public class FinderApp extends Application {
     * Handles user selecting a saved path from the combobox.
     */
     savedPathDropDown.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent event){
-             //Completing the abridged file name to the full file name
-              readFromFile(System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
-              String buildingNameRead = "";
-              if(planRead!=null && planRead.getBuildingName()!=null && planRead.getGrid()!=null){
-                buildingNameRead = planRead.getBuildingName();
-                System.out.println(buildingNameRead);
-
-              buildingAndFloorLabel.setText(setBuildingAndFloorLabel(planRead.getFlNum(), buildingNameRead));
-              invalidEntry.setText("You have loaded a path from "+ startRead+ " to " + destRead+".");
-              enterStartRoom.setText(startRead+"");
-              enterDestRoom.setText(destRead+"");
-              buildingDropDown.setValue(buildingNameRead);
-
-              map1.setCurrentFloorPlan(planRead);
-              Path readPath = new Path(planRead.getGrid(),startRead,destRead);
-              map1.setStartValues(planRead,startRead);
-              map1.setEndValues(planRead,destRead);
-              int[][] readGrid = readPath.createPath();
-              planRead.setGrid(readGrid);
-
-              makeGrid(readGrid,gridPane,rectLength);
-              highlight(planRead, destRead);
-              gridVisible = true;
-              differentFloor = false;
-
-              buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
-            }else{
-              System.out.println("No file to load.");
-            }
-
-
-            }
-          });
+      public void handle(ActionEvent event){
+        //Completing the abridged file name to the full file name
+        readFromFile(System.getProperty("user.dir")+"/SavedPaths/" + savedPathDropDown.getValue());
+        String buildingNameRead = "";
+        //If building is successfully read from the file.
+        if(planRead!=null && planRead.getBuildingName()!=null && planRead.getGrid()!=null){
+          buildingNameRead = planRead.getBuildingName();
+          System.out.println(buildingNameRead);
+          /* Put the correct building and floor name above the map, inform the user the file has been loaded,
+          and autocomplete the building combobox and starting and destination room textfields.*/
+          buildingAndFloorLabel.setText(setBuildingAndFloorLabel(planRead.getFlNum(), buildingNameRead));
+          invalidEntry.setText("You have loaded a path from "+ startRead+ " to " + destRead+".");
+          enterStartRoom.setText(startRead+"");
+          enterDestRoom.setText(destRead+"");
+          buildingDropDown.setValue(buildingNameRead);
+          /* Set the floorplan from the file, create the path, place the starting and end values on the map,
+          and set the grid*/
+          map1.setCurrentFloorPlan(planRead);
+          Path readPath = new Path(planRead.getGrid(),startRead,destRead);
+          map1.setStartValues(planRead,startRead);
+          map1.setEndValues(planRead,destRead);
+          int[][] readGrid = readPath.createPath();
+          planRead.setGrid(readGrid);
+          // Make the grid on the screen and highlight the destination room.
+          makeGrid(readGrid,gridPane,rectLength);
+          highlight(planRead, destRead);
+          gridVisible = true;
+          differentFloor = false;
+          //Adjust the size of building and floor number label above the map based on the mapsize.
+          buildingAndFloorLabel.setFont(Font.font("Verdana", (int)sizeGroup.getSelectedToggle().getUserData()/1.5));
+        }else{
+          System.out.println("No file to load.");
+        }
+      }
+    });
 
 
 
@@ -1007,73 +1012,78 @@ public class FinderApp extends Application {
     mapSize.getChildren().addAll(smallButton, mediumButton, largeButton, fileTextField, savePath, savedPathDropDown);
 
     /*Sets the size of the map based on the users selection of the map size radiobutton group.
-    * https://stackoverflow.com/questions/32424915/how-to-get-selected-radio-button-from-togglegroup */
+     https://stackoverflow.com/questions/32424915/how-to-get-selected-radio-button-from-togglegroup */
     sizeGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
       public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+        //Condition for if size toggle is selected.
         if (sizeGroup.getSelectedToggle() != null) {
-          String userSelection = (String)sizeGroup.getSelectedToggle().getUserData().toString();
+          String userSelection = (String)sizeGroup.getSelectedToggle().getUserData().toString(); //Store the value of the size toggle selected as a Srting.
+          //Adjust the size of the squares on the grid and size of the numbers on the map to the according size of the map.
           rectLength = Integer.parseInt(userSelection);
           roomNumberFontSize = (int)sizeGroup.getSelectedToggle().getUserData()/3;
-          System.out.println(roomNumberFontSize);
         }
       }
     });
 
+    //HBox for the title of the app.
+    HBox titleRow = new HBox();
+    titleRow.setAlignment(Pos.CENTER);
+    titleRow.getChildren().add(appName);
 
-    HBox topRow2 = new HBox();
-    topRow2.setAlignment(Pos.CENTER);
-    topRow2.getChildren().add(appName);
 
-
-
+    //HBox for the Label for messaging to the user to inform of errors or changes when the app is running.
     HBox invalidHBox = new HBox(Constants.PREFERRED_HBOX_VBOX_SIZE);
     invalidHBox.getChildren().add(invalidEntry);
     invalidHBox.setAlignment(Pos.CENTER);
 
-    // New button to submit textfield information.
+    //Button to submit textfield information for starting and destination rooms and building combobox.
     Button submitB = new Button("Submit");
     submitB.setOnAction(new HandleButtonClick());
 
+    //The combobox for selecting and providing the building name.
     buildingDropDown.setPromptText("Select a Building:");
     Label buildingDropDownLabel = new Label("Building:");
     VBox buildingDropDownVBox = new VBox();
     buildingDropDownVBox.getChildren().addAll(buildingDropDownLabel, buildingDropDown);
 
+    //The Label and VBox for typing and providing the starting room number.
     Label enterStartRoomLabel = new Label ("Start Room:");
     enterStartRoomVBox.getChildren().addAll(enterStartRoomLabel, enterStartRoom);
 
+    //The Label and VBox for typing and providing the destination room number.
     Label enterDestRoomLabel = new Label("Destination Room:");
     enterDestRoomVBox.getChildren().addAll(enterDestRoomLabel, enterDestRoom);
 
+    //The VBox for holding the submit button.
     VBox submitBBox = new VBox();
-    Label submitBlankLabel = new Label(" ");
+    Label submitBlankLabel = new Label(" "); //Blank label for formatting purposes.
     submitBBox.getChildren().addAll(submitBlankLabel,submitB);
+
     // Create FlowPane to hold items in the top row of the border pane.
     FlowPane topRow = new FlowPane();
     topRow.setAlignment(Pos.CENTER);
     topRow.getChildren().addAll(buildingDropDownVBox, enterStartRoomVBox,
     enterDestRoomVBox, submitBBox);
 
-    VBox topVBox = new VBox(15);
-    topVBox.getChildren().addAll(topRow2,topRow,invalidHBox);
-    topVBox.setMinHeight(190);
+    //VBox containting everything above the map in border pane.
+    VBox topVBox = new VBox(Constants.TOP_VBOX_SIZE);
+    topVBox.getChildren().addAll(titleRow,topRow,invalidHBox);
+    topVBox.setMinHeight(Constants.TOP_VBOX_MIN_HEIGHT);
 
 
-    // Create an HBox to hold items in the  bottom row of the border pane.
+    // Create an HBox to hold buttons in the bottom row of the border pane.
     HBox bottomHBox = new HBox(Constants.PREFERRED_HBOX_VBOX_SIZE);
 
-
-
-    // Add a new button to go back to scene 1.
+    // Add a new button to go back to Welcome screen.
     Button backButton = new Button("Back");
     bottomHBox.getChildren().addAll(backButton);
 
     /**
-    * Handles a button click to change scene.
+    * Handles a button click to change scene back to the welcome screen.
     */
     backButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
-        primaryStage.setScene(scene1);
+        primaryStage.setScene(welcomeScene);
       }
     });
 
@@ -1113,10 +1123,13 @@ public class FinderApp extends Application {
     StackPane aboutStackPane = new StackPane(aboutBackground);
     aboutStackPane.getChildren().add(aboutVBox);
 
+    //Add the stackpane to the popup window.
     aboutPopup.getContent().add(aboutStackPane);
 
-    /** Handles a click of the About button to open the About popup with
-    * information on the app. */
+    /**
+    * Handles a click of the About button to open the About popup with
+    * information on the app.
+    */
     aboutButton.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent event){
         aboutPopup.show(primaryStage);
@@ -1124,18 +1137,21 @@ public class FinderApp extends Application {
     });
 
 
-    /** Handles a click of the Hide About this App button. */
+    /**
+    * Handles a click of the Hide About this App button to hide the
+    * information that was previously opened.
+    */
     hideAboutButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
         aboutPopup.hide();
       }
     });
 
-    // Add a Help button to provide guidance on using the app.
+    // Help button to provide guidance on using the app.
     Button helpButton = new Button("Help?");
     bottomHBox.getChildren().add(helpButton);
 
-    //Add a popup window when user clicks the Help button.
+    //Add a popup window with information when user clicks the Help button.
     //Source: https://gist.github.com/jewelsea/1926196 jewelsea
     Popup helpPopup = new Popup();
     Label helpLabel = new Label(
@@ -1149,7 +1165,7 @@ public class FinderApp extends Application {
     "If you enter an invalid room, example room numbers will be provided in a message.");
 
 
-    //Add a Hide button to hide the Help popup window.
+    //Add a Hide button to hide the Help popup window when opened.
     Button hideHelpButton = new Button("Hide \"Help?\"");
     bottomHBox.getChildren().add(hideHelpButton);
 
@@ -1167,9 +1183,12 @@ public class FinderApp extends Application {
     StackPane helpStackPane = new StackPane(helpBackground);
     helpStackPane.getChildren().add(helpVBox);
 
+    // Add the stackpane to the Help popup window.
     helpPopup.getContent().add(helpStackPane);
 
-    /** Handles a click of the Help button to open the Help popup.*/
+    /**
+    * Handles a click of the Help button to open the Help popup with its information.
+    */
     helpButton.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent event){
         helpPopup.show(primaryStage);
@@ -1177,7 +1196,9 @@ public class FinderApp extends Application {
     });
 
 
-    /** Handles a click of the Hide Help button. */
+    /**
+    * Handles a click of the Hide Help button to hide the popup window.
+    */
     hideHelpButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
         helpPopup.hide();
@@ -1185,31 +1206,31 @@ public class FinderApp extends Application {
     });
 
 
-    BorderPane borderPanes2 = new BorderPane();
-    borderPanes2.setCenter(gridPaneVBox);
-    borderPanes2.setTop(topVBox);
-    borderPanes2.setBottom(bottomHBox);
-    borderPanes2.setRight(mapSize);
+    BorderPane mainBorderPane = new BorderPane();
+    mainBorderPane.setCenter(gridPaneVBox);
+    mainBorderPane.setTop(topVBox);
+    mainBorderPane.setBottom(bottomHBox);
+    mainBorderPane.setRight(mapSize);
 
-    /* Scrollable display. Only shows scroll bars when needed.
+    /* Scrollable display of the grid. Only shows scroll bars when needed.
     * https://docs.oracle.com/javafx/2/ui_controls/scrollpane.htm
     * https://stackoverflow.com/questions/17568688/how-to-resize-javafx-scrollpane-content-to-fit-current-size*/
-    ScrollPane scrollPane = new ScrollPane(borderPanes2);
+    ScrollPane scrollPane = new ScrollPane(mainBorderPane);
     scrollPane.setFitToHeight(true);
     scrollPane.setFitToWidth(true);
     scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
     scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
     scrollPane.setPannable(true);
 
-
-    Scene scene2 = new Scene(scrollPane,Constants.SCENESIZE,Constants.SCENESIZE);
+    //main scene of the program and it is set to default sizes.
+    Scene mainScene = new Scene(scrollPane,Constants.SCENESIZE,Constants.SCENESIZE);
 
     /**
-    * Handles a button click to change the scene to scene 2.
+    * Handles a button click of the Start button on the Welcome Screen to change the scene to Main scene.
     */
     startButton.setOnAction(new EventHandler<ActionEvent>(){
       public void handle(ActionEvent event){
-        primaryStage.setScene(scene2);
+        primaryStage.setScene(mainScene);
       }
     });
 
@@ -1225,7 +1246,7 @@ public class FinderApp extends Application {
             if(isMaximizedScreen == true){
               primaryStage.setWidth(bounds.getWidth());
               primaryStage.setHeight(bounds.getHeight());
-            }// If the screen is no longer maximized, set the stage to the original size and position it in the center of the screen.
+            }// If the screen is no longer maximized, set the stage to the original default size and position it in the center of the screen.
             else if(isMaximizedScreen == false){
               primaryStage.setWidth(Constants.SCENESIZE);
               primaryStage.setHeight(Constants.SCENESIZE);
@@ -1237,7 +1258,7 @@ public class FinderApp extends Application {
 
 
     primaryStage.setTitle("Room Finder App");
-    primaryStage.setScene(scene1);
+    primaryStage.setScene(welcomeScene); //Start on the Welcome screen.
     primaryStage.show();
   }
 }
