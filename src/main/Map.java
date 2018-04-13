@@ -90,22 +90,14 @@ public class Map implements Serializable{
   }
 
   /**
-  * Method that sets the coordinate values startX and startY for the starting room.
+  * Method that sets the start value for the starting room.
   * @param : aFP is a floor plan of type FloorPlans.
   * @param : startRoom the room number of the start room as an integer.
   */
   public void setStartValues(FloorPlans aFP,int startRoom){
     // Set the start equal to the given startRoom
-    start = startRoom;
-    // Loop through each position on the floor plan.
-    for(int row=0;row<aFP.getRowLength();row++){
-      for(int col=0;col<aFP.getColLength(row);col++){
-        /* If the current position on the floorplan is equal to the starting room number,
-        set the current x and y coordinates. */
-        if(aFP.getGrid()[row][col]==startRoom){
-        }
-      }
-    }
+    start = startRoom;  
+    
   }
 
   /**
