@@ -55,9 +55,8 @@ Note: you will be prompted for each value.
 1. Enter the a number corresponding the the building name. (Either "Taylor Family Digital Library" or Bioscience")
 2. Enter a destination room number and press "Enter".
 3. Enter a starting room number and press "Enter".
-4. The first map generate is your path with the start room denoted by a 8.
-5. The second map generate is your path with the start room denoted by a 8 and the destination room denoted by a 5.
-4. The final map generated is your path . The starting room is denoted by a 8 and the destination room is denoted by an 5. The path is highlighted by 7's with the hallways being 1's and the walls being 0's. 1000 series numbers denote rooms and the number 1000 lower than the room numbers denotes the corresponding room's door (example room is 1151 and the door is 151).
+4. The first map generated is the floorplan grid without a path.
+5. The second map generated is your path . The starting room is denoted by a 8 and the destination room is denoted by an 5. The path is highlighted by 7's with the hallways being 1's and the walls being 0's. 1000 series numbers denote rooms and the number 1000 lower than the room numbers denotes the corresponding room's door (example room is 1151 and the door is 151).
 
 Some good room combinations to use the app to start are:
 1. For "Taylor Family Digital Library":
