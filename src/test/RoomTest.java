@@ -4,14 +4,24 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+* This test class is a JUnit test to test the Room Class of the Roomfinding Program.
+*/
+
 public class RoomTest {
 
+    /**
+    * Test case to test constructing a room and using the getter method to get the room number.
+    */
     @Test
     public void test_ConstructorAndGetter() {
         Room c = new Room(0);
         assertEquals("Testing constructor and getter", 0, c.getRoomsNumber());
     }
 
+    /**
+    * Test case to test adding a tile to the list of tiles for a room, checking its size, and the x and y coordinates of the tile.
+    */
     @Test
     public void test_addTile_addingOne() {
         Room c = new Room(10);
@@ -26,6 +36,10 @@ public class RoomTest {
         assertEquals("Room only has one Tile - testing y coord.", 5, m2.getYCoord());
     }
 
+    /**
+    * Test case adding a bunch of tiles to the tile list for a Room and checking each one was added and has the correct
+    * x coordinates.
+    */
     @Test
     public void getTileList_Encapsulation() {
         Room c = new Room(20);
@@ -56,6 +70,9 @@ public class RoomTest {
         assertEquals("Tile 6 test - testing x coordinate", 20, list.get(5).getXCoord());
     }
 
+    /**
+    * Testing adding tiles to a Room and checking they are all added successfully based on size of the tilelist.
+    */
     @Test
     public void addTile() {
         Room c = new Room(20);
@@ -66,6 +83,9 @@ public class RoomTest {
         assertEquals("Check size of ArrayList", 3, c.getTileList().size());
     }
 
+    /**
+    * Testing a Room can be constructed and correctly sets and gets the x and y coordinate for a door for that room.
+    */
     @Test
     public void getAndSetDoor() {
         Room c = new Room(20);
