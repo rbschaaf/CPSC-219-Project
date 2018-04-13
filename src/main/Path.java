@@ -281,7 +281,7 @@ public class Path {
    * for the distance based on the best move
    *
    * @param nodes containing the arraylist of nodes as type ArrayList<Node>. Nodes that have not been traversed through.
-   * @return : an arraylist of nodes with all the appropriate instance
+   * @return visitedNodes an arraylist of nodes with all the appropriate instance
    * variables set to create the shortest path
    */
   private ArrayList<Node> setNodeDistances(ArrayList<Node> nodes) {
@@ -317,7 +317,7 @@ public class Path {
    * altering the grid
    *
    * @param visitedNodes containing an ArrayList of nodes of type ArrayList<Node> that have been traversed through.
-   * @return : an ArrayList of nodes of type ArrayList<Node> that only contain the direct path nodes from the start to end node.
+   * @return shortestPathNodes an ArrayList of nodes of type ArrayList<Node> that only contain the direct path nodes from the start to end node.
    */
 
   private ArrayList<Node> getConnectedNodes(ArrayList<Node> visitedNodes) {
@@ -387,7 +387,7 @@ public class Path {
   /**
    * Method that will combine other methods into simpler step to be called.
    *
-   * @return : a grid that will show the shortest path on a grid as int[][]
+   * @return gridNodes a grid that will show the shortest path on a grid as int[][]
    */
   public int[][] createPath() {
     // Create an arraylist of the nodes for the floors grid.
