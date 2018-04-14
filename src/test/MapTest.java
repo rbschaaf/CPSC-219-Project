@@ -4,6 +4,10 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import resources.BuiltFloorPlans;
 
+/** 
+* Testing class of JUnit tests for the Map of the room finding program.
+*/
+
 public class MapTest {
 
   /**
