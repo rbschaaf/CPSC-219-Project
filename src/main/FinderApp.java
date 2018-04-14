@@ -180,8 +180,8 @@ public class FinderApp extends Application {
           and set the grid*/
           map1.setCurrentFloorPlan(planRead);
           Path readPath = new Path(planRead.getGrid(),startRead,destRead);
-          map1.setStartValues(planRead,startRead);
-          map1.setEndValues(planRead,destRead);
+          map1.setStartValues(startRead);
+          map1.setEndValues(destRead);
           int[][] readGrid = readPath.createPath();
           planRead.setGrid(readGrid);
           // Make the grid on the screen and highlight the destination room.
@@ -494,8 +494,8 @@ public class FinderApp extends Application {
 
      /* Set the start and end values for the map based on the user inputted
      or temporary destination and the inputted or temporary starts*/
-     map1.setStartValues(floorPlan,start);
-     map1.setEndValues(floorPlan,end);
+     map1.setStartValues(start);
+     map1.setEndValues(end);
 
      // Create a grid with the path from start to final destination.
      int[][] theGrid = thePath.createPath();
