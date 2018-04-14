@@ -94,7 +94,7 @@ public class Map implements Serializable{
   * @param : aFP is a floor plan of type FloorPlans.
   * @param : startRoom the room number of the start room as an integer.
   */
-  public void setStartValues(FloorPlans aFP,int startRoom){
+  public void setStartValues(int startRoom){
     // Set the start equal to the given startRoom
     start = startRoom;  
     
@@ -105,7 +105,7 @@ public class Map implements Serializable{
   * @param aFP a floorPlan as type FloorPlans
   * @param endRoom the current end room number as an int.
   */
-  public void setEndValues(FloorPlans aFP, int endRoom){
+  public void setEndValues(int endRoom){
     // Set the destination value equal to the given endRoom.
     dest = endRoom;
   }
