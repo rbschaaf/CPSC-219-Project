@@ -190,11 +190,18 @@ public class FloorPlansTest {
     assertNotNull("Room 2 exists",a.getRoom(2+1000));
     assertNotNull("Room 300 exists",a.getRoom(300+1000));
     assertNotNull("Room 500 exists", a.getRoom(500+1000));
+
     // Check for the correct amount of tiles for each room.
     assertEquals("Tiles for Room 1",2,a.getRoom(1+1000).getTileList().size());
     assertEquals("Tiles for Room 2",2,a.getRoom(2+1000).getTileList().size());
     assertEquals("Tiles for Room 300",1,a.getRoom(300+1000).getTileList().size());
     assertEquals("Tiles for Room 500",3,a.getRoom(500+1000).getTileList().size());
+
+    // Check that the tiles have the proper x and y values for two rooms.
+    assertEquals("X for room 1, tile 1", 0,a.getRoom(1+1000).getTileList().get(0).getXCoord());
+    assertEquals("Y for room 1, tile 1",0, a.getRoom(1+1000).getTileList().get(0).getYCoord());
+    assertEquals("X for room 500, tile 3",1,a.getRoom(500+1000).getTileList().get(2).getXCoord());
+    assertEquals("Y for room 500, tile 3",5,a.getRoom(500+1000).getTileList().get(2).getYCoord());
   }
 
   /**
