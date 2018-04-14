@@ -550,7 +550,7 @@ public class FinderApp extends Application {
 
           if(building1.onAFloor(startNumberInput)!=null && building1.onAFloor(destNumberInput)!=null){
             map1.setCurrentFloorPlan(building1.getFloorPlan(startNumberInput));
-          }
+
 
 
           /* If the floors for the start and destination numbers are the same
@@ -586,15 +586,15 @@ public class FinderApp extends Application {
 
             // Specify that the start and destination are on different floors.
             differentFloor = true;
-
-          /* If the start and destination inputs are null, give the user
-          an appropriate error message*/
-          }else if(building1.onAFloor(startNumberInput)==null ||
-          building1.onAFloor(destNumberInput)==null){
-              if(building1.onAFloor(startNumberInput)==null) invalidEntry.setText("Please enter a valid start number.");
-              else if(building1.onAFloor(destNumberInput)==null)invalidEntry.setText("Please enter a valid destination number.");
-              System.out.println("No valid start/dest info. added");
-          }
+      }
+      /* If the start and destination inputs are null, give the user
+      an appropriate error message*/
+      }else if(building1.onAFloor(startNumberInput)==null ||
+      building1.onAFloor(destNumberInput)==null){
+          if(building1.onAFloor(startNumberInput)==null) invalidEntry.setText("Please enter a valid start number.");
+          else if(building1.onAFloor(destNumberInput)==null)invalidEntry.setText("Please enter a valid destination number.");
+          System.out.println("No valid start/dest info. added");
+      }
 
         /* If the value for the building name is null, give the user an
         appropriate error message.*/
