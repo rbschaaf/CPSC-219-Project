@@ -166,7 +166,7 @@ public class FloorPlansTest {
   * is the same as the grid of the floor plan.
   */
   @Test
-  public void testGrid() {
+  public void testGrid2() {
     // Create a new floor plan
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", BuiltFloorPlans.TFDLONE,1,150,151);
     /*Check if the grid returned from getGrid() is the same as the one the floor plans
