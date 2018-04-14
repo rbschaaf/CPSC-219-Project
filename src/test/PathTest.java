@@ -233,7 +233,22 @@ public class PathTest {
   */
   @Test
   public void getCopyNodes() {
-
+    Path c = new Path(BIOSCIONE,180, 129);
+    ArrayList<Node> list = new ArrayList<>();
+    Node m1 = new Node(9, 9, true);
+    Node m2 = new Node(1, 7);
+    Node m3 = new Node(10, 5);
+    Node m4 = new Node(4, 10);
+    Node m5 = new Node(8, 9);
+    Node m6 = new Node(12, 4);
+    c.addNodeToList(list,m1);
+    c.addNodeToList(list,m2);
+    c.addNodeToList(list,m3);
+    c.addNodeToList(list,m4);
+    c.addNodeToList(list,m5);
+    c.addNodeToList(list,m6);
+    //Comparing size of original arraylist of nodes to a copy of it to see if they are the same size.
+    assertEquals("Compare the original node list to a copy of the list", list.size(), c.getCopyNodes(list).size());
   }
 
   /**
@@ -401,5 +416,27 @@ public class PathTest {
   */
   @Test
   public void createPath() {
+    int[][] a = {{0,0,0,129,0,0,0},
+    {0,0,1,0,0,0,0},
+    {0,0,1,1,0,0,0},
+    {0,0,0,0,180,0,0}};
+    //Creat a path for the grid.
+    Path c = new Path(a ,129, 180);
+    Node m1 = new Node(0, 3, 0);
+    Node m2 = new Node(1, 2);
+    Node m3 = new Node(2, 2);
+    Node m4 = new Node(2, 3);
+    Node m5 = new Node(3, 4, true);
+    ArrayList<Node> list = new ArrayList<>();
+    c.addNodeToList(list,m1);
+    c.addNodeToList(list,m2);
+    c.addNodeToList(list,m3);
+    c.addNodeToList(list,m4);
+    c.addNodeToList(list,m5);
+    //Compare the created path on the grid to the hardcoded correct path for the grid.
+    int[][] b = {{0,0,0,129,0,0,0},
+    {0,0,SWPATH,0,0,0,0},
+    {0,0,1,SEPATH,0,0,0},
+    {0,0,0,0,180,0,0}};
+    assertTrue("Check if nodes added properly to the grid.", Arrays.deepEquals(b, c.createPath()));
   }
-}
