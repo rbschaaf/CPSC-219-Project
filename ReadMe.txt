@@ -77,7 +77,7 @@ In the GUI, to see different floors try combinations using rooms on different fl
 
 
 Unit Tests:
-The JUnit tests are located in the test file within the zip folder.
+The JUnit tests are located in the test folder within the zip folder.
 
 
 
