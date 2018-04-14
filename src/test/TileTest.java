@@ -4,6 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+* Test class of JUnit tests for the Tile class of the room finding program.
+*/
+
 public class TileTest {
     
     /**
