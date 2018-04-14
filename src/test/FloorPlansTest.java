@@ -153,7 +153,7 @@ public class FloorPlansTest {
   *
   */
   @Test
-  public void getBuildingName() {
+  public void testBuildingName() {
     FloorPlans a = new FloorPlans("Taylor Family Digital Library",BuiltFloorPlans.TFDLFIVE,5,543,553);
     assertEquals("The building's name is","Taylor Family Digital Library",a.getBuildingName());
 
@@ -166,7 +166,7 @@ public class FloorPlansTest {
   * is the same as the grid of the floor plan.
   */
   @Test
-  public void getGrid() {
+  public void testGrid() {
     // Create a new floor plan
     FloorPlans a = new FloorPlans("Taylor Family Digital Library", BuiltFloorPlans.TFDLONE,1,150,151);
     /*Check if the grid returned from getGrid() is the same as the one the floor plans
@@ -179,7 +179,7 @@ public class FloorPlansTest {
   * of tiles and that these tiles are valid.
   */
   @Test
-  public void populateRooms() {
+  public void testPopulateRooms() {
     int[][] g = {{1001,1,1001,1002,2,1002},{1300,300,500,1500,1500,1500}};
     FloorPlans a = new FloorPlans();
     a.setGrid(g);
@@ -210,7 +210,7 @@ public class FloorPlansTest {
   *
   */
   @Test
-  public void makeRooms() {
+  public void testMakeRooms() {
     int[][] g = {{1001,999,8},{1375,40,1700}};
     // Make a new floor plan and set its grid to g. Make rooms based on g.
     FloorPlans a = new FloorPlans();
