@@ -144,7 +144,7 @@ public class FloorPlans implements Serializable {
   public int[][] getGrid() {
     return copyGrid(grid);
   }
-  
+
   /**
   * Method that sets the grid for the current floorplan.
   *
@@ -223,6 +223,7 @@ public class FloorPlans implements Serializable {
   }
 
 
+
   /**
    * Method to populate each room within the floorplan with tiles and a door
    * meant to be used in a for-loop
@@ -234,18 +235,21 @@ public class FloorPlans implements Serializable {
       for (int col = 0; col < grid[row].length; col++) {
         gridNum = grid[row][col];
         // If the current coordinate being iterated is a room, add a tile to the coordinate.
-        if (getRoom(gridNum) != null) {
-          getRoom(gridNum).addTile(row, col);
-          // If the current coordinate being iterated through has a value less than 1000
-        } else if (gridNum < 1000) {
-          /* get the room for a door (1000+ item) and subtract 1000 to find
-          which room it is for. Set the door as the current tile in the loop. */
-          if (getRoom(gridNum) != null) {
-            Room tempRoom = getRoom(gridNum);
-            tempRoom.setDoor(row, col);
-          }
+        for(Room room : roomList){
+          if (room.getRoomsNumber() == gridNum) {
+            room.addTile(row, col);
+            // If the current coordinate being iterated through has a value less than 1000
+          } else if (gridNum < 1000) {
+            /* get the room for a door (1000+ item) and subtract 1000 to find
+            which room it is for. Set the door as the current tile in the loop. */
+            if (getRoom(gridNum) != null) {
+              Room tempRoom = getRoom(gridNum);
+              tempRoom.setDoor(row, col);
+            }
 
+          }
         }
+
 
       }
     }
