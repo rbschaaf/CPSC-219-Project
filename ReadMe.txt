@@ -15,7 +15,7 @@ Linux or Windows operating system. Java installed.
 
 Installation:
 1. Download the CPSC219Group05 zip file into a new folder.
-2. Open the folder in the Terminal.
+2. Open the "main" folder in the Terminal (within folder "src").
 3. Type javac *.java to compile the entire folder
 
 
@@ -76,7 +76,8 @@ In the GUI, to see different floors try combinations using rooms on different fl
 2. "Taylor Digital Family Library", Rooms 259 and 553.
 
 
-Running the JUnit Tests:
+Unit Tests:
+The JUnit tests are located in the test file within the zip folder.
 
 
 
