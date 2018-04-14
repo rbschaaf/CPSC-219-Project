@@ -365,42 +365,4 @@ public class PathTest {
     c.addNodeToList(list, m1);
     assertEquals("Check length of connected node array, should not include the EndNode", 3, c.getConnectedNodes(list).size());
   }
-
-  /**
-  * Test adding a path can be added to a grid after it has been found.
-  */
-  @Test
-  public void addPathToGrid() {
-    int[][] a = {{0,0,0,129,0,0,0},
-            {0,0,1,0,0,0,0},
-            {0,0,1,1,0,0,0},
-            {0,0,0,0,180,0,0}};
-    //Creat a path for the grid.
-    Path c = new Path(a ,129, 180);
-    Node m1 = new Node(0, 3, 0);
-    Node m2 = new Node(1, 2);
-    Node m3 = new Node(2, 2);
-    Node m4 = new Node(2, 3);
-    Node m5 = new Node(3, 4, true);
-    ArrayList<Node> list = new ArrayList<>();
-    c.addNodeToList(list,m1);
-    c.addNodeToList(list,m2);
-    c.addNodeToList(list,m3);
-    c.addNodeToList(list,m4);
-    c.addNodeToList(list,m5);
-    //Compare the created path on the grid to the hardcoded correct path for the grid.
-    int[][] b = {{0,0,0,129,0,0,0},
-            {0,0,SPATH,0,0,0,0},
-            {0,0,1,SEPATH,0,0,0},
-            {0,0,0,0,180,0,0}};
-
-    assertTrue("Check if nodes added properly to the grid.", Arrays.deepEquals(b, c.createPath()));
-  }
-
-  /**
-  * Test the creation of the path for a provided grid.
-  */
-  @Test
-  public void createPath() {
-  }
 }
