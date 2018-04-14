@@ -403,13 +403,16 @@ public class PathTest {
     c.addNodeToList(list,m3);
     c.addNodeToList(list,m4);
     c.addNodeToList(list,m5);
-    //Compare the created path on the grid to the hardcoded correct path for the grid.
+    ArrayList<Node> nodeDistances = c.setNodeDistances(list); //Set the node distances in an arraylist.
+    ArrayList<Node> connectedNodes = c.getConnectedNodes(nodeDistances); //Connect the nodes in an arraylist.
+    a = c.addPathToGrid(connectedNodes); //Add these node values to the original 2D grid.
+    //Compare the created nodes with values on the grid to the hardcoded correct path for the grid.
     int[][] b = {{0,0,0,129,0,0,0},
                  {0,0,SWPATH,0,0,0,0},
                  {0,0,1,SEPATH,0,0,0},
                  {0,0,0,0,180,0,0}};
-    assertTrue("Check if nodes added properly to the grid.", Arrays.deepEquals(b, c.createPath()));
-  }
+    assertTrue("Check if nodes added properly to the grid.", Arrays.deepEquals(b, a));
+}
 
   /**
   * Test the creation of the path for a provided grid.
@@ -440,3 +443,4 @@ public class PathTest {
     {0,0,0,0,180,0,0}};
     assertTrue("Check if nodes added properly to the grid.", Arrays.deepEquals(b, c.createPath()));
   }
+}
