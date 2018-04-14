@@ -137,8 +137,8 @@ public class MapMain {
     /* Create a new path and set its start and end values on the map for
      the current floorplan.*/
     Path path = new Path(floorPlan.getGrid(), roomStart, roomDest);
-    newMap.setStartValues(floorPlan, roomStart);
-    newMap.setEndValues(floorPlan, roomDest);
+    newMap.setStartValues(roomStart);
+    newMap.setEndValues(roomDest);
 
 
     // Form the path from starting room to destination room.
